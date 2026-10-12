@@ -41,7 +41,8 @@ pnpm build          # 全量构建（turbo 缓存）
 pnpm lint           # ESLint
 pnpm typecheck      # TypeScript 类型检查
 pnpm test           # 单元测试（Vitest）
-pnpm test:e2e       # 端到端测试（Playwright）
+pnpm test:e2e       # 端到端 + 视觉回归（Playwright，复用已启动的 dev 服务）
+pnpm test:e2e:update  # 更新视觉基准图（基准按平台区分，新平台首次需运行）
 pnpm ai:generate    # 从 schema 重新生成 AI 提示词 / 规则 / 规范文档
 pnpm gen:element    # 脚手架：新增元素类型
 pnpm gen:layout     # 脚手架：新增版式

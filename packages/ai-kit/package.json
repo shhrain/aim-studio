@@ -7,17 +7,27 @@
     ".": "./src/index.ts",
     "./PROMPT.md": "./PROMPT.md"
   },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./PROMPT.md": "./PROMPT.md"
+    }
+  },
   "files": [
+    "dist",
     "PROMPT.md",
-    "examples",
-    "src"
+    "examples"
   ],
   "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --sourcemap --clean",
     "generate": "tsx src/generate.ts",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "clean": "rimraf .turbo"
+    "clean": "rimraf dist .turbo"
   },
   "dependencies": {
     "@aim/template-core": "workspace:*",
@@ -30,6 +40,7 @@
     "@aim/vitest-config": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
+    "tsup": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -11,7 +11,7 @@ export function Textarea({ className, showCount, maxLength, value, ...props }: T
     <textarea
       data-slot="textarea"
       className={cn(
-        'flex field-sizing-content min-h-20 w-full rounded-md border border-input bg-card px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive',
+        'border-input bg-card placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-ring aria-invalid:border-destructive flex field-sizing-content min-h-20 w-full rounded-md border px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
         showCount && 'pb-6',
         className,
       )}
@@ -24,7 +24,7 @@ export function Textarea({ className, showCount, maxLength, value, ...props }: T
   return (
     <div className="relative">
       {el}
-      <span className="pointer-events-none absolute right-2.5 bottom-1.5 text-xs text-muted-foreground tabular-nums">
+      <span className="text-muted-foreground pointer-events-none absolute right-2.5 bottom-1.5 text-xs tabular-nums">
         {count}/{maxLength}
       </span>
     </div>

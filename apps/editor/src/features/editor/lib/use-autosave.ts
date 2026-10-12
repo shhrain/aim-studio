@@ -20,12 +20,15 @@ export function useAutosave() {
     saving.current = true
     setSaveState('saving')
     try {
-      const res = isNew ? await editorApi.createTemplate(current) : await editorApi.saveTemplate(current)
+      const res = isNew
+        ? await editorApi.createTemplate(current)
+        : await editorApi.saveTemplate(current)
       set({ isNew: false })
       // 保存期间若又有修改，保持 dirty
       const latest = useEditor.getState().doc
       setSaveState(latest === current ? 'saved' : 'dirty', res.updatedAt)
-      if (isNew && typeof window !== 'undefined') window.history.replaceState(null, '', `/editor/${current.id}`)
+      if (isNew && typeof window !== 'undefined')
+        window.history.replaceState(null, '', `/editor/${current.id}`)
       return true
     } catch {
       setSaveState('error')

@@ -2,39 +2,74 @@ import { ArrowRightIcon, LayersIcon, QrCodeIcon, SearchCheckIcon, SendIcon } fro
 import Link from 'next/link'
 
 const ENTRIES = [
-  { href: '/template-list', title: '模板发送', desc: '浏览精选模板，发送到手机体验', icon: SendIcon, tone: 'from-blue-500 to-indigo-500' },
-  { href: '/scan-experience', title: '扫码体验', desc: '微信扫码，立即收到阅信', icon: QrCodeIcon, tone: 'from-emerald-500 to-teal-500' },
-  { href: '/ability-query', title: '能力查询', desc: '查询号码是否支持阅信', icon: SearchCheckIcon, tone: 'from-amber-500 to-orange-500' },
-  { href: '/template-list?integrated=1', title: '三信融合', desc: '阅信 / 5G 消息 / 视频短信', icon: LayersIcon, tone: 'from-fuchsia-500 to-pink-500' },
+  {
+    href: '/template-list',
+    title: '模板发送',
+    desc: '浏览精选模板，发送到手机体验',
+    icon: SendIcon,
+    tone: 'from-blue-500 to-indigo-500',
+  },
+  {
+    href: '/scan-experience',
+    title: '扫码体验',
+    desc: '微信扫码，立即收到阅信',
+    icon: QrCodeIcon,
+    tone: 'from-emerald-500 to-teal-500',
+  },
+  {
+    href: '/ability-query',
+    title: '能力查询',
+    desc: '查询号码是否支持阅信',
+    icon: SearchCheckIcon,
+    tone: 'from-amber-500 to-orange-500',
+  },
+  {
+    href: '/template-list?integrated=1',
+    title: '三信融合',
+    desc: '阅信 / 5G 消息 / 视频短信',
+    icon: LayersIcon,
+    tone: 'from-fuchsia-500 to-pink-500',
+  },
 ]
 
 export default function Home() {
   return (
-    <main className="mx-auto min-h-dvh max-w-screen-sm bg-muted">
+    <main className="bg-muted mx-auto min-h-dvh max-w-screen-sm">
       <section className="hero-gradient relative overflow-hidden px-5 pt-[calc(env(safe-area-inset-top)+2.5rem)] pb-16 text-white">
         <div className="absolute -top-10 -right-10 size-40 rounded-full bg-white/10" />
         <div className="absolute top-24 -right-4 size-20 rounded-full bg-white/10" />
         <p className="text-sm opacity-80">梦网科技</p>
         <h1 className="mt-1 text-[1.75rem] leading-tight font-bold">5G 阅信体验中心</h1>
-        <p className="mt-2 max-w-64 text-sm opacity-90">短信升级为富媒体卡片：图文、视频、卡券、通知，一条短信即是一个服务入口。</p>
+        <p className="mt-2 max-w-64 text-sm opacity-90">
+          短信升级为富媒体卡片：图文、视频、卡券、通知，一条短信即是一个服务入口。
+        </p>
       </section>
       <section className="-mt-10 grid grid-cols-2 gap-3 px-4 pb-8">
         {ENTRIES.map(({ href, title, desc, icon: Icon, tone }) => (
-          <Link key={title} href={href} className="relative flex flex-col gap-2 rounded-2xl bg-card p-4 shadow-panel active:scale-[0.98] transition">
-            <span className={`flex size-10 items-center justify-center rounded-xl bg-gradient-to-br ${tone} text-white shadow-sm`}>
+          <Link
+            key={title}
+            href={href}
+            className="bg-card shadow-panel relative flex flex-col gap-2 rounded-2xl p-4 transition active:scale-[0.98]"
+          >
+            <span
+              className={`flex size-10 items-center justify-center rounded-xl bg-gradient-to-br ${tone} text-white shadow-sm`}
+            >
               <Icon className="size-5" />
             </span>
             <span className="text-base font-semibold">{title}</span>
-            <span className="text-xs leading-relaxed text-muted-foreground">{desc}</span>
-            <ArrowRightIcon className="absolute top-4 right-4 size-4 text-muted-foreground/60" />
+            <span className="text-muted-foreground text-xs leading-relaxed">{desc}</span>
+            <ArrowRightIcon className="text-muted-foreground/60 absolute top-4 right-4 size-4" />
           </Link>
         ))}
-        <Link href="/ability-guide" className="col-span-2 flex items-center justify-between rounded-2xl bg-card px-4 py-3.5 text-sm shadow-panel">
+        <Link
+          href="/ability-guide"
+          className="bg-card shadow-panel col-span-2 flex items-center justify-between rounded-2xl px-4 py-3.5 text-sm"
+        >
           <span>
             <span className="font-medium">收不到阅信？</span>
-            <span className="ml-1 text-muted-foreground">查看各品牌手机开启指引</span>
+            <span className="text-muted-foreground ml-1">查看各品牌手机开启指引</span>
           </span>
-          <ArrowRightIcon className="size-4 text-muted-foreground" />
+          <ArrowRightIcon className="text-muted-foreground size-4" />
         </Link>
       </section>
     </main>

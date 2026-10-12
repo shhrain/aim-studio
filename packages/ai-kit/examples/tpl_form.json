@@ -15,7 +15,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_4mssa5h59c",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 369,
@@ -24,7 +24,7 @@
       },
       "elements": [
         {
-          "id": "el_68x872s9t3",
+          "id": "el_01",
           "type": "text",
           "x": 14,
           "y": 14,
@@ -47,7 +47,7 @@
           "slot": "title"
         },
         {
-          "id": "el_9jzzsujqr5",
+          "id": "el_02",
           "type": "form",
           "x": 0,
           "y": 49,

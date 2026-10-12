@@ -17,7 +17,8 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as { document: unknown; vendor?: string; ttl?: number }
     const parsed = parseTemplateDocument(body.document)
-    if (!parsed.success) return NextResponse.json({ message: '模板数据不合法' }, { status: 400, headers: CORS })
+    if (!parsed.success)
+      return NextResponse.json({ message: '模板数据不合法' }, { status: 400, headers: CORS })
     const expiresAt = Date.now() + Math.min(body.ttl ?? SHARE_TTL_MS, SHARE_TTL_MS)
     const id = putShare({ document: body.document as never, vendor: body.vendor, expiresAt })
     return NextResponse.json({ id, expiresAt }, { headers: CORS })

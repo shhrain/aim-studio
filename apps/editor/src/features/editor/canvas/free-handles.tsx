@@ -46,7 +46,13 @@ function snapBox(start: number, size: number, targets: number[]): number {
 
 /** 自由版式：拖拽移动 / 八向缩放 / 边缘与中线吸附 */
 export function FreeHandles({ el }: { el: AnyElement }) {
-  const start = useRef<{ px: number; py: number; box: { x: number; y: number; w: number; h: number }; mode: Mode; scale: number } | null>(null)
+  const start = useRef<{
+    px: number
+    py: number
+    box: { x: number; y: number; w: number; h: number }
+    mode: Mode
+    scale: number
+  } | null>(null)
   const [hint, setHint] = useState<string | null>(null)
 
   const onDown = (mode: Mode) => (e: React.PointerEvent<HTMLDivElement>) => {
@@ -54,7 +60,13 @@ export function FreeHandles({ el }: { el: AnyElement }) {
     e.stopPropagation()
     const card = e.currentTarget.closest('.aim-card')
     const scale = (card?.getBoundingClientRect().width ?? CANVAS_WIDTH) / CANVAS_WIDTH
-    start.current = { px: e.clientX, py: e.clientY, box: { x: el.x, y: el.y, w: el.w, h: el.h }, mode, scale }
+    start.current = {
+      px: e.clientX,
+      py: e.clientY,
+      box: { x: el.x, y: el.y, w: el.w, h: el.h },
+      mode,
+      scale,
+    }
     try {
       e.currentTarget.setPointerCapture(e.pointerId)
     } catch {
@@ -71,7 +83,12 @@ export function FreeHandles({ el }: { el: AnyElement }) {
     const page = doc?.pages[0]
     if (!page) return
     const others = page.elements.filter((o) => o.id !== el.id && o.visible)
-    const xs = [0, CANVAS_WIDTH, CANVAS_WIDTH / 2, ...others.flatMap((o) => [o.x, o.x + o.w, o.x + o.w / 2])]
+    const xs = [
+      0,
+      CANVAS_WIDTH,
+      CANVAS_WIDTH / 2,
+      ...others.flatMap((o) => [o.x, o.x + o.w, o.x + o.w / 2]),
+    ]
     const ys = [0, page.style.height, ...others.flatMap((o) => [o.y, o.y + o.h, o.y + o.h / 2])]
     let { x, y, w, h } = s.box
     if (s.mode === 'move') {
@@ -91,11 +108,21 @@ export function FreeHandles({ el }: { el: AnyElement }) {
         y = ny
       }
     }
-    setHint(s.mode === 'move' ? `${Math.round(x)}, ${Math.round(y)}` : `${Math.round(w)} × ${Math.round(h)}`)
+    setHint(
+      s.mode === 'move'
+        ? `${Math.round(x)}, ${Math.round(y)}`
+        : `${Math.round(w)} × ${Math.round(h)}`,
+    )
     useEditor.getState().update((d) => {
       let next = updateElement(d, el.id, { x, y, w, h })
       const bottom = y + h + 12
-      if (bottom > page.style.height) next = { ...next, pages: next.pages.map((p, i) => (i === 0 ? { ...p, style: { ...p.style, height: Math.ceil(bottom) } } : p)) }
+      if (bottom > page.style.height)
+        next = {
+          ...next,
+          pages: next.pages.map((p, i) =>
+            i === 0 ? { ...p, style: { ...p.style, height: Math.ceil(bottom) } } : p,
+          ),
+        }
       return next
     })
   }
@@ -103,7 +130,8 @@ export function FreeHandles({ el }: { el: AnyElement }) {
   const onUp = (e: React.PointerEvent<HTMLDivElement>) => {
     start.current = null
     setHint(null)
-    if (e.currentTarget.hasPointerCapture?.(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId)
+    if (e.currentTarget.hasPointerCapture?.(e.pointerId))
+      e.currentTarget.releasePointerCapture(e.pointerId)
   }
 
   return (
@@ -123,7 +151,7 @@ export function FreeHandles({ el }: { el: AnyElement }) {
       {HANDLES.map((hd) => (
         <div
           key={hd.mode}
-          className={`absolute size-2 rounded-[2px] border border-primary bg-white shadow-sm ${hd.cls}`}
+          className={`border-primary absolute size-2 rounded-[2px] border bg-white shadow-sm ${hd.cls}`}
           style={{ cursor: hd.cursor }}
           onPointerDown={onDown(hd.mode)}
           onPointerMove={onMove}
@@ -131,7 +159,7 @@ export function FreeHandles({ el }: { el: AnyElement }) {
         />
       ))}
       {hint && (
-        <div className="pointer-events-none absolute -top-7 left-0 rounded bg-foreground px-1.5 py-0.5 text-[11px] whitespace-nowrap text-background tabular-nums">
+        <div className="bg-foreground text-background pointer-events-none absolute -top-7 left-0 rounded px-1.5 py-0.5 text-[11px] whitespace-nowrap tabular-nums">
           {hint}
         </div>
       )}

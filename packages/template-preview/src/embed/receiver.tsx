@@ -3,7 +3,14 @@
 import type { TemplateDocument } from '@aim/template-schema'
 import { useEffect, useRef, useState } from 'react'
 import { TemplatePreview } from '../TemplatePreview'
-import { EMBED_SOURCE, EMBED_VERSION, isEmbedMessage, type EmbedRenderOptions, type HostMessage, type ReceiverMessage } from './protocol'
+import {
+  EMBED_SOURCE,
+  EMBED_VERSION,
+  isEmbedMessage,
+  type EmbedRenderOptions,
+  type HostMessage,
+  type ReceiverMessage,
+} from './protocol'
 
 export interface PreviewReceiverProps {
   /** 允许的宿主来源；默认允许任意来源（仅渲染，不执行敏感操作） */
@@ -37,14 +44,23 @@ export function PreviewReceiver({ allowOrigins, defaultOptions }: PreviewReceive
       } else if (msg.type === 'options') setOptions((o) => ({ ...o, ...msg.options }))
     }
     window.addEventListener('message', onMessage)
-    window.parent?.postMessage({ source: EMBED_SOURCE, type: 'ready', version: EMBED_VERSION } satisfies ReceiverMessage, '*')
+    window.parent?.postMessage(
+      { source: EMBED_SOURCE, type: 'ready', version: EMBED_VERSION } satisfies ReceiverMessage,
+      '*',
+    )
     return () => window.removeEventListener('message', onMessage)
   }, [allowOrigins])
 
   useEffect(() => {
     if (!root.current || typeof ResizeObserver === 'undefined') return
     const ro = new ResizeObserver(([entry]) => {
-      if (entry) send({ source: EMBED_SOURCE, type: 'resize', height: entry.contentRect.height, width: entry.contentRect.width })
+      if (entry)
+        send({
+          source: EMBED_SOURCE,
+          type: 'resize',
+          height: entry.contentRect.height,
+          width: entry.contentRect.width,
+        })
     })
     ro.observe(root.current)
     return () => ro.disconnect()
@@ -65,7 +81,14 @@ export function PreviewReceiver({ allowOrigins, defaultOptions }: PreviewReceive
         chatbotName={options.chatbotName}
         width={options.width}
         emptyText="等待宿主传入模板…"
-        onAction={(e) => send({ source: EMBED_SOURCE, type: 'action', event: e.event as Record<string, unknown>, label: e.label })}
+        onAction={(e) =>
+          send({
+            source: EMBED_SOURCE,
+            type: 'action',
+            event: e.event as Record<string, unknown>,
+            label: e.label,
+          })
+        }
       />
     </div>
   )

@@ -1,12 +1,23 @@
 'use client'
 
 import { convertDocument } from '@aim/template-core'
-import { PROTOCOL_META, VENDORS, VENDOR_IDS, getLayout, type Protocol, type TemplateDocument, type VendorId } from '@aim/template-schema'
+import {
+  PROTOCOL_META,
+  VENDORS,
+  VENDOR_IDS,
+  getLayout,
+  type Protocol,
+  type TemplateDocument,
+  type VendorId,
+} from '@aim/template-schema'
 import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { TemplatePreview, type TemplatePreviewProps } from './TemplatePreview'
 
-export interface MultiVendorPreviewProps extends Omit<TemplatePreviewProps, 'vendor' | 'mode' | 'document'> {
+export interface MultiVendorPreviewProps extends Omit<
+  TemplatePreviewProps,
+  'vendor' | 'mode' | 'document'
+> {
   document: TemplateDocument | null | undefined
   /** 厂商列表，默认模板已选厂商 */
   vendors?: (VendorId | string)[]
@@ -18,7 +29,15 @@ export interface MultiVendorPreviewProps extends Omit<TemplatePreviewProps, 'ven
   renderFooter?: (vendor: VendorId | string) => ReactNode
 }
 
-function QrFooter({ vendor, qrcode, tip }: { vendor: string; qrcode: NonNullable<MultiVendorPreviewProps['qrcode']>; tip?: ReactNode }) {
+function QrFooter({
+  vendor,
+  qrcode,
+  tip,
+}: {
+  vendor: string
+  qrcode: NonNullable<MultiVendorPreviewProps['qrcode']>
+  tip?: ReactNode
+}) {
   const [url, setUrl] = useState<string>()
   useEffect(() => {
     let alive = true
@@ -42,14 +61,31 @@ function QrFooter({ vendor, qrcode, tip }: { vendor: string; qrcode: NonNullable
 }
 
 /** 多厂商并排预览（编辑器“预览”弹窗） */
-export function MultiVendorPreview({ document, vendors, phoneWidth = 230, qrcode, qrcodeTip, renderFooter, ...rest }: MultiVendorPreviewProps) {
+export function MultiVendorPreview({
+  document,
+  vendors,
+  phoneWidth = 230,
+  qrcode,
+  qrcodeTip,
+  renderFooter,
+  ...rest
+}: MultiVendorPreviewProps) {
   const list = vendors ?? (document?.vendors.length ? document.vendors : [...VENDOR_IDS])
   return (
-    <div className="aim-root aim-multi" style={{ ['--aim-multi-col' as string]: `${phoneWidth}px` }}>
+    <div
+      className="aim-root aim-multi"
+      style={{ ['--aim-multi-col' as string]: `${phoneWidth}px` }}
+    >
       {list.map((v) => (
         <div key={v} className="aim-multi-item">
           <div className="aim-multi-title">{VENDORS[v as VendorId]?.name ?? v}手机</div>
-          <TemplatePreview {...rest} document={document} vendor={v} mode="phone" width={phoneWidth} />
+          <TemplatePreview
+            {...rest}
+            document={document}
+            vendor={v}
+            mode="phone"
+            width={phoneWidth}
+          />
           {renderFooter?.(v) ?? (qrcode && <QrFooter vendor={v} qrcode={qrcode} tip={qrcodeTip} />)}
         </div>
       ))}
@@ -57,7 +93,10 @@ export function MultiVendorPreview({ document, vendors, phoneWidth = 230, qrcode
   )
 }
 
-export interface IntegratedPreviewProps extends Omit<TemplatePreviewProps, 'protocol' | 'document'> {
+export interface IntegratedPreviewProps extends Omit<
+  TemplatePreviewProps,
+  'protocol' | 'document'
+> {
   document: TemplateDocument | null | undefined
   defaultProtocol?: Protocol
   protocol?: Protocol
@@ -83,7 +122,8 @@ export function IntegratedPreview({
   const hints: string[] = []
   if (result && protocol === 'rcs' && result.editRcsBtns.length)
     hints.push(`${result.editRcsBtns.length} 个按钮事件在苹果端不支持，提交时需补填替代链接`)
-  if (result?.needCapture && protocol !== 'aim') hints.push('红包将在提交时自动截图生成苹果 / 其他终端审核图')
+  if (result?.needCapture && protocol !== 'aim')
+    hints.push('红包将在提交时自动截图生成苹果 / 其他终端审核图')
   if (protocol === 'rms' && result) hints.push(`彩信标题：${result.rmsTitle || '（未设置）'}`)
   return (
     <div className="aim-root aim-integrated">
@@ -106,11 +146,12 @@ export function IntegratedPreview({
         ))}
       </div>
       <TemplatePreview {...rest} document={document} protocol={protocol} />
-      {showHints && hints.map((h) => (
-        <div key={h} className="aim-hint">
-          {h}
-        </div>
-      ))}
+      {showHints &&
+        hints.map((h) => (
+          <div key={h} className="aim-hint">
+            {h}
+          </div>
+        ))}
     </div>
   )
 }

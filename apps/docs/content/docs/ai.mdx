@@ -19,12 +19,12 @@ icon: Sparkles
 
 ### 在不同工具中使用
 
-| 工具 | 用法 |
-| --- | --- |
-| Cursor | 已生成 `.cursor/rules/*.mdc`（全局 + 按目录生效），并在根目录提供 `AGENTS.md` |
-| Claude Code / Codex 等 | 读取根目录 `AGENTS.md`，并在会话开头引用 `packages/ai-kit/PROMPT.md` |
-| 通用对话模型 | 将 `PROMPT.md` 全文作为系统提示词，或提供文档站 `/llms-full.txt` |
-| 自建 Agent | `import { buildPrompt } from '@aim/ai-kit'` 在运行时生成 |
+| 工具                   | 用法                                                                          |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| Cursor                 | 已生成 `.cursor/rules/*.mdc`（全局 + 按目录生效），并在根目录提供 `AGENTS.md` |
+| Claude Code / Codex 等 | 读取根目录 `AGENTS.md`，并在会话开头引用 `packages/ai-kit/PROMPT.md`          |
+| 通用对话模型           | 将 `PROMPT.md` 全文作为系统提示词，或提供文档站 `/llms-full.txt`              |
+| 自建 Agent             | `import { buildPrompt } from '@aim/ai-kit'` 在运行时生成                      |
 
 ## llms.txt
 

@@ -22,7 +22,10 @@ import type { LegacyElement } from './rcs'
 
 /** {#x#} → 旧编辑器参数节点 */
 export function tokensToLegacyHtml(text: string | undefined): string {
-  return (text ?? '').replace(PARAM_TOKEN_REG, (_, n: string) => `<input type="button" class="param-btn" value="{#${n}#}" readonly>`)
+  return (text ?? '').replace(
+    PARAM_TOKEN_REG,
+    (_, n: string) => `<input type="button" class="param-btn" value="{#${n}#}" readonly>`,
+  )
 }
 
 /** 旧编辑器参数节点 → {#x#} */
@@ -38,7 +41,17 @@ function legacyStyle(el: AnyElement) {
 }
 
 function toLegacyElement(el: AnyElement, cardId: string): LegacyElement {
-  const base = { type: el.type, x: el.x, y: el.y, w: el.w, h: el.h, z: el.z, visible: el.visible, style: legacyStyle(el), event: el.event }
+  const base = {
+    type: el.type,
+    x: el.x,
+    y: el.y,
+    w: el.w,
+    h: el.h,
+    z: el.z,
+    visible: el.visible,
+    style: legacyStyle(el),
+    event: el.event,
+  }
   switch (el.type) {
     case 'text':
       return {
@@ -55,14 +68,22 @@ function toLegacyElement(el: AnyElement, cardId: string): LegacyElement {
         isBgimg: el.props.role === 'background' ? true : undefined,
       }
     case 'video':
-      return { ...base, src: el.props.src, cover: el.props.cover, size: el.props.size ?? 0, duration: el.props.duration }
+      return {
+        ...base,
+        src: el.props.src,
+        cover: el.props.cover,
+        size: el.props.size ?? 0,
+        duration: el.props.duration,
+      }
     case 'audio':
       return { ...base, src: el.props.src, title: el.props.title, duration: el.props.duration }
     case 'button':
       return {
         ...base,
         text: tokensToLegacyHtml(el.props.text),
-        event: el.event ? { ...el.event, target: tokensToLegacyHtml(String(el.event.target ?? '')) } : { action: 'OPEN_URL', target: '' },
+        event: el.event
+          ? { ...el.event, target: tokensToLegacyHtml(String(el.event.target ?? '')) }
+          : { action: 'OPEN_URL', target: '' },
       }
     case 'swiper':
       return {
@@ -121,9 +142,20 @@ function fromLegacyStyle(style: Record<string, any> = {}) {
   const out: Record<string, any> = {}
   for (const [k, v] of Object.entries(style)) {
     if (v == null || v === '') continue
-    if (['fontSize', 'borderRadius', 'borderWidth', 'padding', 'letterSpacing'].includes(k)) out[k] = num(v)
+    if (['fontSize', 'borderRadius', 'borderWidth', 'padding', 'letterSpacing'].includes(k))
+      out[k] = num(v)
     else if (k === 'lineHeight') out[k] = num(v, 1.5)
-    else if (['color', 'backgroundColor', 'textAlign', 'fontWeight', 'borderColor', 'borderStyle'].includes(k)) out[k] = v
+    else if (
+      [
+        'color',
+        'backgroundColor',
+        'textAlign',
+        'fontWeight',
+        'borderColor',
+        'borderStyle',
+      ].includes(k)
+    )
+      out[k] = v
   }
   return out
 }
@@ -142,7 +174,9 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
     visible: item.visible !== false,
     locked: Boolean(item.locked),
     style: fromLegacyStyle(item.style),
-    event: item.event?.action ? { ...item.event, target: legacyHtmlToTokens(item.event.target) } : undefined,
+    event: item.event?.action
+      ? { ...item.event, target: legacyHtmlToTokens(item.event.target) }
+      : undefined,
   }
   let props: Record<string, any>
   switch (type) {
@@ -153,7 +187,12 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
       props = { src: item.src ?? '', fit: 'cover', role: item.isBgimg ? 'background' : 'content' }
       break
     case 'video':
-      props = { src: item.src ?? '', cover: item.cover ?? '', duration: item.duration, size: item.size }
+      props = {
+        src: item.src ?? '',
+        cover: item.cover ?? '',
+        duration: item.duration,
+        size: item.size,
+      }
       break
     case 'audio':
       props = { src: item.src ?? '', title: item.title ?? '', duration: num(item.duration) }
@@ -183,7 +222,9 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
     }
     case 'sideslip': {
       const s = item.sideslip ?? {}
-      const [a, b] = String(s.proportion ?? '16:9').split(':').map(Number)
+      const [a, b] = String(s.proportion ?? '16:9')
+        .split(':')
+        .map(Number)
       props = {
         ratio: [a || 16, b || 9],
         showContent: item.contentShow ?? true,
@@ -191,7 +232,10 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
           src: c.src ?? '',
           title: c.title ?? '',
           content: c.content ?? '',
-          buttons: (c.buts ?? []).map((bt: any) => ({ text: bt.text ?? '', event: bt.action ? { action: bt.action, target: bt.target } : undefined })),
+          buttons: (c.buts ?? []).map((bt: any) => ({
+            text: bt.text ?? '',
+            event: bt.action ? { action: bt.action, target: bt.target } : undefined,
+          })),
         })),
       }
       break
@@ -200,7 +244,10 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
       const c = item.content ?? {}
       props = {
         media: c.video?.visibility === 'visible' ? 'video' : 'image',
-        images: (c.imageList?.listItem ?? []).map((it: any) => ({ src: it.image?.src ?? '', event: it.action ? { action: it.action, target: it.target } : undefined })),
+        images: (c.imageList?.listItem ?? []).map((it: any) => ({
+          src: it.image?.src ?? '',
+          event: it.action ? { action: it.action, target: it.target } : undefined,
+        })),
         video: c.video ? { src: c.video.src ?? '', cover: c.video.cover ?? '' } : undefined,
         currency: c.divTextArea1?.currencyText?.textValue ?? '¥',
         price: c.divTextArea1?.text1?.textValue ?? '',
@@ -216,10 +263,21 @@ function fromLegacyElement(item: LegacyElement): AnyElement | null {
       props = { endTime: num(item.countdown?.endTime, Date.now()), label: '距活动结束' }
       break
     case 'tel':
-      props = { styleType: item.styleType ?? 'text', text: item.text ?? '', phone: item.event?.target ?? '', image: item.iconImage }
+      props = {
+        styleType: item.styleType ?? 'text',
+        text: item.text ?? '',
+        phone: item.event?.target ?? '',
+        image: item.iconImage,
+      }
       break
     case 'map':
-      props = { mode: 'text', title: item.query?.title ?? '', address: item.query?.address ?? '', longitude: num(item.query?.lng), latitude: num(item.query?.lat) }
+      props = {
+        mode: 'text',
+        title: item.query?.title ?? '',
+        address: item.query?.address ?? '',
+        longitude: num(item.query?.lng),
+        latitude: num(item.query?.lat),
+      }
       break
     default: {
       const { type: _t, x: _x, y: _y, w: _w, h: _h, style: _s, event: _e, ...rest } = item
@@ -263,14 +321,19 @@ export interface FromLegacyOptions {
 }
 
 /** 导入旧模板：pages 可为 JSON 字符串或数组 */
-export function fromLegacyPages(pages: string | any[], options: FromLegacyOptions = {}): TemplateDocument {
+export function fromLegacyPages(
+  pages: string | any[],
+  options: FromLegacyOptions = {},
+): TemplateDocument {
   const list: any[] = typeof pages === 'string' ? JSON.parse(pages) : pages
   const first = list[0] ?? {}
   const cardId: string = options.cardId ?? first.cardId ?? 'com.hbm.custom'
   const layout = getLayout(cardId) ?? requireLayout('com.hbm.custom')
   const now = Date.now()
   const docPages = list.map((p) => {
-    const content: LegacyElement[] = (p.content ?? []).filter((c: LegacyElement) => ELEMENT_TYPES.includes(c.type))
+    const content: LegacyElement[] = (p.content ?? []).filter((c: LegacyElement) =>
+      ELEMENT_TYPES.includes(c.type),
+    )
     const elements = content.map(fromLegacyElement).filter((e): e is AnyElement => e !== null)
     if (!layout.free) inferSlots(elements, content, cardId)
     const height = num(p.style?.height, Math.max(120, ...elements.map((e) => e.y + e.h)))
@@ -286,7 +349,10 @@ export function fromLegacyPages(pages: string | any[], options: FromLegacyOption
       elements,
     }
   })
-  const params: TemplateParam[] = (options.params ?? []).map((p) => ({ ...createParam(p.name), example: p.example ?? '' }))
+  const params: TemplateParam[] = (options.params ?? []).map((p) => ({
+    ...createParam(p.name),
+    example: p.example ?? '',
+  }))
   return {
     schemaVersion: SCHEMA_VERSION,
     id: options.id ?? uid('tpl'),
@@ -299,7 +365,9 @@ export function fromLegacyPages(pages: string | any[], options: FromLegacyOption
     recognition: 'shortLink',
     params,
     settings: defaultLayoutSettings(layout),
-    pages: docPages.length ? docPages : [{ id: uid('page'), mode: 'absolute', style: { height: 420 }, elements: [] }],
+    pages: docPages.length
+      ? docPages
+      : [{ id: uid('page'), mode: 'absolute', style: { height: 420 }, elements: [] }],
     meta: { status: 'draft', createdAt: now, updatedAt: now },
   }
 }

@@ -35,7 +35,8 @@ export function readPath(obj: unknown, path: string): { value: unknown; at: stri
     for (const c of current) {
       const v = (c.value as Record<string, unknown> | undefined)?.[key]
       if (isArray) {
-        if (Array.isArray(v)) v.forEach((item, i) => next.push({ value: item, at: `${c.at}${key}[${i}].` }))
+        if (Array.isArray(v))
+          v.forEach((item, i) => next.push({ value: item, at: `${c.at}${key}[${i}].` }))
       } else if (v !== undefined) next.push({ value: v, at: `${c.at}${key}.` })
     }
     current = next
@@ -60,12 +61,30 @@ export const basicRule = defineRule({
   description: '模板名称、厂商、版式',
   run(doc) {
     const out: PrecheckIssue[] = []
-    if (!doc.name.trim()) out.push(issue({ code: 'basic.name', level: 'error', message: '请填写模板名称', suggestion: '在画布上方输入模板名称' }))
+    if (!doc.name.trim())
+      out.push(
+        issue({
+          code: 'basic.name',
+          level: 'error',
+          message: '请填写模板名称',
+          suggestion: '在画布上方输入模板名称',
+        }),
+      )
     else if (charLength(doc.name) > TEMPLATE_NAME_MAX)
-      out.push(issue({ code: 'basic.name', level: 'error', message: `模板名称不能超过 ${TEMPLATE_NAME_MAX} 个字` }))
-    if (!doc.vendors.length) out.push(issue({ code: 'basic.vendors', level: 'error', message: '请至少选择一个发送厂商' }))
+      out.push(
+        issue({
+          code: 'basic.name',
+          level: 'error',
+          message: `模板名称不能超过 ${TEMPLATE_NAME_MAX} 个字`,
+        }),
+      )
+    if (!doc.vendors.length)
+      out.push(issue({ code: 'basic.vendors', level: 'error', message: '请至少选择一个发送厂商' }))
     const layout = getLayout(doc.layoutId)
-    if (!layout) out.push(issue({ code: 'basic.layout', level: 'error', message: `未知版式：${doc.layoutId}` }))
+    if (!layout)
+      out.push(
+        issue({ code: 'basic.layout', level: 'error', message: `未知版式：${doc.layoutId}` }),
+      )
     else {
       for (const v of doc.vendors) {
         if (!layout.vendors.includes(v))
@@ -97,7 +116,15 @@ export const slotRule = defineRule({
     for (const slot of expandSlots(layout, doc.settings)) {
       const el = page.elements.find((e) => e.slot === slot.key)
       if (!el) {
-        if (slot.required) out.push(issue({ code: 'slot.missing', level: 'error', slot: slot.key, message: `缺少「${slot.label}」` }))
+        if (slot.required)
+          out.push(
+            issue({
+              code: 'slot.missing',
+              level: 'error',
+              slot: slot.key,
+              message: `缺少「${slot.label}」`,
+            }),
+          )
         continue
       }
       if (!el.visible) continue
@@ -105,7 +132,15 @@ export const slotRule = defineRule({
       const text = mainText(el)
       if (text !== undefined) {
         const len = displayLength(text, doc)
-        if (slot.required && len === 0) out.push(issue({ ...base, code: 'slot.required', level: 'error', message: `「${slot.label}」不能为空` }))
+        if (slot.required && len === 0)
+          out.push(
+            issue({
+              ...base,
+              code: 'slot.required',
+              level: 'error',
+              message: `「${slot.label}」不能为空`,
+            }),
+          )
         if (slot.maxLength && len > slot.maxLength)
           out.push(
             issue({
@@ -117,26 +152,63 @@ export const slotRule = defineRule({
             }),
           )
         if (PLACEHOLDER_TEXT.test(stripTags(text)))
-          out.push(issue({ ...base, code: 'slot.placeholder', level: 'warning', message: `「${slot.label}」仍为默认文案` }))
+          out.push(
+            issue({
+              ...base,
+              code: 'slot.placeholder',
+              level: 'warning',
+              message: `「${slot.label}」仍为默认文案`,
+            }),
+          )
       }
       if (el.type === 'image' && isPlaceholderSrc(el.props.src) && !el.props.srcParam) {
-        out.push(issue({ ...base, code: 'slot.image', level: slot.required ? 'error' : 'warning', message: `请上传「${slot.label}」` }))
+        out.push(
+          issue({
+            ...base,
+            code: 'slot.image',
+            level: slot.required ? 'error' : 'warning',
+            message: `请上传「${slot.label}」`,
+          }),
+        )
       }
       if (el.type === 'video' && !el.props.src) {
-        out.push(issue({ ...base, code: 'slot.video', level: 'error', message: `请上传「${slot.label}」` }))
+        out.push(
+          issue({
+            ...base,
+            code: 'slot.video',
+            level: 'error',
+            message: `请上传「${slot.label}」`,
+          }),
+        )
       }
       for (const [path, max] of Object.entries(slot.limits ?? {})) {
         for (const { value, at } of readPath(el.props, path)) {
           if (typeof value !== 'string') continue
           const len = displayLength(value, doc)
-          if (len > max) out.push(issue({ ...base, code: 'slot.maxLength', level: 'error', target: at, message: `「${slot.label}」${at} 超出字数（${len}/${max}）` }))
+          if (len > max)
+            out.push(
+              issue({
+                ...base,
+                code: 'slot.maxLength',
+                level: 'error',
+                target: at,
+                message: `「${slot.label}」${at} 超出字数（${len}/${max}）`,
+              }),
+            )
         }
       }
       if (slot.count) {
         const list = (el.props as Record<string, unknown>)[slot.count.path]
         const n = Array.isArray(list) ? list.length : 0
         if (n < slot.count.min || n > slot.count.max)
-          out.push(issue({ ...base, code: 'slot.count', level: 'error', message: `「${slot.label}」数量需为 ${slot.count.min}-${slot.count.max} 个，当前 ${n} 个` }))
+          out.push(
+            issue({
+              ...base,
+              code: 'slot.count',
+              level: 'error',
+              message: `「${slot.label}」数量需为 ${slot.count.min}-${slot.count.max} 个，当前 ${n} 个`,
+            }),
+          )
       }
     }
     return out
@@ -145,10 +217,23 @@ export const slotRule = defineRule({
 
 /* ---------------------------- 点击事件 ---------------------------- */
 
-function checkEvent(event: ActionEvent | undefined, where: string, el: AnyElement, doc: TemplateDocument): PrecheckIssue[] {
+function checkEvent(
+  event: ActionEvent | undefined,
+  where: string,
+  el: AnyElement,
+  doc: TemplateDocument,
+): PrecheckIssue[] {
   if (!event) return []
   const def = ACTIONS[event.action]
-  if (!def) return [issue({ code: 'event.unknown', level: 'error', elementId: el.id, message: `${where}：未知事件 ${event.action}` })]
+  if (!def)
+    return [
+      issue({
+        code: 'event.unknown',
+        level: 'error',
+        elementId: el.id,
+        message: `${where}：未知事件 ${event.action}`,
+      }),
+    ]
   const out: PrecheckIssue[] = []
   const examples = new Map(doc.params.map((p) => [p.name, p.example]))
   for (const f of def.fields) {
@@ -156,25 +241,81 @@ function checkEvent(event: ActionEvent | undefined, where: string, el: AnyElemen
     const value = typeof raw === 'string' ? replaceParams(raw, (n) => examples.get(n) ?? '') : raw
     const empty = value === undefined || value === ''
     if (f.required && empty) {
-      out.push(issue({ code: 'event.required', level: 'error', elementId: el.id, slot: el.slot, message: `${where}「${def.label}」未填写${f.label}` }))
+      out.push(
+        issue({
+          code: 'event.required',
+          level: 'error',
+          elementId: el.id,
+          slot: el.slot,
+          message: `${where}「${def.label}」未填写${f.label}`,
+        }),
+      )
       continue
     }
     if (empty || typeof value !== 'string') continue
     if (f.kind === 'url') {
       if (!isHttpsUrl(value))
-        out.push(issue({ code: 'event.https', level: 'error', elementId: el.id, slot: el.slot, message: `${where}：${f.label}需以 https:// 开头` }))
+        out.push(
+          issue({
+            code: 'event.https',
+            level: 'error',
+            elementId: el.id,
+            slot: el.slot,
+            message: `${where}：${f.label}需以 https:// 开头`,
+          }),
+        )
       if (value.length > URL_MAX_LENGTH)
-        out.push(issue({ code: 'event.urlLength', level: 'error', elementId: el.id, message: `${where}：链接长度不能超过 ${URL_MAX_LENGTH}` }))
+        out.push(
+          issue({
+            code: 'event.urlLength',
+            level: 'error',
+            elementId: el.id,
+            message: `${where}：链接长度不能超过 ${URL_MAX_LENGTH}`,
+          }),
+        )
     }
     if (f.kind === 'phone' && !/^[\d*+\-\s]{3,20}$/.test(value))
-      out.push(issue({ code: 'event.phone', level: 'error', elementId: el.id, message: `${where}：电话号码格式不正确` }))
+      out.push(
+        issue({
+          code: 'event.phone',
+          level: 'error',
+          elementId: el.id,
+          message: `${where}：电话号码格式不正确`,
+        }),
+      )
     if (f.kind === 'email' && !isEmail(value))
-      out.push(issue({ code: 'event.email', level: 'error', elementId: el.id, message: `${where}：邮箱格式不正确` }))
+      out.push(
+        issue({
+          code: 'event.email',
+          level: 'error',
+          elementId: el.id,
+          message: `${where}：邮箱格式不正确`,
+        }),
+      )
     if (f.maxLength && charLength(value) > f.maxLength && f.kind !== 'url')
-      out.push(issue({ code: 'event.maxLength', level: 'error', elementId: el.id, message: `${where}：${f.label}最多 ${f.maxLength} 个字` }))
+      out.push(
+        issue({
+          code: 'event.maxLength',
+          level: 'error',
+          elementId: el.id,
+          message: `${where}：${f.label}最多 ${f.maxLength} 个字`,
+        }),
+      )
   }
-  if (event.action === 'OPEN_SCHEDULE' && event.startTime && event.endTime && String(event.startTime) >= String(event.endTime))
-    out.push(issue({ code: 'event.schedule', level: 'error', elementId: el.id, message: `${where}：日程结束时间需晚于开始时间` }))
+  if (
+    event.action === 'OPEN_SCHEDULE' &&
+    event.startTime &&
+    event.endTime &&
+    String(event.startTime) >= String(event.endTime)
+  )
+    out.push(
+      issue({
+        code: 'event.schedule',
+        level: 'error',
+        elementId: el.id,
+        message: `${where}：日程结束时间需晚于开始时间`,
+      }),
+    )
   return out
 }
 
@@ -184,15 +325,24 @@ function nestedEvents(el: AnyElement): { event?: ActionEvent; where: string }[] 
   const p = el.props as Record<string, unknown>
   const pushButtons = (buttons: unknown, prefix: string) => {
     if (Array.isArray(buttons))
-      buttons.forEach((b: { text?: string; event?: ActionEvent }, i) => list.push({ event: b?.event, where: `${prefix}按钮${i + 1}「${b?.text ?? ''}」` }))
+      buttons.forEach((b: { text?: string; event?: ActionEvent }, i) =>
+        list.push({ event: b?.event, where: `${prefix}按钮${i + 1}「${b?.text ?? ''}」` }),
+      )
   }
-  if (el.type === 'sideslip') el.props.cards.forEach((c, i) => pushButtons(c.buttons, `${label}第${i + 1}张`))
+  if (el.type === 'sideslip')
+    el.props.cards.forEach((c, i) => pushButtons(c.buttons, `${label}第${i + 1}张`))
   if (el.type === 'eCommerce') pushButtons(el.props.buttons, label)
-  if (el.type === 'moreGoods') el.props.items.forEach((it, i) => list.push({ event: it.button.event, where: `${label}商品${i + 1}按钮` }))
-  if (el.type === 'swiper') el.props.items.forEach((it, i) => list.push({ event: it.event, where: `${label}第${i + 1}张` }))
+  if (el.type === 'moreGoods')
+    el.props.items.forEach((it, i) =>
+      list.push({ event: it.button.event, where: `${label}商品${i + 1}按钮` }),
+    )
+  if (el.type === 'swiper')
+    el.props.items.forEach((it, i) => list.push({ event: it.event, where: `${label}第${i + 1}张` }))
   if (el.type === 'cardVoucher') list.push({ event: el.props.button?.event, where: `${label}按钮` })
   if (el.type === 'textSelect' || el.type === 'imgSelect')
-    (p.options as { event?: ActionEvent }[]).forEach((o, i) => list.push({ event: o.event, where: `${label}选项${i + 1}` }))
+    (p.options as { event?: ActionEvent }[]).forEach((o, i) =>
+      list.push({ event: o.event, where: `${label}选项${i + 1}` }),
+    )
   return list
 }
 
@@ -204,7 +354,8 @@ export const eventRule = defineRule({
     for (const page of doc.pages)
       for (const el of page.elements) {
         if (!el.visible) continue
-        for (const { event, where } of nestedEvents(el)) out.push(...checkEvent(event, where, el, doc))
+        for (const { event, where } of nestedEvents(el))
+          out.push(...checkEvent(event, where, el, doc))
       }
     return out
   },
@@ -222,19 +373,65 @@ export const paramRule = defineRule({
     for (const name of used) {
       const p = defined.get(name)
       if (!p) {
-        out.push(issue({ code: 'param.undefined', level: 'error', target: name, message: `参数「${name}」未定义`, suggestion: '打开“参数管理”补充参数' }))
+        out.push(
+          issue({
+            code: 'param.undefined',
+            level: 'error',
+            target: name,
+            message: `参数「${name}」未定义`,
+            suggestion: '打开“参数管理”补充参数',
+          }),
+        )
         continue
       }
       if (!p.example.trim())
-        out.push(issue({ code: 'param.example', level: 'error', target: name, message: `参数「${name}」缺少示例`, suggestion: `示例：${PARAM_TYPE_META[p.type].example}` }))
+        out.push(
+          issue({
+            code: 'param.example',
+            level: 'error',
+            target: name,
+            message: `参数「${name}」缺少示例`,
+            suggestion: `示例：${PARAM_TYPE_META[p.type].example}`,
+          }),
+        )
       const len = charLength(p.example)
       if (p.example && (len < p.minLength || len > p.maxLength))
-        out.push(issue({ code: 'param.length', level: 'error', target: name, message: `参数「${name}」示例长度需在 ${p.minLength}-${p.maxLength} 之间` }))
-      if (p.minLength > p.maxLength) out.push(issue({ code: 'param.range', level: 'error', target: name, message: `参数「${name}」最小长度大于最大长度` }))
+        out.push(
+          issue({
+            code: 'param.length',
+            level: 'error',
+            target: name,
+            message: `参数「${name}」示例长度需在 ${p.minLength}-${p.maxLength} 之间`,
+          }),
+        )
+      if (p.minLength > p.maxLength)
+        out.push(
+          issue({
+            code: 'param.range',
+            level: 'error',
+            target: name,
+            message: `参数「${name}」最小长度大于最大长度`,
+          }),
+        )
     }
     for (const p of doc.params)
-      if (!used.includes(p.name)) out.push(issue({ code: 'param.unused', level: 'info', target: p.name, message: `参数「${p.name}」未被使用` }))
-    if (used.length > 0) out.push(issue({ code: 'param.dynamic', level: 'info', message: `模板包含 ${used.length} 个动态参数，发送时需传入参数值` }))
+      if (!used.includes(p.name))
+        out.push(
+          issue({
+            code: 'param.unused',
+            level: 'info',
+            target: p.name,
+            message: `参数「${p.name}」未被使用`,
+          }),
+        )
+    if (used.length > 0)
+      out.push(
+        issue({
+          code: 'param.dynamic',
+          level: 'info',
+          message: `模板包含 ${used.length} 个动态参数，发送时需传入参数值`,
+        }),
+      )
     return out
   },
 })
@@ -262,7 +459,14 @@ export const protocolRule = defineRule({
           }),
         )
       if (def.rcs.kind === 'asBrowser')
-        out.push(issue({ code: 'protocol.rcsBrowser', level: 'info', elementId: el.id, message: `按钮「${el.props.text}」在苹果端将以浏览器打开` }))
+        out.push(
+          issue({
+            code: 'protocol.rcsBrowser',
+            level: 'info',
+            elementId: el.id,
+            message: `按钮「${el.props.text}」在苹果端将以浏览器打开`,
+          }),
+        )
     }
     return out
   },
@@ -271,7 +475,18 @@ export const protocolRule = defineRule({
 /* ---------------------------- 内容合规 ---------------------------- */
 
 /** 广告法极限词（示例词库，可通过插件替换） */
-export const SENSITIVE_WORDS = ['最好', '第一', '国家级', '最高级', '顶级', '绝对', '100%', '万能', '史无前例', '永久']
+export const SENSITIVE_WORDS = [
+  '最好',
+  '第一',
+  '国家级',
+  '最高级',
+  '顶级',
+  '绝对',
+  '100%',
+  '万能',
+  '史无前例',
+  '永久',
+]
 
 export const contentRule = defineRule({
   code: 'content',
@@ -284,13 +499,33 @@ export const contentRule = defineRule({
       const hits = SENSITIVE_WORDS.filter((w) => text.includes(w))
       if (hits.length)
         out.push(
-          issue({ code: 'content.sensitive', level: 'warning', elementId: el.id, slot: el.slot, message: `检测到疑似极限词：${hits.join('、')}`, suggestion: '极限词易导致审核驳回，建议替换' }),
+          issue({
+            code: 'content.sensitive',
+            level: 'warning',
+            elementId: el.id,
+            slot: el.slot,
+            message: `检测到疑似极限词：${hits.join('、')}`,
+            suggestion: '极限词易导致审核驳回，建议替换',
+          }),
         )
     }
     if (doc.usage === 'commercial' && doc.category === 'service')
-      out.push(issue({ code: 'content.unsubscribe', level: 'info', message: '营销类模板下发时将自动追加退订提示' }))
+      out.push(
+        issue({
+          code: 'content.unsubscribe',
+          level: 'info',
+          message: '营销类模板下发时将自动追加退订提示',
+        }),
+      )
     return out
   },
 })
 
-export const builtinRules: PrecheckRule[] = [basicRule, slotRule, eventRule, paramRule, protocolRule, contentRule]
+export const builtinRules: PrecheckRule[] = [
+  basicRule,
+  slotRule,
+  eventRule,
+  paramRule,
+  protocolRule,
+  contentRule,
+]

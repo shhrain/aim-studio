@@ -6,7 +6,9 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <span className="flex items-center gap-2 font-semibold">
-          <span className="flex size-6 items-center justify-center rounded-md bg-fd-primary text-xs text-fd-primary-foreground">A</span>
+          <span className="bg-fd-primary text-fd-primary-foreground flex size-6 items-center justify-center rounded-md text-xs">
+            A
+          </span>
           {appName}
         </span>
       ),

@@ -8,10 +8,22 @@ import { z } from 'zod'
 export const PARAM_TOKEN_REG = /\{#([^#{}\s]{1,30})#\}/g
 export const PARAM_NAME_REG = /^[A-Za-z0-9_\u4e00-\u9fa5]{1,30}$/
 
-export const PARAM_TYPES = ['text', 'number', 'amount', 'date', 'time', 'phone', 'url', 'code'] as const
+export const PARAM_TYPES = [
+  'text',
+  'number',
+  'amount',
+  'date',
+  'time',
+  'phone',
+  'url',
+  'code',
+] as const
 export type ParamType = (typeof PARAM_TYPES)[number]
 
-export const PARAM_TYPE_META: Record<ParamType, { label: string; example: string; maxLength: number }> = {
+export const PARAM_TYPE_META: Record<
+  ParamType,
+  { label: string; example: string; maxLength: number }
+> = {
   text: { label: '文本', example: '张三', maxLength: 30 },
   number: { label: '数字', example: '100', maxLength: 20 },
   amount: { label: '金额', example: '99.00', maxLength: 12 },

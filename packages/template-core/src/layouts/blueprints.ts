@@ -19,7 +19,11 @@ export function parseRatio(value: unknown, fallback: Ratio = [16, 9]): Ratio {
 
 const heightOf = (ratio: Ratio, width = W) => Math.round((width * ratio[1]) / ratio[0])
 
-function page(b: FlowBuilder, extra: Partial<TemplatePage['style']> = {}, bottom = PAD): Omit<TemplatePage, 'id'> {
+function page(
+  b: FlowBuilder,
+  extra: Partial<TemplatePage['style']> = {},
+  bottom = PAD,
+): Omit<TemplatePage, 'id'> {
   return {
     mode: 'flow',
     style: { height: b.height + bottom, backgroundColor: '#FFFFFF', borderRadius: 12, ...extra },
@@ -53,14 +57,23 @@ function desc(b: FlowBuilder, max: number, slot = 'description', gapAfter = 12) 
 
 function buttons(b: FlowBuilder, count: number, labels = ['编辑按钮', '编辑按钮']) {
   if (count <= 1) {
-    b.add('button', { slot: 'button.0', x: PAD, w: INNER, h: 40, props: { text: labels[0]!, variant: 'primary' } })
+    b.add('button', {
+      slot: 'button.0',
+      x: PAD,
+      w: INNER,
+      h: 40,
+      props: { text: labels[0]!, variant: 'primary' },
+    })
     return
   }
   b.row(
     'button',
     Array.from({ length: count }, (_, i) => ({
       slot: `button.${i}`,
-      props: { text: labels[i] ?? '编辑按钮', variant: i === count - 1 ? ('primary' as const) : ('secondary' as const) },
+      props: {
+        text: labels[i] ?? '编辑按钮',
+        variant: i === count - 1 ? ('primary' as const) : ('secondary' as const),
+      },
     })),
     { h: 40, gap: 12 },
   )
@@ -418,7 +431,11 @@ export const builtinBlueprints: Record<string, LayoutBlueprint> = {
       x: PAD,
       w: INNER,
       h: 110,
-      props: { src: placeholderImage(INNER, 110, '底部图片（可选）'), ratio: [INNER, 110], fit: 'cover' },
+      props: {
+        src: placeholderImage(INNER, 110, '底部图片（可选）'),
+        ratio: [INNER, 110],
+        fit: 'cover',
+      },
       style: { borderRadius: 8 },
     })
     return page(b)
@@ -481,8 +498,18 @@ export const builtinBlueprints: Record<string, LayoutBlueprint> = {
     form.props.fields = [
       { label: '姓名', placeholder: '请输入姓名', type: 'input', required: true },
       { label: '手机号', placeholder: '请输入手机号', type: 'phone', required: true },
-      { label: '年龄段', placeholder: '请选择', type: 'select', options: ['18岁以下', '18-30岁', '31-45岁', '45岁以上'] },
-      { label: '关注内容', placeholder: '请选择', type: 'select', options: ['新品', '优惠', '服务'] },
+      {
+        label: '年龄段',
+        placeholder: '请选择',
+        type: 'select',
+        options: ['18岁以下', '18-30岁', '31-45岁', '45岁以上'],
+      },
+      {
+        label: '关注内容',
+        placeholder: '请选择',
+        type: 'select',
+        options: ['新品', '优惠', '服务'],
+      },
       { label: '到店日期', placeholder: '请选择日期', type: 'date' },
     ]
     return page(b, {}, 0)
@@ -508,7 +535,13 @@ export const builtinBlueprints: Record<string, LayoutBlueprint> = {
   /* ---------------- 自由版式 ---------------- */
   'com.hbm.custom': defineBlueprint(() => {
     const els = [
-      createElement('image', { x: 0, y: 0, w: W, h: 192, props: { src: placeholderImage(W, 192) } }),
+      createElement('image', {
+        x: 0,
+        y: 0,
+        w: W,
+        h: 192,
+        props: { src: placeholderImage(W, 192) },
+      }),
       createElement('text', {
         x: PAD,
         y: 206,
@@ -527,7 +560,11 @@ export const builtinBlueprints: Record<string, LayoutBlueprint> = {
       }),
       createElement('button', { x: PAD, y: 292, w: INNER, h: 40, props: { text: '编辑按钮' } }),
     ]
-    return { mode: 'absolute', style: { height: 346, backgroundColor: '#FFFFFF', borderRadius: 12 }, elements: els }
+    return {
+      mode: 'absolute',
+      style: { height: 346, backgroundColor: '#FFFFFF', borderRadius: 12 },
+      elements: els,
+    }
   }),
 }
 
@@ -591,5 +628,9 @@ function redpacket(nameMax: number, descMax: number): Omit<TemplatePage, 'id'> {
       style: { backgroundColor: '#FFD27A', color: '#C2261B', borderRadius: 21, fontWeight: 600 },
     }),
   ]
-  return { mode: 'absolute', style: { height: H, backgroundColor: 'transparent', borderRadius: 16 }, elements }
+  return {
+    mode: 'absolute',
+    style: { height: H, backgroundColor: 'transparent', borderRadius: 16 },
+    elements,
+  }
 }

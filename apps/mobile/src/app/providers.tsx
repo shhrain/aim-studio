@@ -38,7 +38,10 @@ function MockGate({ children }: { children: ReactNode }) {
 export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(createQueryClient)
   useEffect(() => {
-    void setupWechatShare({ title: '梦网5G阅信', desc: '一键体验富媒体短信：图文、视频、卡券、通知多种版式' })
+    void setupWechatShare({
+      title: '梦网5G阅信',
+      desc: '一键体验富媒体短信：图文、视频、卡券、通知多种版式',
+    })
   }, [])
   return (
     <QueryClientProvider client={client}>

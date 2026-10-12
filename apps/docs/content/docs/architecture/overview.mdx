@@ -23,17 +23,17 @@ flowchart TB
 
 ## 包职责
 
-| 包 | 职责 | 约束 |
-| --- | --- | --- |
-| `@aim/template-schema` | 类型、Zod Schema、版式目录、槽位与字数、事件、参数、厂商矩阵 | 纯数据，不依赖 React / DOM |
-| `@aim/template-core` | 文档操作、插件注册、版式蓝图、预检、三信融合转换、旧数据适配、分享链接 | 纯函数，可在 Node / Worker 运行 |
-| `@aim/template-preview` | React 渲染器、手机壳、厂商主题、多协议、iframe、Web Component | 自带 `styles.css`，不依赖 Tailwind |
-| `@aim/ui` | shadcn/ui + Radix 企业组件、移动端组件 | Tailwind v4 token |
-| `@aim/api-client` | 接口契约、请求层、TanStack Query hooks | 业务只依赖契约 |
-| `@aim/mock` | MSW handlers、示例模板、IndexedDB 持久化 | 仅开发 / 测试使用 |
-| `@aim/utils` | HTML 净化、格式化、存储、编码、校验 | 无业务依赖 |
-| `@aim/ai-kit` | 提示词、规则与规范文档生成 | 由 schema 生成 |
-| `tooling/*` | tsconfig、eslint、tailwind token、vitest 配置 | – |
+| 包                      | 职责                                                                   | 约束                               |
+| ----------------------- | ---------------------------------------------------------------------- | ---------------------------------- |
+| `@aim/template-schema`  | 类型、Zod Schema、版式目录、槽位与字数、事件、参数、厂商矩阵           | 纯数据，不依赖 React / DOM         |
+| `@aim/template-core`    | 文档操作、插件注册、版式蓝图、预检、三信融合转换、旧数据适配、分享链接 | 纯函数，可在 Node / Worker 运行    |
+| `@aim/template-preview` | React 渲染器、手机壳、厂商主题、多协议、iframe、Web Component          | 自带 `styles.css`，不依赖 Tailwind |
+| `@aim/ui`               | shadcn/ui + Radix 企业组件、移动端组件                                 | Tailwind v4 token                  |
+| `@aim/api-client`       | 接口契约、请求层、TanStack Query hooks                                 | 业务只依赖契约                     |
+| `@aim/mock`             | MSW handlers、示例模板、IndexedDB 持久化                               | 仅开发 / 测试使用                  |
+| `@aim/utils`            | HTML 净化、格式化、存储、编码、校验                                    | 无业务依赖                         |
+| `@aim/ai-kit`           | 提示词、规则与规范文档生成                                             | 由 schema 生成                     |
+| `tooling/*`             | tsconfig、eslint、tailwind token、vitest 配置                          | –                                  |
 
 ## 源码引用与发布
 

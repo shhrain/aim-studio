@@ -162,8 +162,18 @@ export const ENUM_OPTIONS: Record<string, { value: string; label: string }[]> = 
 
 /** 按元素类型区分的枚举（同名字段含义不同） */
 export const ELEMENT_ENUMS: Record<string, Record<string, { value: string; label: string }[]>> = {
-  map: { mode: [{ value: 'card', label: '地图卡片' }, { value: 'text', label: '文字地址' }] },
-  serviceNumber: { mode: [{ value: 'profile', label: '服务号名片' }, { value: 'guide', label: '引导文案' }] },
+  map: {
+    mode: [
+      { value: 'card', label: '地图卡片' },
+      { value: 'text', label: '文字地址' },
+    ],
+  },
+  serviceNumber: {
+    mode: [
+      { value: 'profile', label: '服务号名片' },
+      { value: 'guide', label: '引导文案' },
+    ],
+  },
 }
 
 /** 字段使用素材选择器 */

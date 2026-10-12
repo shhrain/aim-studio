@@ -13,12 +13,12 @@ description: 在预览之上构建编辑器：选中、行内编辑、问题标�
   ignoreVendorSupport
   editor={{
     selectedId,
-    issueIds,                               // 有问题的元素，红色虚线标记
+    issueIds, // 有问题的元素，红色虚线标记
     onSelect: (id) => setSelected(id),
     editingId,
-    onEditStart: (id) => setEditing(id),    // 双击文本
+    onEditStart: (id) => setEditing(id), // 双击文本
     onTextCommit: (id, text) => save(id, text),
-    renderOverlay: (el) => el.id === selectedId ? <DragHandles el={el} /> : null,
+    renderOverlay: (el) => (el.id === selectedId ? <DragHandles el={el} /> : null),
   }}
 />
 ```

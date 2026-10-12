@@ -7,13 +7,28 @@ icon: Puzzle
 `@aim/template-core` 的所有内置能力都以插件形式注册（`builtinPlugin`），业务方可新增或覆盖：
 
 ```ts
-import { definePlugin, defineElement, defineBlueprint, defineConverter, defineRule, registerPlugin, FlowBuilder } from '@aim/template-core'
+import {
+  definePlugin,
+  defineElement,
+  defineBlueprint,
+  defineConverter,
+  defineRule,
+  registerPlugin,
+  FlowBuilder,
+} from '@aim/template-core'
 
 registerPlugin(
   definePlugin({
     name: 'my-company',
     // 1. 覆盖元素默认值
-    elements: [defineElement({ type: 'button', label: '按钮', size: { w: 314, h: 44 }, defaults: () => ({ text: '立即查看', variant: 'primary' }) })],
+    elements: [
+      defineElement({
+        type: 'button',
+        label: '按钮',
+        size: { w: 314, h: 44 },
+        defaults: () => ({ text: '立即查看', variant: 'primary' }),
+      }),
+    ],
     // 2. 为新版式提供蓝图（版式目录本身在 template-schema 中定义）
     blueprints: {
       'com.my.banner': defineBlueprint(() => {
@@ -23,9 +38,20 @@ registerPlugin(
       }),
     },
     // 3. 新增转换器
-    converters: [defineConverter({ from: 'aim', to: 'markdown', convert: (doc) => `# ${doc.name}` })],
+    converters: [
+      defineConverter({ from: 'aim', to: 'markdown', convert: (doc) => `# ${doc.name}` }),
+    ],
     // 4. 新增 / 替换预检规则（同 code 覆盖）
-    rules: [defineRule({ code: 'brand', description: '品牌词', run: (doc) => (doc.name.includes('梦网') ? [] : [{ code: 'brand.name', level: 'warning', message: '建议在模板名称中包含品牌名' }]) })],
+    rules: [
+      defineRule({
+        code: 'brand',
+        description: '品牌词',
+        run: (doc) =>
+          doc.name.includes('梦网')
+            ? []
+            : [{ code: 'brand.name', level: 'warning', message: '建议在模板名称中包含品牌名' }],
+      }),
+    ],
   }),
 )
 
@@ -34,14 +60,14 @@ registry.converter('aim', 'markdown').convert(doc)
 
 ## 扩展点一览
 
-| 扩展点 | 注册方式 | 作用 |
-| --- | --- | --- |
-| 元素数据 | `defineElement` | 默认尺寸、props、样式、文本收集、校验 |
-| 元素渲染 | `definePreviewElement`（preview） | React 渲染组件 |
-| 版式蓝图 | `defineBlueprint` | 根据版式设置生成页面 |
-| 转换器 | `defineConverter` | `from → to` 任意协议 |
-| 预检规则 | `defineRule` | 返回 `PrecheckIssue[]` |
-| 厂商皮肤 | `defineVendorTheme`（preview） | 手机壳、按钮、卡片样式 |
+| 扩展点   | 注册方式                          | 作用                                  |
+| -------- | --------------------------------- | ------------------------------------- |
+| 元素数据 | `defineElement`                   | 默认尺寸、props、样式、文本收集、校验 |
+| 元素渲染 | `definePreviewElement`（preview） | React 渲染组件                        |
+| 版式蓝图 | `defineBlueprint`                 | 根据版式设置生成页面                  |
+| 转换器   | `defineConverter`                 | `from → to` 任意协议                  |
+| 预检规则 | `defineRule`                      | 返回 `PrecheckIssue[]`                |
+| 厂商皮肤 | `defineVendorTheme`（preview）    | 手机壳、按钮、卡片样式                |
 
 ## 脚手架
 

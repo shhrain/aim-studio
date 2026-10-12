@@ -1,13 +1,17 @@
 {
   "name": "@aim/ai-kit",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "面向 AI 编程 Agent 的 AIM 模板知识包：系统提示词、Cursor 规则、规范文档与示例模板（由 schema 自动生成）",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./PROMPT.md": "./PROMPT.md"
   },
-  "files": ["PROMPT.md", "examples", "src"],
+  "files": [
+    "PROMPT.md",
+    "examples",
+    "src"
+  ],
   "scripts": {
     "generate": "tsx src/generate.ts",
     "lint": "eslint src",
@@ -16,12 +20,12 @@
     "clean": "rimraf .turbo"
   },
   "dependencies": {
-    "@aim/mock": "workspace:*",
     "@aim/template-core": "workspace:*",
     "@aim/template-schema": "workspace:*"
   },
   "devDependencies": {
     "@aim/eslint-config": "workspace:*",
+    "@aim/mock": "workspace:*",
     "@aim/tsconfig": "workspace:*",
     "@aim/vitest-config": "workspace:*",
     "@types/node": "catalog:",

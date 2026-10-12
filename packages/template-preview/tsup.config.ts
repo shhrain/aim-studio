@@ -2,7 +2,11 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig([
   {
-    entry: { index: 'src/index.ts', 'embed/receiver': 'src/embed/receiver.tsx', 'element/index': 'src/element/index.tsx' },
+    entry: {
+      index: 'src/index.ts',
+      'embed/receiver': 'src/embed/receiver.tsx',
+      'element/index': 'src/element/index.tsx',
+    },
     format: ['esm'],
     dts: true,
     sourcemap: true,

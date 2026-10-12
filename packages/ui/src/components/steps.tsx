@@ -19,14 +19,22 @@ export function Steps({ current, items, onStepClick, className }: StepsProps) {
         return (
           <li key={index} className="flex items-center gap-2">
             {index > 0 && (
-              <span className={cn('h-px w-10 bg-border transition-colors', index <= current && 'bg-primary/60')} />
+              <span
+                className={cn(
+                  'bg-border h-px w-10 transition-colors',
+                  index <= current && 'bg-primary/60',
+                )}
+              />
             )}
             <button
               type="button"
               disabled={!clickable}
               onClick={() => clickable && onStepClick?.(index)}
               aria-current={status === 'active' ? 'step' : undefined}
-              className={cn('group flex items-center gap-2 text-sm whitespace-nowrap', clickable && 'cursor-pointer')}
+              className={cn(
+                'group flex items-center gap-2 text-sm whitespace-nowrap',
+                clickable && 'cursor-pointer',
+              )}
             >
               <span
                 className={cn(
@@ -40,7 +48,7 @@ export function Steps({ current, items, onStepClick, className }: StepsProps) {
               </span>
               <span
                 className={cn(
-                  status === 'todo' ? 'text-muted-foreground' : 'font-medium text-foreground',
+                  status === 'todo' ? 'text-muted-foreground' : 'text-foreground font-medium',
                   clickable && 'group-hover:text-primary',
                 )}
               >

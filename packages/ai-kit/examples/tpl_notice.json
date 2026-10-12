@@ -20,7 +20,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_jk1f6uz1bl",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 425,
@@ -29,7 +29,7 @@
       },
       "elements": [
         {
-          "id": "el_uzpqlsse3h",
+          "id": "el_01",
           "type": "text",
           "x": 14,
           "y": 14,
@@ -52,7 +52,7 @@
           "slot": "title"
         },
         {
-          "id": "el_4q7by97f44",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 47,
@@ -74,7 +74,7 @@
           "slot": "description"
         },
         {
-          "id": "el_uf1r3umgmx",
+          "id": "el_03",
           "type": "button",
           "x": 14,
           "y": 371,

@@ -22,7 +22,13 @@ const TEXT: Record<Status, string> = {
 }
 
 /** 下拉刷新：仅在页面滚动到顶部时响应手势 */
-export function PullRefresh({ onRefresh, threshold = 64, disabled, className, children }: PullRefreshProps) {
+export function PullRefresh({
+  onRefresh,
+  threshold = 64,
+  disabled,
+  className,
+  children,
+}: PullRefreshProps) {
   const [offset, setOffset] = React.useState(0)
   const [status, setStatus] = React.useState<Status>('idle')
   const startY = React.useRef<number | null>(null)
@@ -64,11 +70,11 @@ export function PullRefresh({ onRefresh, threshold = 64, disabled, className, ch
     >
       <div
         aria-live="polite"
-        className="absolute inset-x-0 top-0 flex items-center justify-center text-xs text-muted-foreground"
+        className="text-muted-foreground absolute inset-x-0 top-0 flex items-center justify-center text-xs"
         style={{ height: offset, opacity: offset ? 1 : 0 }}
       >
         {status === 'refreshing' && (
-          <span className="mr-2 size-3.5 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+          <span className="border-primary mr-2 size-3.5 animate-spin rounded-full border-2 border-r-transparent" />
         )}
         {TEXT[status]}
       </div>

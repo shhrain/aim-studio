@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": { "types": "./index.d.ts", "default": "./index.js" },
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
     "./setup-dom": "./setup-dom.js"
   },
   "dependencies": {
@@ -16,6 +19,8 @@
     "vitest": "^4.0.0"
   },
   "peerDependenciesMeta": {
-    "@testing-library/react": { "optional": true }
+    "@testing-library/react": {
+      "optional": true
+    }
   }
 }

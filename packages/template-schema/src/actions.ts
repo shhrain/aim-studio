@@ -94,10 +94,29 @@ const URL_FIELD: ActionFieldDefinition = {
   placeholder: 'https://开头，字符长度<=3000',
   allowParams: true,
 }
-const PAGE_NAME: ActionFieldDefinition = { key: 'pageName', label: '页面名称', kind: 'text', maxLength: 10, placeholder: '最多10个字' }
+const PAGE_NAME: ActionFieldDefinition = {
+  key: 'pageName',
+  label: '页面名称',
+  kind: 'text',
+  maxLength: 10,
+  placeholder: '最多10个字',
+}
 const FALLBACK: ActionFieldDefinition[] = [
-  { key: 'floorType', label: '兜底类型', kind: 'select', options: FALLBACK_TYPES, defaultValue: 'h5' },
-  { key: 'floorUrl', label: '兜底链接', kind: 'url', maxLength: 3000, placeholder: 'https://', allowParams: true },
+  {
+    key: 'floorType',
+    label: '兜底类型',
+    kind: 'select',
+    options: FALLBACK_TYPES,
+    defaultValue: 'h5',
+  },
+  {
+    key: 'floorUrl',
+    label: '兜底链接',
+    kind: 'url',
+    maxLength: 3000,
+    placeholder: 'https://',
+    allowParams: true,
+  },
 ]
 
 export const ACTIONS: Record<ActionType, ActionDefinition> = {
@@ -123,8 +142,21 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
     label: '打开APP',
     description: '通过 DeepLink 拉起已安装应用，未安装时按兜底类型处理',
     fields: [
-      { key: 'target', label: 'DeepLink', kind: 'text', required: true, placeholder: 'scheme://path', allowParams: true },
-      { key: 'packageName', label: 'APK包名', kind: 'text', required: true, placeholder: 'com.example.app' },
+      {
+        key: 'target',
+        label: 'DeepLink',
+        kind: 'text',
+        required: true,
+        placeholder: 'scheme://path',
+        allowParams: true,
+      },
+      {
+        key: 'packageName',
+        label: 'APK包名',
+        kind: 'text',
+        required: true,
+        placeholder: 'com.example.app',
+      },
       ...FALLBACK,
     ],
     rcs: { kind: 'asBrowser' },
@@ -134,7 +166,10 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
     type: 'OPEN_QUICK',
     label: '打开快应用',
     description: '拉起快应用（hap://），RCS/RMS 自动转为 hapjs.org 链接',
-    fields: [{ ...URL_FIELD, label: '快应用链接', kind: 'text', placeholder: 'hap://app/包名/页面' }, ...FALLBACK],
+    fields: [
+      { ...URL_FIELD, label: '快应用链接', kind: 'text', placeholder: 'hap://app/包名/页面' },
+      ...FALLBACK,
+    ],
     rcs: { kind: 'asBrowser' },
     rms: 'link',
   },
@@ -160,7 +195,13 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
     description: '跳转微信小店 / 自定义小程序落地页',
     fields: [
       { key: 'shopId', label: '微信小店ID', kind: 'text', required: true },
-      { key: 'landingPage', label: '小程序落地页', kind: 'text', placeholder: 'pages/index/index', help: '自定义小程序落地页' },
+      {
+        key: 'landingPage',
+        label: '小程序落地页',
+        kind: 'text',
+        placeholder: 'pages/index/index',
+        help: '自定义小程序落地页',
+      },
     ],
     rcs: { kind: 'unsupported' },
     rms: 'none',
@@ -182,7 +223,13 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
         defaultValue: 'embedded',
       },
       { key: 'appId', label: '华为元服务APPID', kind: 'text', required: true },
-      { key: 'target', label: '链接', kind: 'text', placeholder: '元服务页面路径', allowParams: true },
+      {
+        key: 'target',
+        label: '链接',
+        kind: 'text',
+        placeholder: '元服务页面路径',
+        allowParams: true,
+      },
       { key: 'parameters', label: '元服务动态参数', kind: 'keyValue' },
     ],
     rcs: { kind: 'unsupported' },
@@ -233,7 +280,14 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
         ],
         defaultValue: 'param',
       },
-      { key: 'content', label: '复制内容', kind: 'text', required: true, allowParams: true, placeholder: '请输入要复制的内容' },
+      {
+        key: 'content',
+        label: '复制内容',
+        kind: 'text',
+        required: true,
+        allowParams: true,
+        placeholder: '请输入要复制的内容',
+      },
     ],
     rcs: { kind: 'unsupported' },
     rms: 'text',
@@ -243,8 +297,22 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
     label: '发送短信',
     description: '调用系统发送短信功能，自动填写号码与正文',
     fields: [
-      { key: 'target', label: '短信号码', kind: 'phone', required: true, placeholder: '131****4321，1069****1234', allowParams: true },
-      { key: 'body', label: '短信正文', kind: 'textarea', maxLength: 70, placeholder: '例如：2000积分兑换话费', allowParams: true },
+      {
+        key: 'target',
+        label: '短信号码',
+        kind: 'phone',
+        required: true,
+        placeholder: '131****4321，1069****1234',
+        allowParams: true,
+      },
+      {
+        key: 'body',
+        label: '短信正文',
+        kind: 'textarea',
+        maxLength: 70,
+        placeholder: '例如：2000积分兑换话费',
+        allowParams: true,
+      },
     ],
     rcs: { kind: 'unsupported' },
     rms: 'text',
@@ -281,7 +349,13 @@ export const ACTIONS: Record<ActionType, ActionDefinition> = {
     fields: [
       { key: 'title', label: '弹窗标题', kind: 'text', required: true, maxLength: 15 },
       { key: 'content', label: '弹窗内容', kind: 'textarea', required: true, maxLength: 500 },
-      { key: 'buttonText', label: '弹窗按钮名称', kind: 'text', maxLength: 6, defaultValue: '我知道了' },
+      {
+        key: 'buttonText',
+        label: '弹窗按钮名称',
+        kind: 'text',
+        maxLength: 6,
+        defaultValue: '我知道了',
+      },
     ],
     rcs: { kind: 'unsupported' },
     rms: 'text',

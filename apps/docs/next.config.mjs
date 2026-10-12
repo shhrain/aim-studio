@@ -5,7 +5,12 @@ const withMDX = createMDX()
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  transpilePackages: ['@aim/utils', '@aim/template-schema', '@aim/template-core', '@aim/template-preview'],
+  transpilePackages: [
+    '@aim/utils',
+    '@aim/template-schema',
+    '@aim/template-core',
+    '@aim/template-preview',
+  ],
   devIndicators: false,
 }
 

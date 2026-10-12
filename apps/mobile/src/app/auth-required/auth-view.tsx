@@ -28,24 +28,37 @@ export function AuthView() {
   }
   return (
     <main className="mx-auto flex min-h-dvh max-w-screen-sm flex-col items-center px-6 pt-[18vh] text-center">
-      <span className="flex size-16 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
+      <span className="bg-accent text-accent-foreground flex size-16 items-center justify-center rounded-2xl">
         <LockKeyholeIcon className="size-7" />
       </span>
       <h1 className="mt-5 text-xl font-semibold">{expired ? '登录已失效' : '请先登录'}</h1>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">5G 阅信体验需在登录状态下使用。请从体验平台入口重新进入，链接会自动携带登录信息。</p>
+      <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+        5G 阅信体验需在登录状态下使用。请从体验平台入口重新进入，链接会自动携带登录信息。
+      </p>
       {env.mock ? (
         <div className="mt-8 w-full space-y-3 text-left">
           <Alert variant="info" title="本地 Mock 环境">
             输入任意手机号即可体验登录，数据保存在浏览器本地。
           </Alert>
-          <Input value={phone} inputMode="numeric" maxLength={11} onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} className="h-11 text-base" aria-label="手机号" />
+          <Input
+            value={phone}
+            inputMode="numeric"
+            maxLength={11}
+            onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+            className="h-11 text-base"
+            aria-label="手机号"
+          />
           <Button block size="xl" loading={loading} onClick={() => void login()}>
             体验登录
           </Button>
         </div>
       ) : (
-        // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- 跳转原体验系统登录页（非本应用路由）
-        <Button className="mt-8" size="lg" onClick={() => location.assign(`${location.origin}/aim/experience/#/login`)}>
+        <Button
+          className="mt-8"
+          size="lg"
+          // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- 跳转原体验系统登录页（非本应用路由）
+          onClick={() => location.assign(`${location.origin}/aim/experience/#/login`)}
+        >
           重新进入
         </Button>
       )}

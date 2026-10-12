@@ -22,7 +22,12 @@ export function RcsView({ material }: { material: RcsSourceMaterial }) {
               <div key={i} className="aim-rcs-card">
                 {media ? (
                   <div style={{ position: 'relative' }}>
-                    <img className="aim-rcs-media" src={media} alt="" style={material.tplType === 'media' ? { aspectRatio: 'auto' } : undefined} />
+                    <img
+                      className="aim-rcs-media"
+                      src={media}
+                      alt=""
+                      style={material.tplType === 'media' ? { aspectRatio: 'auto' } : undefined}
+                    />
                     {isVideo && <span className="aim-play" />}
                   </div>
                 ) : (
@@ -30,16 +35,30 @@ export function RcsView({ material }: { material: RcsSourceMaterial }) {
                 )}
                 {material.tplType !== 'media' && (c.title || c.description) && (
                   <div className="aim-rcs-body">
-                    {c.title && <div className="aim-t1" dangerouslySetInnerHTML={{ __html: renderTextHtml(c.title, r) }} />}
+                    {c.title && (
+                      <div
+                        className="aim-t1"
+                        dangerouslySetInnerHTML={{ __html: renderTextHtml(c.title, r) }}
+                      />
+                    )}
                     {c.description && (
-                      <div className="aim-t2" style={{ marginTop: u(4) }} dangerouslySetInnerHTML={{ __html: renderTextHtml(c.description, r) }} />
+                      <div
+                        className="aim-t2"
+                        style={{ marginTop: u(4) }}
+                        dangerouslySetInnerHTML={{ __html: renderTextHtml(c.description, r) }}
+                      />
                     )}
                   </div>
                 )}
                 {buttons.length > 0 && material.tplType !== 'media' && (
                   <div className="aim-rcs-suggestions">
                     {buttons.map((b, j) => (
-                      <button key={j} type="button" data-missing={!b.action || undefined} title={b.action || '需补填链接'}>
+                      <button
+                        key={j}
+                        type="button"
+                        data-missing={!b.action || undefined}
+                        title={b.action || '需补填链接'}
+                      >
                         {renderTextPlain(b.name, r)}
                       </button>
                     ))}
@@ -70,11 +89,20 @@ export function RmsView({ title, frames }: { title: string; frames: RmsFrame[] }
         {title && <div className="aim-rms-title">{renderTextPlain(title, r)}</div>}
         {frames.map((f, i) => (
           <div key={i} className="aim-rms-frame">
-            {f.type === 'text' && <div className="aim-rms-text" dangerouslySetInnerHTML={{ __html: renderTextHtml(String(f.text ?? ''), r) }} />}
-            {f.type === 'image' && f.src && <img src={String(f.src)} alt="" loading={lazy(String(f.src))} />}
+            {f.type === 'text' && (
+              <div
+                className="aim-rms-text"
+                dangerouslySetInnerHTML={{ __html: renderTextHtml(String(f.text ?? ''), r) }}
+              />
+            )}
+            {f.type === 'image' && f.src && (
+              <img src={String(f.src)} alt="" loading={lazy(String(f.src))} />
+            )}
             {f.type === 'video' && (
               <div className="aim-media" style={{ aspectRatio: '16 / 9' }}>
-                {f.fistFramePath && <img className="aim-media-cover" src={String(f.fistFramePath)} alt="" />}
+                {f.fistFramePath && (
+                  <img className="aim-media-cover" src={String(f.fistFramePath)} alt="" />
+                )}
                 <span className="aim-play" />
               </div>
             )}

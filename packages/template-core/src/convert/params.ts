@@ -9,7 +9,11 @@ export function replaceAll(str: unknown, search: string, replacement: string) {
 
 export function replaceSymbol<T extends string | undefined | null>(str: T): T {
   if (!str) return str
-  return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<br>/g, '') as T
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/<br>/g, '') as T
 }
 
 export function stripReject<T extends string | undefined | null>(str: T): T {
@@ -27,7 +31,10 @@ export function getTextParam(html: string | undefined | null): string {
   if (!html) return ''
   return html
     .replace(/<i\b[^>]*>[\s\S]*?<\/i>/g, '')
-    .replace(/<span\b[^>]*>([\s\S]*?)<\/span> ?/g, (_, inner: string) => '${' + stripInner(inner) + '}')
+    .replace(
+      /<span\b[^>]*>([\s\S]*?)<\/span> ?/g,
+      (_, inner: string) => '${' + stripInner(inner) + '}',
+    )
 }
 
 export function stripDynamicParams(html: string | undefined | null): string {
@@ -35,7 +42,8 @@ export function stripDynamicParams(html: string | undefined | null): string {
 }
 
 /** 任意层级转义的参数节点（如 actionDetail 内二次 JSON 序列化的 <input>） */
-const ESCAPED_PARAM_INPUT_REG = /<input[^>]*?\bvalue=(?:\\+)?["'](?:\$)?\{#([^#{}]+?)#\}(?:\\+)?["'][^>]*>/g
+const ESCAPED_PARAM_INPUT_REG =
+  /<input[^>]*?\bvalue=(?:\\+)?["'](?:\$)?\{#([^#{}]+?)#\}(?:\\+)?["'][^>]*>/g
 
 /**
  * 参数节点 → 协议变量 ${x}
@@ -45,7 +53,10 @@ const ESCAPED_PARAM_INPUT_REG = /<input[^>]*?\bvalue=(?:\\+)?["'](?:\$)?\{#([^#{
 export function htmlParamsToTpl<T>(payload: T, mode: 'legacy' | 'fixed' = 'legacy'): T {
   if (payload == null) return payload
   const raw = typeof payload === 'string' ? payload : JSON.stringify(payload)
-  let replaced = raw.replace(PARAM_NAME_REG, (_: string, __: string, param: string) => '${' + param + '}')
+  let replaced = raw.replace(
+    PARAM_NAME_REG,
+    (_: string, __: string, param: string) => '${' + param + '}',
+  )
   if (mode === 'fixed') {
     replaced = replaced
       .replace(ESCAPED_PARAM_INPUT_REG, (_: string, param: string) => '${' + param + '}')

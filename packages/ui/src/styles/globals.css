@@ -8,4 +8,4 @@
 @import '@aim/tailwind-config/tokens.css';
 
 /* 扫描 UI 包自身源码中的类名 */
-@source "../";
+@source '../';

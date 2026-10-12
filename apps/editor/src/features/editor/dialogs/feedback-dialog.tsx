@@ -1,10 +1,28 @@
 'use client'
 
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Field, Input, Textarea, toast } from '@aim/ui'
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Field,
+  Input,
+  Textarea,
+  toast,
+} from '@aim/ui'
 import { useState } from 'react'
 import { editorApi } from '@/lib/api'
 
-export function FeedbackDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+export function FeedbackDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean
+  onOpenChange: (o: boolean) => void
+}) {
   const [content, setContent] = useState('')
   const [contact, setContact] = useState('')
   const [loading, setLoading] = useState(false)
@@ -17,10 +35,21 @@ export function FeedbackDialog({ open, onOpenChange }: { open: boolean; onOpenCh
         </DialogHeader>
         <div className="space-y-3">
           <Field label="反馈内容" required>
-            <Textarea rows={5} maxLength={500} showCount value={content} onChange={(e) => setContent(e.target.value)} placeholder="请描述问题出现的步骤或期望的功能" />
+            <Textarea
+              rows={5}
+              maxLength={500}
+              showCount
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="请描述问题出现的步骤或期望的功能"
+            />
           </Field>
           <Field label="联系方式">
-            <Input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="手机号 / 邮箱（选填）" />
+            <Input
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              placeholder="手机号 / 邮箱（选填）"
+            />
           </Field>
         </div>
         <DialogFooter>

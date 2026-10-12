@@ -36,18 +36,44 @@ export function GalleryView() {
                     { value: 'sample', label: '示例模板' },
                   ]}
                 />
-                <SimpleSelect value={vendor} onValueChange={setVendor} options={VENDOR_LIST.map((v) => ({ value: v.id, label: v.name }))} className="w-28" aria-label="厂商" />
-                <Segmented value={protocol} onValueChange={setProtocol} options={(['aim', 'rcs', 'rms'] as const).map((p) => ({ value: p, label: PROTOCOL_META[p].terminal }))} />
+                <SimpleSelect
+                  value={vendor}
+                  onValueChange={setVendor}
+                  options={VENDOR_LIST.map((v) => ({ value: v.id, label: v.name }))}
+                  className="w-28"
+                  aria-label="厂商"
+                />
+                <Segmented
+                  value={protocol}
+                  onValueChange={setProtocol}
+                  options={(['aim', 'rcs', 'rms'] as const).map((p) => ({
+                    value: p,
+                    label: PROTOCOL_META[p].terminal,
+                  }))}
+                />
               </div>
             }
           />
           <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
             {docs.map((doc) => (
-              <figure key={doc.id} className="flex flex-col items-center gap-2" data-testid={`gallery-${doc.layoutId}`}>
-                <TemplatePreview document={doc} vendor={vendor} protocol={protocol} width={280} paramDisplay="example" showTime={false} />
+              <figure
+                key={doc.id}
+                className="flex flex-col items-center gap-2"
+                data-testid={`gallery-${doc.layoutId}`}
+              >
+                <TemplatePreview
+                  document={doc}
+                  vendor={vendor}
+                  protocol={protocol}
+                  width={280}
+                  paramDisplay="example"
+                  showTime={false}
+                />
                 <figcaption className="flex items-center gap-1.5 text-sm">
                   {doc.name}
-                  {LAYOUTS.find((l) => l.id === doc.layoutId)?.protocols.includes('rcs') && <Badge variant="success">三信融合</Badge>}
+                  {LAYOUTS.find((l) => l.id === doc.layoutId)?.protocols.includes('rcs') && (
+                    <Badge variant="success">三信融合</Badge>
+                  )}
                   <Button size="xs" variant="link" asChild>
                     <Link href={`/editor/new?layout=${doc.layoutId}`}>使用</Link>
                   </Button>

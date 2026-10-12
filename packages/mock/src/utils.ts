@@ -40,11 +40,20 @@ export async function latency(path: string) {
 }
 
 export function ok<T>(data: T, pageInfo?: PageInfo) {
-  return HttpResponse.json({ subCode: 0, message: 'success', data, ...(pageInfo ? { pageInfo } : {}) })
+  return HttpResponse.json({
+    subCode: 0,
+    message: 'success',
+    data,
+    ...(pageInfo ? { pageInfo } : {}),
+  })
 }
 
 export function fail(subCode: number, message?: string) {
-  return HttpResponse.json({ subCode, message: message ?? SUB_CODE_MESSAGE[subCode] ?? '请求失败', data: null })
+  return HttpResponse.json({
+    subCode,
+    message: message ?? SUB_CODE_MESSAGE[subCode] ?? '请求失败',
+    data: null,
+  })
 }
 
 /** 号码哈希：保证同一号码每次 Mock 结果一致 */

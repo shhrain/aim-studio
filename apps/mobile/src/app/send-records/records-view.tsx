@@ -36,7 +36,8 @@ export function RecordsView() {
   const [status, setStatus] = useState<SendStatus | undefined>()
   const [previewing, setPreviewing] = useState<SendRecord | null>(null)
   const [resend, setResend] = useState<SendRecord | null>(null)
-  const startDate = range === 'all' ? undefined : formatDate(Date.now() - Number(range) * 86_400_000, 'YYYY-MM-DD')
+  const startDate =
+    range === 'all' ? undefined : formatDate(Date.now() - Number(range) * 86_400_000, 'YYYY-MM-DD')
   const q = { whois, mobile: mobile || undefined, startDate, status }
   const list = useInfiniteQuery({
     queryKey: ['experience', 'records', q],
@@ -45,22 +46,49 @@ export function RecordsView() {
     getNextPageParam: (last) => (last.current < last.pages ? last.current + 1 : undefined),
   })
   const records = list.data?.pages.flatMap((p) => p.records) ?? []
-  const detail = useQuery({ queryKey: ['experience', 'detail', resend?.tplId ?? previewing?.tplId], queryFn: () => api.templateDetail((resend ?? previewing)!.tplId), enabled: Boolean(resend ?? previewing) })
+  const detail = useQuery({
+    queryKey: ['experience', 'detail', resend?.tplId ?? previewing?.tplId],
+    queryFn: () => api.templateDetail((resend ?? previewing)!.tplId),
+    enabled: Boolean(resend ?? previewing),
+  })
 
   return (
     <div className="mx-auto min-h-dvh max-w-screen-sm">
       <NavBar title="发送记录" onBack={() => router.push('/template-list')} />
-      <div className="sticky top-[calc(44px+env(safe-area-inset-top))] z-20 space-y-2 bg-muted/95 px-3 py-2.5 backdrop-blur">
-        <Input prefix={<SearchIcon className="size-4" />} placeholder="搜索手机号" inputMode="numeric" value={keyword} onChange={(e) => setKeyword(e.target.value.replace(/\D/g, ''))} className="bg-card" />
+      <div className="bg-muted/95 sticky top-[calc(44px+env(safe-area-inset-top))] z-20 space-y-2 px-3 py-2.5 backdrop-blur">
+        <Input
+          prefix={<SearchIcon className="size-4" />}
+          placeholder="搜索手机号"
+          inputMode="numeric"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value.replace(/\D/g, ''))}
+          className="bg-card"
+        />
         <div className="flex gap-2 overflow-x-auto">
           {RANGES.map((r) => (
-            <button key={r.key} type="button" onClick={() => setRange(r.key)} className={cn('h-7 shrink-0 rounded-full px-3 text-xs', range === r.key ? 'bg-primary text-primary-foreground' : 'bg-card')}>
+            <button
+              key={r.key}
+              type="button"
+              onClick={() => setRange(r.key)}
+              className={cn(
+                'h-7 shrink-0 rounded-full px-3 text-xs',
+                range === r.key ? 'bg-primary text-primary-foreground' : 'bg-card',
+              )}
+            >
               {r.label}
             </button>
           ))}
-          <span className="mx-1 w-px bg-border" />
+          <span className="bg-border mx-1 w-px" />
           {(Object.keys(STATUS) as SendStatus[]).map((s) => (
-            <button key={s} type="button" onClick={() => setStatus(status === s ? undefined : s)} className={cn('h-7 shrink-0 rounded-full px-3 text-xs', status === s ? 'bg-foreground text-background' : 'bg-card')}>
+            <button
+              key={s}
+              type="button"
+              onClick={() => setStatus(status === s ? undefined : s)}
+              className={cn(
+                'h-7 shrink-0 rounded-full px-3 text-xs',
+                status === s ? 'bg-foreground text-background' : 'bg-card',
+              )}
+            >
               {STATUS[s].label}
             </button>
           ))}
@@ -71,10 +99,18 @@ export function RecordsView() {
           {list.isLoading ? (
             Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-32 rounded-xl" />)
           ) : records.length === 0 ? (
-            <Empty title="暂无发送记录" description="去模板列表挑选一个模板，发送到手机体验吧" action={<Button size="sm" asChild><Link href="/template-list">去体验</Link></Button>} />
+            <Empty
+              title="暂无发送记录"
+              description="去模板列表挑选一个模板，发送到手机体验吧"
+              action={
+                <Button size="sm" asChild>
+                  <Link href="/template-list">去体验</Link>
+                </Button>
+              }
+            />
           ) : (
             records.map((r) => (
-              <article key={r.id} className="rounded-xl bg-card p-3.5 shadow-panel">
+              <article key={r.id} className="bg-card shadow-panel rounded-xl p-3.5">
                 <header className="flex items-center gap-2">
                   <span className="line-clamp-1 flex-1 font-medium">{r.tplName}</span>
                   <Badge variant={STATUS[r.status].variant} dot>
@@ -85,7 +121,9 @@ export function RecordsView() {
                   <dt className="text-muted-foreground">接收号码</dt>
                   <dd className="tabular-nums">
                     {r.mobile}
-                    {r.contactName && <span className="ml-1 text-muted-foreground">{r.contactName}</span>}
+                    {r.contactName && (
+                      <span className="text-muted-foreground ml-1">{r.contactName}</span>
+                    )}
                   </dd>
                   <dt className="text-muted-foreground">消息形态</dt>
                   <dd className="flex items-center gap-1">
@@ -104,11 +142,14 @@ export function RecordsView() {
                   <dd>{formatDate(r.sendTime, 'YYYY-MM-DD HH:mm:ss')}</dd>
                 </dl>
                 {(r.failReason || r.degraded) && (
-                  <p className="mt-2 flex items-start gap-1 rounded-md bg-muted px-2 py-1.5 text-xs text-muted-foreground">
+                  <p className="bg-muted text-muted-foreground mt-2 flex items-start gap-1 rounded-md px-2 py-1.5 text-xs">
                     <InfoIcon className="mt-0.5 size-3.5 shrink-0" />
                     {r.failReason ?? r.degraded?.reason}
                     {r.degraded?.from === 1 && (
-                      <Link href={`/ability-guide${r.factory ? `?factory=${r.factory}` : ''}`} className="ml-auto shrink-0 text-primary">
+                      <Link
+                        href={`/ability-guide${r.factory ? `?factory=${r.factory}` : ''}`}
+                        className="text-primary ml-auto shrink-0"
+                      >
                         开启指引
                       </Link>
                     )}
@@ -128,21 +169,49 @@ export function RecordsView() {
             ))
           )}
           {list.hasNextPage && (
-            <Button block variant="ghost" loading={list.isFetchingNextPage} onClick={() => void list.fetchNextPage()}>
+            <Button
+              block
+              variant="ghost"
+              loading={list.isFetchingNextPage}
+              onClick={() => void list.fetchNextPage()}
+            >
               加载更多
             </Button>
           )}
         </div>
       </PullRefresh>
       <AppTabBar />
-      <BottomSheet open={Boolean(previewing)} onOpenChange={(o) => !o && setPreviewing(null)} title="消息预览" description={previewing ? `${MESSAGE_TYPE_LABEL[previewing.messageType]} · ${previewing.mobile}` : undefined}>
+      <BottomSheet
+        open={Boolean(previewing)}
+        onOpenChange={(o) => !o && setPreviewing(null)}
+        title="消息预览"
+        description={
+          previewing
+            ? `${MESSAGE_TYPE_LABEL[previewing.messageType]} · ${previewing.mobile}`
+            : undefined
+        }
+      >
         {detail.data && previewing && (
           <div className="overflow-hidden rounded-xl">
-            <TemplatePreview document={detail.data.document} protocol={({ 1: 'aim', 2: 'rcs', 3: 'rms' } as const)[previewing.messageType]} vendor={previewing.factory} mode="fluid" paramDisplay="example" showTime={false} />
+            <TemplatePreview
+              document={detail.data.document}
+              protocol={({ 1: 'aim', 2: 'rcs', 3: 'rms' } as const)[previewing.messageType]}
+              vendor={previewing.factory}
+              mode="fluid"
+              paramDisplay="example"
+              showTime={false}
+            />
           </div>
         )}
       </BottomSheet>
-      {resend && detail.data && <SendFlow open onOpenChange={(o) => !o && setResend(null)} template={detail.data} initialMobiles={[resend.mobile]} />}
+      {resend && detail.data && (
+        <SendFlow
+          open
+          onOpenChange={(o) => !o && setResend(null)}
+          template={detail.data}
+          initialMobiles={[resend.mobile]}
+        />
+      )}
     </div>
   )
 }

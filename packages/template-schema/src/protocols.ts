@@ -121,6 +121,11 @@ export interface IntegratedResult {
 }
 
 export interface SubmitPayload {
-  rcsTplRequest: { tplName: string; chatbotNameId: string; chatbotName: string; tplContent: RcsSourceMaterial }
+  rcsTplRequest: {
+    tplName: string
+    chatbotNameId: string
+    chatbotName: string
+    tplContent: RcsSourceMaterial
+  }
   rmsTplRequest: { tplName: string; signature: string; content: RmsTplFrame[]; params?: RmsParam[] }
 }

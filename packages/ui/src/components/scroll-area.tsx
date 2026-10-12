@@ -9,13 +9,19 @@ export function ScrollArea({
   children,
   viewportRef,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & { viewportRef?: React.Ref<HTMLDivElement> }) {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
+  viewportRef?: React.Ref<HTMLDivElement>
+}) {
   return (
-    <ScrollAreaPrimitive.Root data-slot="scroll-area" className={cn('relative overflow-hidden', className)} {...props}>
+    <ScrollAreaPrimitive.Root
+      data-slot="scroll-area"
+      className={cn('relative overflow-hidden', className)}
+      {...props}
+    >
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
         data-slot="scroll-area-viewport"
-        className="size-full rounded-[inherit] outline-none focus-visible:ring-[3px] focus-visible:ring-ring [&>div]:!block"
+        className="focus-visible:ring-ring size-full rounded-[inherit] outline-none focus-visible:ring-[3px] [&>div]:!block"
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
@@ -41,7 +47,7 @@ export function ScrollBar({
       )}
       {...props}
     >
-      <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border hover:bg-muted-foreground/40" />
+      <ScrollAreaPrimitive.ScrollAreaThumb className="bg-border hover:bg-muted-foreground/40 relative flex-1 rounded-full" />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   )
 }

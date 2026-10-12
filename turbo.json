@@ -1,8 +1,15 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
+  "agentGuidance": false,
   "globalDependencies": [".env", "tooling/tsconfig/*.json"],
-  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_API_MOCK", "NEXT_PUBLIC_MOBILE_URL", "NEXT_PUBLIC_DOCS_URL", "NEXT_PUBLIC_EDITOR_URL"],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_API_MOCK",
+    "NEXT_PUBLIC_MOBILE_URL",
+    "NEXT_PUBLIC_DOCS_URL",
+    "NEXT_PUBLIC_EDITOR_URL"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

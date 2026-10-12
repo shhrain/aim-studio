@@ -1,4 +1,9 @@
-import { CANVAS_WIDTH, REDPACKET_SIZE, REJECT_TEXT as REJECT, RMS_CANVAS_WIDTH as RMS_W } from '@aim/template-schema'
+import {
+  CANVAS_WIDTH,
+  REDPACKET_SIZE,
+  REJECT_TEXT as REJECT,
+  RMS_CANVAS_WIDTH as RMS_W,
+} from '@aim/template-schema'
 
 export const AIM_CANVAS_WIDTH = CANVAS_WIDTH
 export const RMS_CANVAS_WIDTH = RMS_W
@@ -19,10 +24,18 @@ export const CARD_IDS = {
 
 /** 支持三信融合转换的 cardId */
 export const INTEGRATED_CARD_IDS: string[] = Object.values(CARD_IDS)
-export const CAROUSEL_IDS: string[] = [CARD_IDS.CAROUSEL_16_9, CARD_IDS.CAROUSEL_SQUARE, CARD_IDS.CAROUSEL_VERTICAL]
+export const CAROUSEL_IDS: string[] = [
+  CARD_IDS.CAROUSEL_16_9,
+  CARD_IDS.CAROUSEL_SQUARE,
+  CARD_IDS.CAROUSEL_VERTICAL,
+]
 export const REDPACKET_IDS: string[] = [CARD_IDS.REDPACKET, CARD_IDS.REDPACKET_V2]
 export const CARD_TPL_IDS: string[] = [CARD_IDS.IMAGE_TEXT, CARD_IDS.NOTIFICATION]
-export const SINGLE_MEDIA_IDS: string[] = [CARD_IDS.IMAGE_TEXT, CARD_IDS.NOTIFICATION, CARD_IDS.VIDEO]
+export const SINGLE_MEDIA_IDS: string[] = [
+  CARD_IDS.IMAGE_TEXT,
+  CARD_IDS.NOTIFICATION,
+  CARD_IDS.VIDEO,
+]
 
 /** RCS 不支持的事件：转换时置空链接，由用户补填 */
 export const UNSUPPORTED_RCS_ACTIONS: Record<string, string> = {
@@ -47,12 +60,16 @@ export const RCS_URL_APPLICATION: Record<string, 'webview' | 'browser'> = {
   OPEN_DRAWER: 'webview',
 }
 
-export const DEFAULT_LAYOUT = '{"height":"tall_height","alignment":"","orientation":"vertical","width":"medium_width"}'
-export const DIALER_DETAIL = '{"height":"tall_height","alignment":"","orientation":"vertical","width":"medium_width"}'
+export const DEFAULT_LAYOUT =
+  '{"height":"tall_height","alignment":"","orientation":"vertical","width":"medium_width"}'
+export const DIALER_DETAIL =
+  '{"height":"tall_height","alignment":"","orientation":"vertical","width":"medium_width"}'
 
 export const REDPACKET_BG = {
-  TYPE1: 'https://aim6.oss-cn-beijing.aliyuncs.com/test_file/null/E01/S01/Fodder/1/20250403145724977HLipVR.png',
-  TYPE23: 'https://aim6.oss-cn-beijing.aliyuncs.com/test_file/null/E01/S01/Fodder/1/20250403145732834Xj0iJi.png',
+  TYPE1:
+    'https://aim6.oss-cn-beijing.aliyuncs.com/test_file/null/E01/S01/Fodder/1/20250403145724977HLipVR.png',
+  TYPE23:
+    'https://aim6.oss-cn-beijing.aliyuncs.com/test_file/null/E01/S01/Fodder/1/20250403145732834Xj0iJi.png',
 }
 
 /** 旧编辑器参数节点：<input value="{#x#}"> */

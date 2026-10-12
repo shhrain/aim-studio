@@ -20,7 +20,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_frz8fcp052",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 456,
@@ -29,7 +29,7 @@
       },
       "elements": [
         {
-          "id": "el_v3lqzhjj3u",
+          "id": "el_01",
           "type": "image",
           "x": 0,
           "y": 0,

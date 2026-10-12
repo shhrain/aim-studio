@@ -18,7 +18,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_zxw8wkx63n",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 210,
@@ -27,7 +27,7 @@
       },
       "elements": [
         {
-          "id": "el_8f7hz6iup1",
+          "id": "el_01",
           "type": "cardVoucher",
           "x": 0,
           "y": 0,

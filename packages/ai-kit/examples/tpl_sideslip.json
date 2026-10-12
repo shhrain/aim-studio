@@ -21,7 +21,7 @@
   },
   "pages": [
     {
-      "id": "page_df3r66us2a",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 282,
@@ -30,7 +30,7 @@
       },
       "elements": [
         {
-          "id": "el_a7u4tljgue",
+          "id": "el_01",
           "type": "sideslip",
           "x": 0,
           "y": 14,

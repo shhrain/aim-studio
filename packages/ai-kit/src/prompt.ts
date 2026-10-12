@@ -1,5 +1,12 @@
 import { CANVAS_WIDTH, URL_MAX_LENGTH } from '@aim/template-schema'
-import { actionsTable, counts, elementsTable, layoutsSummaryTable, paramTypesTable, vendorsTable } from './tables'
+import {
+  actionsTable,
+  counts,
+  elementsTable,
+  layoutsSummaryTable,
+  paramTypesTable,
+  vendorsTable,
+} from './tables'
 
 /**
  * 开箱即用的系统提示词：让任意 AI 编程 Agent 正确理解并使用 AIM 模板能力。

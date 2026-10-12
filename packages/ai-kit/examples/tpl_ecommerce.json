@@ -20,7 +20,7 @@
   },
   "pages": [
     {
-      "id": "page_pai57uey61",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 520,
@@ -29,7 +29,7 @@
       },
       "elements": [
         {
-          "id": "el_hcq88niqqn",
+          "id": "el_01",
           "type": "eCommerce",
           "x": 0,
           "y": 0,

@@ -49,7 +49,10 @@ export const elementTypeSchema = z.enum(ELEMENT_TYPES)
 
 export type ElementGroup = 'basic' | 'media' | 'marketing' | 'service' | 'form'
 
-export const ELEMENT_META: Record<ElementType, { label: string; group: ElementGroup; clickable: boolean }> = {
+export const ELEMENT_META: Record<
+  ElementType,
+  { label: string; group: ElementGroup; clickable: boolean }
+> = {
   text: { label: '文本', group: 'basic', clickable: true },
   image: { label: '图片', group: 'basic', clickable: true },
   video: { label: '视频', group: 'basic', clickable: false },
@@ -330,8 +333,16 @@ export const elementPropsSchemas = {
     privacyText: z.string().default('同意用户隐私协议'),
     submitText: z.string().default('提交'),
   }),
-  input: z.object({ label: z.string(), placeholder: z.string(), inputStyle: z.enum(['line', 'box']).default('box') }),
-  textarea: z.object({ label: z.string(), placeholder: z.string(), inputStyle: z.enum(['line', 'box']).default('box') }),
+  input: z.object({
+    label: z.string(),
+    placeholder: z.string(),
+    inputStyle: z.enum(['line', 'box']).default('box'),
+  }),
+  textarea: z.object({
+    label: z.string(),
+    placeholder: z.string(),
+    inputStyle: z.enum(['line', 'box']).default('box'),
+  }),
   radioGroup: z.object({ label: z.string(), options: z.array(z.string()) }),
   checkboxGroup: z.object({ label: z.string(), options: z.array(z.string()) }),
   picker: z.object({ label: z.string(), placeholder: z.string(), options: z.array(z.string()) }),
@@ -342,7 +353,9 @@ export const elementPropsSchemas = {
     activeIndex: z.number().int().default(0),
   }),
   imgSelect: z.object({
-    options: z.array(z.object({ title: z.string(), src: z.string(), event: actionEventSchema.optional() })),
+    options: z.array(
+      z.object({ title: z.string(), src: z.string(), event: actionEventSchema.optional() }),
+    ),
     showTitle: z.boolean().default(true),
     activeIndex: z.number().int().default(0),
   }),
@@ -396,6 +409,9 @@ export const templateElementSchema = elementBaseSchema
   })
 
 /** 类型守卫 */
-export function isElementOf<T extends ElementType>(el: AnyElement | TemplateElement, type: T): el is TemplateElement<T> {
+export function isElementOf<T extends ElementType>(
+  el: AnyElement | TemplateElement,
+  type: T,
+): el is TemplateElement<T> {
   return el.type === type
 }

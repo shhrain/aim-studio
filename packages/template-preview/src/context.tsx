@@ -49,7 +49,13 @@ export interface PreviewContextValue {
 
 const Ctx = createContext<PreviewContextValue | null>(null)
 
-export function PreviewProvider({ value, children }: { value: PreviewContextValue; children: ReactNode }) {
+export function PreviewProvider({
+  value,
+  children,
+}: {
+  value: PreviewContextValue
+  children: ReactNode
+}) {
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
 

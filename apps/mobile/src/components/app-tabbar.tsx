@@ -14,7 +14,9 @@ const ITEMS = [
 export function AppTabBar() {
   const pathname = usePathname()
   const router = useRouter()
-  const active = [...ITEMS].sort((a, b) => b.key.length - a.key.length).find((i) => pathname.startsWith(i.key))?.key ?? ''
+  const active =
+    [...ITEMS].sort((a, b) => b.key.length - a.key.length).find((i) => pathname.startsWith(i.key))
+      ?.key ?? ''
   return (
     <>
       <TabBarSpacer />

@@ -36,7 +36,12 @@ describe('@aim/ui', () => {
   })
 
   it('Steps 标记当前步骤', () => {
-    render(<Steps current={1} items={[{ title: '选择模板' }, { title: '编辑模板' }, { title: '提交审核' }]} />)
+    render(
+      <Steps
+        current={1}
+        items={[{ title: '选择模板' }, { title: '编辑模板' }, { title: '提交审核' }]}
+      />,
+    )
     expect(screen.getByRole('button', { name: /编辑模板/ })).toHaveAttribute('aria-current', 'step')
   })
 })

@@ -33,7 +33,12 @@ export function useFeedback() {
       )}
       {popup && (
         <div className="aim-modal-mask" onClick={() => setPopup(null)}>
-          <div className="aim-modal" role="dialog" aria-label={popup.title} onClick={(e) => e.stopPropagation()}>
+          <div
+            className="aim-modal"
+            role="dialog"
+            aria-label={popup.title}
+            onClick={(e) => e.stopPropagation()}
+          >
             <h4>{popup.title}</h4>
             <p>{popup.content}</p>
             <button type="button" onClick={() => setPopup(null)}>
@@ -43,7 +48,12 @@ export function useFeedback() {
         </div>
       )}
       {image && (
-        <div className="aim-lightbox" onClick={() => setImage(null)} role="dialog" aria-label="查看大图">
+        <div
+          className="aim-lightbox"
+          onClick={() => setImage(null)}
+          role="dialog"
+          aria-label="查看大图"
+        >
           <img src={image} alt="" />
         </div>
       )}
@@ -52,7 +62,10 @@ export function useFeedback() {
   return { api, layer }
 }
 
-export class PreviewErrorBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, { error: Error | null }> {
+export class PreviewErrorBoundary extends Component<
+  { children: ReactNode; fallback?: ReactNode },
+  { error: Error | null }
+> {
   override state = { error: null as Error | null }
   static getDerivedStateFromError(error: Error) {
     return { error }
@@ -73,7 +86,15 @@ export class PreviewErrorBoundary extends Component<{ children: ReactNode; fallb
   }
 }
 
-export function Notice({ icon = 'i', title, description }: { icon?: string; title: ReactNode; description?: ReactNode }) {
+export function Notice({
+  icon = 'i',
+  title,
+  description,
+}: {
+  icon?: string
+  title: ReactNode
+  description?: ReactNode
+}) {
   return (
     <div className="aim-notice">
       <span className="aim-notice-icon">{icon}</span>

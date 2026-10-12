@@ -1,5 +1,13 @@
 import { LAYOUTS, LAYOUT_GROUPS, groupLayouts } from '@aim/template-schema'
-import { actionsTable, elementsTable, layoutDetail, layoutsSummaryTable, paramTypesTable, vendorMatrix, vendorsTable } from './tables'
+import {
+  actionsTable,
+  elementsTable,
+  layoutDetail,
+  layoutsSummaryTable,
+  paramTypesTable,
+  vendorMatrix,
+  vendorsTable,
+} from './tables'
 
 const HEADER = '{/* 本文件由 pnpm ai:generate 根据 @aim/template-schema 自动生成，请勿手改 */}'
 
@@ -26,14 +34,22 @@ export function buildSpecDocs(): Record<string, string> {
       '',
       layoutsSummaryTable(),
       '',
-      ...groups.flatMap((g) => [`## ${LAYOUT_GROUPS[g.key].label}`, '', ...g.layouts.flatMap((l) => [layoutDetail(l), `<LayoutPreview layout="${l.id}" />`, ''])]),
+      ...groups.flatMap((g) => [
+        `## ${LAYOUT_GROUPS[g.key].label}`,
+        '',
+        ...g.layouts.flatMap((l) => [layoutDetail(l), `<LayoutPreview layout="${l.id}" />`, '']),
+      ]),
     ].join('\n'),
     'LayoutTemplate',
   )
   const elements = page(
     '元素',
     '32 种画布元素及其 props 字段。',
-    ['元素数据结构见 [模板文档](/docs/spec/document)。props 字段的类型与默认值以 `elementPropsSchemas` 为准。', '', elementsTable()].join('\n'),
+    [
+      '元素数据结构见 [模板文档](/docs/spec/document)。props 字段的类型与默认值以 `elementPropsSchemas` 为准。',
+      '',
+      elementsTable(),
+    ].join('\n'),
     'Shapes',
   )
   const actions = page(
@@ -51,7 +67,12 @@ export function buildSpecDocs(): Record<string, string> {
     ].join('\n'),
     'MousePointerClick',
   )
-  const vendors = page('厂商', '8 个手机厂商与各版式的支持矩阵。', ['## 厂商', '', vendorsTable(), '', '## 支持矩阵', '', vendorMatrix()].join('\n'), 'Smartphone')
+  const vendors = page(
+    '厂商',
+    '8 个手机厂商与各版式的支持矩阵。',
+    ['## 厂商', '', vendorsTable(), '', '## 支持矩阵', '', vendorMatrix()].join('\n'),
+    'Smartphone',
+  )
   const params = page(
     '参数',
     '动态参数语法、类型与校验。',
@@ -75,6 +96,20 @@ export function buildSpecDocs(): Record<string, string> {
     ].join('\n'),
     'Braces',
   )
-  const meta = JSON.stringify({ title: '模板规范', pages: ['document', 'layouts', 'elements', 'actions', 'vendors', 'params'] }, null, 2)
-  return { 'layouts.mdx': layouts, 'elements.mdx': elements, 'actions.mdx': actions, 'vendors.mdx': vendors, 'params.mdx': params, 'meta.json': `${meta}\n` }
+  const meta = JSON.stringify(
+    {
+      title: '模板规范',
+      pages: ['document', 'layouts', 'elements', 'actions', 'vendors', 'params'],
+    },
+    null,
+    2,
+  )
+  return {
+    'layouts.mdx': layouts,
+    'elements.mdx': elements,
+    'actions.mdx': actions,
+    'vendors.mdx': vendors,
+    'params.mdx': params,
+    'meta.json': `${meta}\n`,
+  }
 }

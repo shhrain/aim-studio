@@ -36,7 +36,10 @@ export const builtinPlugin = definePlugin({
       description: '新文档 → 旧编辑器 pages',
       convert: toLegacyPages,
     }),
-    defineConverter<{ pages: string | unknown[]; cardId?: string; name?: string }, TemplateDocument>({
+    defineConverter<
+      { pages: string | unknown[]; cardId?: string; name?: string },
+      TemplateDocument
+    >({
       from: 'legacy',
       to: 'document',
       description: '旧编辑器 pages → 新文档',

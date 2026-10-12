@@ -6,8 +6,22 @@ import type { ParamDisplay } from './context'
 const LEGACY_INPUT = /<input[^>]*?\bvalue=\\?["'](?:\$)?\{#([^#{}]+?)#\}\\?["'][^>]*>/g
 /** 协议变量 ${x} */
 const TPL_VAR = /\$\{([^}]{1,30})\}/g
-const ALLOWED = new Set(['b', 'strong', 'i', 'em', 'u', 's', 'br', 'p', 'div', 'span', 'sup', 'sub'])
-const SAFE_STYLE = /^(color|font-weight|font-style|text-decoration|background-color)\s*:\s*[#\w\s(),.%-]+$/i
+const ALLOWED = new Set([
+  'b',
+  'strong',
+  'i',
+  'em',
+  'u',
+  's',
+  'br',
+  'p',
+  'div',
+  'span',
+  'sup',
+  'sub',
+])
+const SAFE_STYLE =
+  /^(color|font-weight|font-style|text-decoration|background-color)\s*:\s*[#\w\s(),.%-]+$/i
 
 export interface ParamResolver {
   display: ParamDisplay
@@ -17,7 +31,8 @@ export interface ParamResolver {
 
 function resolveValue(name: string, r: ParamResolver): string | null {
   if (r.display === 'token') return null
-  if (r.display === 'value' && r.values[name] != null && r.values[name] !== '') return r.values[name]!
+  if (r.display === 'value' && r.values[name] != null && r.values[name] !== '')
+    return r.values[name]!
   return r.examples[name] ?? r.values[name] ?? null
 }
 
@@ -41,17 +56,23 @@ export function sanitizeRich(html: string): string {
   // 先移除危险容器及其内容
   while (prev !== out) {
     prev = out
-    out = out.replace(/<(script|style|iframe|object|embed|template|noscript)\b[\s\S]*?<\/\1\s*>/gi, '')
+    out = out.replace(
+      /<(script|style|iframe|object|embed|template|noscript)\b[\s\S]*?<\/\1\s*>/gi,
+      '',
+    )
   }
   prev = ''
   while (prev !== out) {
     prev = out
-    out = out.replace(/<\s*(\/?)\s*([a-zA-Z][\w-]*)([^<>]*)>/g, (_, close: string, tag: string, attrs: string) => {
-      const name = tag.toLowerCase()
-      if (!ALLOWED.has(name)) return ''
-      if (close) return `</${name}>`
-      return name === 'br' ? '<br>' : `<${name}${cleanStyle(attrs)}>`
-    })
+    out = out.replace(
+      /<\s*(\/?)\s*([a-zA-Z][\w-]*)([^<>]*)>/g,
+      (_, close: string, tag: string, attrs: string) => {
+        const name = tag.toLowerCase()
+        if (!ALLOWED.has(name)) return ''
+        if (close) return `</${name}>`
+        return name === 'br' ? '<br>' : `<${name}${cleanStyle(attrs)}>`
+      },
+    )
   }
   // 残留的未闭合尖括号转义
   return out.replace(/<(?!\/?(?:b|strong|i|em|u|s|br|p|div|span|sup|sub)\b)/gi, '&lt;')
@@ -66,7 +87,11 @@ export function renderTextHtml(text: string | undefined, r: ParamResolver): stri
     .replace(TPL_VAR, (_, n: string) => `{#${n}#}`)
     .replace(PARAM_TOKEN_REG, (_, name: string) => {
       const v = resolveValue(name, r)
-      slots.push(v == null ? `<span class="aim-param" data-param="${escapeHtml(name)}">${escapeHtml(name)}</span>` : escapeHtml(v))
+      slots.push(
+        v == null
+          ? `<span class="aim-param" data-param="${escapeHtml(name)}">${escapeHtml(name)}</span>`
+          : escapeHtml(v),
+      )
       return `\u0000${slots.length - 1}\u0000`
     })
   const safe = sanitizeRich(normalized.replace(/\r?\n/g, '<br>'))

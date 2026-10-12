@@ -1,0 +1,5 @@
+{
+  "extends": "@aim/tsconfig/base.json",
+  "compilerOptions": { "noEmit": true, "types": ["node"] },
+  "include": ["**/*.ts"]
+}

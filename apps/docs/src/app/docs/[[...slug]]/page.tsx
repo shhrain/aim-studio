@@ -1,4 +1,11 @@
-import { DocsBody, DocsDescription, DocsPage, DocsTitle, MarkdownCopyButton, ViewOptionsPopover } from 'fumadocs-ui/layouts/docs/page'
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+  MarkdownCopyButton,
+  ViewOptionsPopover,
+} from 'fumadocs-ui/layouts/docs/page'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'

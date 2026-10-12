@@ -15,18 +15,26 @@ export interface BottomSheetProps {
 }
 
 /** 底部抽屉（支持手势下拉关闭），用于移动端表单、选择器、发送流程 */
-export function BottomSheet({ open, onOpenChange, title, description, footer, className, children }: BottomSheetProps) {
+export function BottomSheet({
+  open,
+  onOpenChange,
+  title,
+  description,
+  footer,
+  className,
+  children,
+}: BottomSheetProps) {
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <Drawer.Content
           className={cn(
-            'fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[92dvh] max-w-screen-sm flex-col rounded-t-2xl bg-card outline-none',
+            'bg-card fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[92dvh] max-w-screen-sm flex-col rounded-t-2xl outline-none',
             className,
           )}
         >
-          <div className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-muted-foreground/25" />
+          <div className="bg-muted-foreground/25 mx-auto mt-2 h-1 w-10 shrink-0 rounded-full" />
           {(title || description) && (
             <div className="px-4 pt-3 pb-2 text-center">
               {title ? (
@@ -35,12 +43,18 @@ export function BottomSheet({ open, onOpenChange, title, description, footer, cl
                 <Drawer.Title className="sr-only">面板</Drawer.Title>
               )}
               {description && (
-                <Drawer.Description className="mt-1 text-xs text-muted-foreground">{description}</Drawer.Description>
+                <Drawer.Description className="text-muted-foreground mt-1 text-xs">
+                  {description}
+                </Drawer.Description>
               )}
             </div>
           )}
           <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">{children}</div>
-          {footer && <div className="border-t px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">{footer}</div>}
+          {footer && (
+            <div className="border-t px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
+              {footer}
+            </div>
+          )}
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>
@@ -75,11 +89,15 @@ export function ActionSheet({
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-50 bg-black/40" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-screen-sm overflow-hidden rounded-t-2xl bg-muted outline-none">
-          <Drawer.Title className={title ? 'bg-card px-4 py-3 text-center text-xs text-muted-foreground' : 'sr-only'}>
+        <Drawer.Content className="bg-muted fixed inset-x-0 bottom-0 z-50 mx-auto max-w-screen-sm overflow-hidden rounded-t-2xl outline-none">
+          <Drawer.Title
+            className={
+              title ? 'bg-card text-muted-foreground px-4 py-3 text-center text-xs' : 'sr-only'
+            }
+          >
             {title ?? '操作'}
           </Drawer.Title>
-          <div className="divide-y bg-card">
+          <div className="bg-card divide-y">
             {actions.map((a) => (
               <button
                 key={a.key}
@@ -90,19 +108,21 @@ export function ActionSheet({
                   onOpenChange(false)
                 }}
                 className={cn(
-                  'flex w-full flex-col items-center justify-center py-3.5 text-base active:bg-muted disabled:opacity-40',
+                  'active:bg-muted flex w-full flex-col items-center justify-center py-3.5 text-base disabled:opacity-40',
                   a.destructive && 'text-destructive',
                 )}
               >
                 {a.label}
-                {a.description && <span className="mt-0.5 text-xs text-muted-foreground">{a.description}</span>}
+                {a.description && (
+                  <span className="text-muted-foreground mt-0.5 text-xs">{a.description}</span>
+                )}
               </button>
             ))}
           </div>
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="mt-2 w-full bg-card py-3.5 pb-[calc(14px+env(safe-area-inset-bottom))] text-base active:bg-muted"
+            className="bg-card active:bg-muted mt-2 w-full py-3.5 pb-[calc(14px+env(safe-area-inset-bottom))] text-base"
           >
             {cancelText}
           </button>

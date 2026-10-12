@@ -42,6 +42,8 @@
     "typescript": "catalog:"
   },
   "msw": {
-    "workerDirectory": ["public"]
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

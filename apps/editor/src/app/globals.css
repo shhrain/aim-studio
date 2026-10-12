@@ -1,7 +1,7 @@
 @import '@aim/ui/globals.css';
 @import '@aim/template-preview/styles.css';
 
-@source "../";
+@source '../';
 
 html,
 body {
@@ -14,6 +14,9 @@ body {
 
 .canvas-grid {
   background-color: var(--color-canvas);
-  background-image: radial-gradient(color-mix(in oklch, var(--color-foreground) 9%, transparent) 1px, transparent 1px);
+  background-image: radial-gradient(
+    color-mix(in oklch, var(--color-foreground) 9%, transparent) 1px,
+    transparent 1px
+  );
   background-size: 18px 18px;
 }

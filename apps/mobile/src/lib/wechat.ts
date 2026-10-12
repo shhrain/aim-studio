@@ -9,7 +9,8 @@ interface Wx {
   updateTimelineShareData: (d: Record<string, unknown>) => void
 }
 
-export const isWechat = () => typeof navigator !== 'undefined' && /MicroMessenger/i.test(navigator.userAgent)
+export const isWechat = () =>
+  typeof navigator !== 'undefined' && /MicroMessenger/i.test(navigator.userAgent)
 
 /**
  * 微信分享适配器（可选）：仅在微信内置浏览器中加载 JS-SDK 并配置分享卡片。
@@ -29,7 +30,11 @@ export async function setupWechatShare(share: { title: string; desc: string; img
       })
     }
     const sig = await api.wechatSignature(location.href.split('#')[0]!)
-    w.wx!.config({ debug: false, ...sig, jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] })
+    w.wx!.config({
+      debug: false,
+      ...sig,
+      jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'],
+    })
     w.wx!.ready(() => {
       const data = { ...share, link: location.href }
       w.wx!.updateAppMessageShareData(data)

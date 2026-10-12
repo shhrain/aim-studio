@@ -38,7 +38,7 @@
   },
   "pages": [
     {
-      "id": "page_7563fc9oed",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 310,
@@ -47,7 +47,7 @@
       },
       "elements": [
         {
-          "id": "el_zzgxdw1hdq",
+          "id": "el_01",
           "type": "image",
           "x": 0,
           "y": 0,
@@ -72,7 +72,7 @@
           "slot": "media"
         },
         {
-          "id": "el_ndy0jfhjnj",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 132,
@@ -95,7 +95,7 @@
           "slot": "title"
         },
         {
-          "id": "el_pwdlc9oxkt",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 163,
@@ -117,7 +117,7 @@
           "slot": "description"
         },
         {
-          "id": "el_8pho8e29sq",
+          "id": "el_04",
           "type": "text",
           "x": 14,
           "y": 194,
@@ -139,7 +139,7 @@
           "slot": "kv.0.label"
         },
         {
-          "id": "el_gvh12yuxtu",
+          "id": "el_05",
           "type": "text",
           "x": 106,
           "y": 194,
@@ -161,7 +161,7 @@
           "slot": "kv.0.value"
         },
         {
-          "id": "el_an0dfux4e1",
+          "id": "el_06",
           "type": "text",
           "x": 14,
           "y": 221,
@@ -183,7 +183,7 @@
           "slot": "kv.1.label"
         },
         {
-          "id": "el_m8oceukql3",
+          "id": "el_07",
           "type": "text",
           "x": 106,
           "y": 221,
@@ -205,7 +205,7 @@
           "slot": "kv.1.value"
         },
         {
-          "id": "el_w8iqn4b0wp",
+          "id": "el_08",
           "type": "button",
           "x": 14,
           "y": 256,
@@ -230,7 +230,7 @@
           }
         },
         {
-          "id": "el_bxbq4vckpd",
+          "id": "el_09",
           "type": "button",
           "x": 177,
           "y": 256,

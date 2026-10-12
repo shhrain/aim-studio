@@ -12,7 +12,15 @@ export interface InputProps extends Omit<React.ComponentProps<'input'>, 'prefix'
 const inputBase =
   'flex h-9 w-full min-w-0 rounded-md border border-input bg-card px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 file:border-0 file:bg-transparent file:text-sm file:font-medium'
 
-export function Input({ className, showCount, prefix, suffix, maxLength, value, ...props }: InputProps) {
+export function Input({
+  className,
+  showCount,
+  prefix,
+  suffix,
+  maxLength,
+  value,
+  ...props
+}: InputProps) {
   const count = typeof value === 'string' ? [...value].length : 0
   if (!showCount && !prefix && !suffix) {
     return (
@@ -30,21 +38,21 @@ export function Input({ className, showCount, prefix, suffix, maxLength, value, 
       data-slot="input-group"
       className={cn(
         inputBase,
-        'items-center gap-2 px-2.5 focus-within:border-primary focus-within:ring-[3px] focus-within:ring-ring',
+        'focus-within:border-primary focus-within:ring-ring items-center gap-2 px-2.5 focus-within:ring-[3px]',
         className,
       )}
     >
-      {prefix && <span className="flex shrink-0 text-muted-foreground">{prefix}</span>}
+      {prefix && <span className="text-muted-foreground flex shrink-0">{prefix}</span>}
       <input
         data-slot="input"
-        className="h-full min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+        className="placeholder:text-muted-foreground h-full min-w-0 flex-1 bg-transparent outline-none"
         maxLength={maxLength}
         value={value}
         {...props}
       />
-      {suffix && <span className="flex shrink-0 text-muted-foreground">{suffix}</span>}
+      {suffix && <span className="text-muted-foreground flex shrink-0">{suffix}</span>}
       {showCount && maxLength != null && (
-        <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+        <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
           {count}/{maxLength}
         </span>
       )}

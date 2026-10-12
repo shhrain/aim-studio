@@ -10,12 +10,15 @@ export const DialogTrigger = DialogPrimitive.Trigger
 export const DialogClose = DialogPrimitive.Close
 export const DialogPortal = DialogPrimitive.Portal
 
-export function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+export function DialogOverlay({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'fixed inset-0 z-50 bg-black/45 backdrop-blur-[1px] data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/45 backdrop-blur-[1px]',
         className,
       )}
       {...props}
@@ -49,7 +52,7 @@ export function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-48px)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_minmax(0,1fr)_auto] gap-4 rounded-xl border bg-popover p-6 text-popover-foreground shadow-float duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+          'bg-popover text-popover-foreground shadow-float data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-48px)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_minmax(0,1fr)_auto] gap-4 rounded-xl border p-6 duration-200',
           sizes[size],
           className,
         )}
@@ -58,7 +61,7 @@ export function DialogContent({
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
-            className="absolute top-4 right-4 rounded-sm p-1 text-muted-foreground opacity-80 transition hover:bg-muted hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="text-muted-foreground hover:bg-muted focus-visible:ring-ring absolute top-4 right-4 rounded-sm p-1 opacity-80 transition hover:opacity-100 focus:outline-none focus-visible:ring-2"
             aria-label="关闭"
           >
             <XIcon className="size-4" />
@@ -70,11 +73,23 @@ export function DialogContent({
 }
 
 export function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="dialog-header" className={cn('flex flex-col gap-1.5 pr-8', className)} {...props} />
+  return (
+    <div
+      data-slot="dialog-header"
+      className={cn('flex flex-col gap-1.5 pr-8', className)}
+      {...props}
+    />
+  )
 }
 
 export function DialogBody({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="dialog-body" className={cn('-mx-6 overflow-y-auto px-6', className)} {...props} />
+  return (
+    <div
+      data-slot="dialog-body"
+      className={cn('-mx-6 overflow-y-auto px-6', className)}
+      {...props}
+    />
+  )
 }
 
 export function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
@@ -87,7 +102,10 @@ export function DialogFooter({ className, ...props }: React.ComponentProps<'div'
   )
 }
 
-export function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+export function DialogTitle({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
@@ -104,7 +122,7 @@ export function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn('text-sm text-muted-foreground', className)}
+      className={cn('text-muted-foreground text-sm', className)}
       {...props}
     />
   )

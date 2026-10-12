@@ -23,7 +23,7 @@ export function TabBar({ items, activeKey, onChange, className }: TabBarProps) {
     <nav
       data-slot="tab-bar"
       className={cn(
-        'fixed inset-x-0 bottom-0 z-30 border-t bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur',
+        'bg-card/95 fixed inset-x-0 bottom-0 z-30 border-t pb-[env(safe-area-inset-bottom)] backdrop-blur',
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function TabBar({ items, activeKey, onChange, className }: TabBarProps) {
                 <span className="relative [&_svg]:size-5.5">
                   {item.icon}
                   {item.badge ? (
-                    <span className="absolute -top-1 -right-2 min-w-4 rounded-full bg-destructive px-1 text-[10px] leading-4 text-white">
+                    <span className="bg-destructive absolute -top-1 -right-2 min-w-4 rounded-full px-1 text-[10px] leading-4 text-white">
                       {item.badge === true ? '' : item.badge}
                     </span>
                   ) : null}

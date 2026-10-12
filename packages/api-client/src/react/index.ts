@@ -1,6 +1,12 @@
 'use client'
 
-import { QueryClient, keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  QueryClient,
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import type { TemplateDocument } from '@aim/template-schema'
 import type { SendRecordQuery, TemplateListQuery, TemplateQuery } from '../contracts'
 import type { EditorApi, ExperienceApi } from '../endpoints'
@@ -13,7 +19,9 @@ export function createQueryClient() {
       queries: {
         staleTime: 30_000,
         refetchOnWindowFocus: false,
-        retry: (count, error) => !(error instanceof ApiError && (error.isUnauthorized || error.subCode < 5000)) && count < 1,
+        retry: (count, error) =>
+          !(error instanceof ApiError && (error.isUnauthorized || error.subCode < 5000)) &&
+          count < 1,
       },
       mutations: { retry: false },
     },
@@ -27,7 +35,8 @@ export const queryKeys = {
     detail: (id: string) => ['experience', 'detail', id] as const,
     records: (q: Omit<SendRecordQuery, 'pageNum'>) => ['experience', 'records', q] as const,
     contacts: (whois: string) => ['experience', 'contacts', whois] as const,
-    statistics: (whois: string, s?: string, e?: string) => ['experience', 'statistics', whois, s, e] as const,
+    statistics: (whois: string, s?: string, e?: string) =>
+      ['experience', 'statistics', whois, s, e] as const,
   },
   editor: {
     templates: (q: TemplateQuery) => ['editor', 'templates', q] as const,
@@ -42,11 +51,22 @@ export const queryKeys = {
 export function createEditorHooks(api: EditorApi) {
   return {
     useTemplates: (q: TemplateQuery) =>
-      useQuery({ queryKey: queryKeys.editor.templates(q), queryFn: () => api.templates(q), placeholderData: keepPreviousData }),
+      useQuery({
+        queryKey: queryKeys.editor.templates(q),
+        queryFn: () => api.templates(q),
+        placeholderData: keepPreviousData,
+      }),
     useTemplate: (id: string | undefined) =>
-      useQuery({ queryKey: queryKeys.editor.template(id ?? ''), queryFn: () => api.template(id!), enabled: Boolean(id) }),
+      useQuery({
+        queryKey: queryKeys.editor.template(id ?? ''),
+        queryFn: () => api.template(id!),
+        enabled: Boolean(id),
+      }),
     useMaterials: (type?: 'image' | 'video' | 'audio', keyword?: string) =>
-      useQuery({ queryKey: queryKeys.editor.materials(type, keyword), queryFn: () => api.materials({ type, keyword }) }),
+      useQuery({
+        queryKey: queryKeys.editor.materials(type, keyword),
+        queryFn: () => api.materials({ type, keyword }),
+      }),
     useSaveTemplate: () => {
       const qc = useQueryClient()
       return useMutation({
@@ -60,15 +80,24 @@ export function createEditorHooks(api: EditorApi) {
     },
     useDeleteTemplate: () => {
       const qc = useQueryClient()
-      return useMutation({ mutationFn: api.deleteTemplate, onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'templates'] }) })
+      return useMutation({
+        mutationFn: api.deleteTemplate,
+        onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'templates'] }),
+      })
     },
     useDuplicateTemplate: () => {
       const qc = useQueryClient()
-      return useMutation({ mutationFn: api.duplicateTemplate, onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'templates'] }) })
+      return useMutation({
+        mutationFn: api.duplicateTemplate,
+        onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'templates'] }),
+      })
     },
     useUploadMaterial: () => {
       const qc = useQueryClient()
-      return useMutation({ mutationFn: api.uploadMaterial, onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'materials'] }) })
+      return useMutation({
+        mutationFn: api.uploadMaterial,
+        onSuccess: () => qc.invalidateQueries({ queryKey: ['editor', 'materials'] }),
+      })
     },
     useDeepPrecheck: (taskId: string | undefined) =>
       useQuery({
@@ -84,18 +113,45 @@ export function createEditorHooks(api: EditorApi) {
 
 export function createExperienceHooks(api: ExperienceApi) {
   return {
-    useFilterOptions: () => useQuery({ queryKey: queryKeys.experience.filters, queryFn: api.filterOptions, staleTime: 5 * 60_000 }),
+    useFilterOptions: () =>
+      useQuery({
+        queryKey: queryKeys.experience.filters,
+        queryFn: api.filterOptions,
+        staleTime: 5 * 60_000,
+      }),
     useTemplateDetail: (tplId: string | undefined) =>
-      useQuery({ queryKey: queryKeys.experience.detail(tplId ?? ''), queryFn: () => api.templateDetail(tplId!), enabled: Boolean(tplId) }),
+      useQuery({
+        queryKey: queryKeys.experience.detail(tplId ?? ''),
+        queryFn: () => api.templateDetail(tplId!),
+        enabled: Boolean(tplId),
+      }),
     useContacts: (whois: string) =>
-      useQuery({ queryKey: queryKeys.experience.contacts(whois), queryFn: () => api.contacts({ whois, pageNum: 1, pageSize: 200 }), enabled: Boolean(whois) }),
+      useQuery({
+        queryKey: queryKeys.experience.contacts(whois),
+        queryFn: () => api.contacts({ whois, pageNum: 1, pageSize: 200 }),
+        enabled: Boolean(whois),
+      }),
     useStatistics: (whois: string, startDate?: string, endDate?: string) =>
-      useQuery({ queryKey: queryKeys.experience.statistics(whois, startDate, endDate), queryFn: () => api.sendStatistics({ whois, startDate, endDate }), enabled: Boolean(whois) }),
+      useQuery({
+        queryKey: queryKeys.experience.statistics(whois, startDate, endDate),
+        queryFn: () => api.sendStatistics({ whois, startDate, endDate }),
+        enabled: Boolean(whois),
+      }),
     useSaveContact: (whois: string) => {
       const qc = useQueryClient()
       return useMutation({
-        mutationFn: ({ id, contactName, mobile }: { id?: string; contactName: string; mobile: string }) =>
-          id ? api.updateContact(id, { whois, contactName, mobile }) : api.createContact({ whois, contactName, mobile }),
+        mutationFn: ({
+          id,
+          contactName,
+          mobile,
+        }: {
+          id?: string
+          contactName: string
+          mobile: string
+        }) =>
+          id
+            ? api.updateContact(id, { whois, contactName, mobile })
+            : api.createContact({ whois, contactName, mobile }),
         onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.experience.contacts(whois) }),
       })
     },

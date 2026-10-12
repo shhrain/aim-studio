@@ -16,14 +16,23 @@ export function LayersPanel() {
   const page = doc.pages[0]!
   const free = page.mode === 'absolute'
   const layout = getLayout(doc.layoutId)
-  const slotLabels = new Map((layout ? expandSlots(layout, doc.settings) : []).map((s) => [s.key, s.label]))
-  const issues = new Set((report?.issues ?? []).filter((i) => i.level === 'error').map((i) => i.elementId))
-  const list = [...page.elements].sort((a, b) => (free ? (b.z ?? 0) - (a.z ?? 0) : a.y - b.y || a.x - b.x))
+  const slotLabels = new Map(
+    (layout ? expandSlots(layout, doc.settings) : []).map((s) => [s.key, s.label]),
+  )
+  const issues = new Set(
+    (report?.issues ?? []).filter((i) => i.level === 'error').map((i) => i.elementId),
+  )
+  const list = [...page.elements].sort((a, b) =>
+    free ? (b.z ?? 0) - (a.z ?? 0) : a.y - b.y || a.x - b.x,
+  )
   if (!list.length) return <Empty size="sm" title="画布为空" description="从「元素」面板添加" />
   return (
     <ul className="space-y-0.5 p-2">
       {list.map((el) => {
-        const text = el.type === 'text' || el.type === 'button' ? truncate(stripTags((el.props as { text: string }).text), 14) : ''
+        const text =
+          el.type === 'text' || el.type === 'button'
+            ? truncate(stripTags((el.props as { text: string }).text), 14)
+            : ''
         return (
           <li key={el.id}>
             <div
@@ -37,30 +46,70 @@ export function LayersPanel() {
                 el.visible === false && 'opacity-50',
               )}
             >
-              <span className={cn('size-1.5 shrink-0 rounded-full', issues.has(el.id) ? 'bg-destructive' : 'bg-transparent')} />
+              <span
+                className={cn(
+                  'size-1.5 shrink-0 rounded-full',
+                  issues.has(el.id) ? 'bg-destructive' : 'bg-transparent',
+                )}
+              />
               <div className="min-w-0 flex-1">
-                <div className="truncate text-[13px]">{(el.slot && slotLabels.get(el.slot)) ?? ELEMENT_META[el.type].label}</div>
-                {text && <div className="truncate text-[11px] text-muted-foreground">{text}</div>}
+                <div className="truncate text-[13px]">
+                  {(el.slot && slotLabels.get(el.slot)) ?? ELEMENT_META[el.type].label}
+                </div>
+                {text && <div className="text-muted-foreground truncate text-[11px]">{text}</div>}
               </div>
-              {el.locked && <LockIcon className="size-3.5 text-muted-foreground" />}
+              {el.locked && <LockIcon className="text-muted-foreground size-3.5" />}
               <div className="hidden items-center group-hover:flex">
                 <Hint content={el.visible === false ? '显示' : '隐藏'}>
-                  <Button size="icon-xs" variant="ghost" aria-label="切换显示" onClick={(e) => (e.stopPropagation(), update((d) => updateElement(d, el.id, { visible: el.visible === false })))}>
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label="切换显示"
+                    onClick={(e) => (
+                      e.stopPropagation(),
+                      update((d) => updateElement(d, el.id, { visible: el.visible === false }))
+                    )}
+                  >
                     {el.visible === false ? <EyeOffIcon /> : <EyeIcon />}
                   </Button>
                 </Hint>
                 {free && (
                   <>
-                    <Button size="icon-xs" variant="ghost" aria-label="上移一层" onClick={(e) => (e.stopPropagation(), update((d) => arrangeElement(d, el.id, 'forward')))}>
+                    <Button
+                      size="icon-xs"
+                      variant="ghost"
+                      aria-label="上移一层"
+                      onClick={(e) => (
+                        e.stopPropagation(),
+                        update((d) => arrangeElement(d, el.id, 'forward'))
+                      )}
+                    >
                       <ArrowUpIcon />
                     </Button>
-                    <Button size="icon-xs" variant="ghost" aria-label="下移一层" onClick={(e) => (e.stopPropagation(), update((d) => arrangeElement(d, el.id, 'backward')))}>
+                    <Button
+                      size="icon-xs"
+                      variant="ghost"
+                      aria-label="下移一层"
+                      onClick={(e) => (
+                        e.stopPropagation(),
+                        update((d) => arrangeElement(d, el.id, 'backward'))
+                      )}
+                    >
                       <ArrowDownIcon />
                     </Button>
                   </>
                 )}
                 {(free || !el.slot) && (
-                  <Button size="icon-xs" variant="ghost" aria-label="删除" onClick={(e) => (e.stopPropagation(), update((d) => removeElement(d, el.id)), select(null))}>
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label="删除"
+                    onClick={(e) => (
+                      e.stopPropagation(),
+                      update((d) => removeElement(d, el.id)),
+                      select(null)
+                    )}
+                  >
                     <Trash2Icon />
                   </Button>
                 )}

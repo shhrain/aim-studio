@@ -6,7 +6,12 @@ import { cn } from '../lib/utils'
 export interface SegmentedProps<T extends string> {
   value: T
   onValueChange: (value: T) => void
-  options: readonly { value: T; label: React.ReactNode; icon?: React.ReactNode; disabled?: boolean }[]
+  options: readonly {
+    value: T
+    label: React.ReactNode
+    icon?: React.ReactNode
+    disabled?: boolean
+  }[]
   size?: 'sm' | 'default'
   block?: boolean
   className?: string
@@ -28,7 +33,7 @@ export function Segmented<T extends string>({
       role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
-        'inline-flex items-center rounded-lg bg-muted p-[3px] text-muted-foreground',
+        'bg-muted text-muted-foreground inline-flex items-center rounded-lg p-[3px]',
         size === 'sm' ? 'h-8' : 'h-9',
         block && 'flex w-full',
         className,
@@ -45,7 +50,7 @@ export function Segmented<T extends string>({
             disabled={o.disabled}
             onClick={() => onValueChange(o.value)}
             className={cn(
-              'inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-md px-3 font-medium whitespace-nowrap transition outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:opacity-50',
+              'focus-visible:ring-ring inline-flex h-full flex-1 items-center justify-center gap-1.5 rounded-md px-3 font-medium whitespace-nowrap transition outline-none focus-visible:ring-[3px] disabled:opacity-50',
               size === 'sm' ? 'text-xs' : 'text-sm',
               active ? 'bg-card text-foreground shadow-sm' : 'hover:text-foreground',
             )}

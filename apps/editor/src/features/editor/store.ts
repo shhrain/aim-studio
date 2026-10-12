@@ -33,7 +33,21 @@ interface EditorState {
   mutateElement: (id: string, recipe: (draft: Draft<AnyElement>) => void) => void
   select: (id: string | null) => void
   setEditing: (id: string | null) => void
-  set: (patch: Partial<Pick<EditorState, 'vendor' | 'paramDisplay' | 'zoom' | 'panel' | 'reviewOpen' | 'previewOpen' | 'paletteOpen' | 'isNew'>>) => void
+  set: (
+    patch: Partial<
+      Pick<
+        EditorState,
+        | 'vendor'
+        | 'paramDisplay'
+        | 'zoom'
+        | 'panel'
+        | 'reviewOpen'
+        | 'previewOpen'
+        | 'paletteOpen'
+        | 'isNew'
+      >
+    >,
+  ) => void
   setSaveState: (state: SaveState, at?: number) => void
 }
 
@@ -90,7 +104,8 @@ export const useEditor = create<EditorState>()(
         const synced = syncParams(next)
         set({ doc: synced, saveState: 'dirty', report: check(synced) })
       },
-      select: (id) => set({ selectedId: id, editingId: get().editingId === id ? get().editingId : null }),
+      select: (id) =>
+        set({ selectedId: id, editingId: get().editingId === id ? get().editingId : null }),
       setEditing: (id) => set({ editingId: id, selectedId: id ?? get().selectedId }),
       set: (patch) => set(patch),
       setSaveState: (saveState, at) => set({ saveState, ...(at ? { lastSavedAt: at } : {}) }),

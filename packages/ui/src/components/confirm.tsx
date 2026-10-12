@@ -34,12 +34,14 @@ export function ConfirmDialog({
     <AlertDialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogPrimitive.Trigger asChild>{trigger}</AlertDialogPrimitive.Trigger>}
       <AlertDialogPrimitive.Portal>
-        <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/45 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
-        <AlertDialogPrimitive.Content className="fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border bg-popover p-6 shadow-float data-[state=open]:animate-in data-[state=open]:zoom-in-95 sm:max-w-md">
+        <AlertDialogPrimitive.Overlay className="data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/45" />
+        <AlertDialogPrimitive.Content className="bg-popover shadow-float data-[state=open]:animate-in data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border p-6 sm:max-w-md">
           <div className="space-y-2">
-            <AlertDialogPrimitive.Title className="text-base font-semibold">{title}</AlertDialogPrimitive.Title>
+            <AlertDialogPrimitive.Title className="text-base font-semibold">
+              {title}
+            </AlertDialogPrimitive.Title>
             {description && (
-              <AlertDialogPrimitive.Description className="text-sm text-muted-foreground">
+              <AlertDialogPrimitive.Description className="text-muted-foreground text-sm">
                 {description}
               </AlertDialogPrimitive.Description>
             )}

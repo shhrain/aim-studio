@@ -1,6 +1,6 @@
 {
   "name": "@aim/utils",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "AIM 通用工具：HTML 净化、日期/时长格式化、存储、压缩编码、校验",
   "type": "module",
   "sideEffects": false,
@@ -9,10 +9,16 @@
   },
   "publishConfig": {
     "exports": {
-      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --sourcemap --clean",
     "lint": "eslint src",

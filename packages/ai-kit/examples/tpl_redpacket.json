@@ -20,7 +20,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_xglguov7j8",
+      "id": "page_01",
       "mode": "absolute",
       "style": {
         "height": 452,
@@ -29,7 +29,7 @@
       },
       "elements": [
         {
-          "id": "el_e8901hanay",
+          "id": "el_01",
           "type": "image",
           "x": 0,
           "y": 0,
@@ -54,7 +54,7 @@
           "slot": "background"
         },
         {
-          "id": "el_4krs9b8cfd",
+          "id": "el_02",
           "type": "image",
           "x": 149,
           "y": 34,
@@ -79,7 +79,7 @@
           "slot": "avatar"
         },
         {
-          "id": "el_xue6s7pudc",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 86,
@@ -102,7 +102,7 @@
           "slot": "name"
         },
         {
-          "id": "el_l8147z12rd",
+          "id": "el_04",
           "type": "text",
           "x": 14,
           "y": 114,
@@ -126,7 +126,7 @@
           "slot": "title"
         },
         {
-          "id": "el_4d5u1gnpoh",
+          "id": "el_05",
           "type": "text",
           "x": 34,
           "y": 154,
@@ -149,7 +149,7 @@
           "slot": "description"
         },
         {
-          "id": "el_yomzpjq003",
+          "id": "el_06",
           "type": "button",
           "x": 71,
           "y": 374,

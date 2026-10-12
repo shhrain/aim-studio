@@ -57,13 +57,17 @@ describe('文档操作', () => {
     let doc = createDocument({ layoutId: 'com.hbm.notification', name: '物流通知' })
     doc = fill(doc, 'title', { text: '您的包裹已发出' })
     doc = applySettings(doc, { pairCount: 4, buttonCount: 1 })
-    expect(findBySlot(doc, 'title')?.type === 'text' && findBySlot(doc, 'title')?.props).toMatchObject({ text: '您的包裹已发出' })
+    expect(
+      findBySlot(doc, 'title')?.type === 'text' && findBySlot(doc, 'title')?.props,
+    ).toMatchObject({ text: '您的包裹已发出' })
     expect(doc.pages[0]!.elements.filter((e) => e.slot?.startsWith('kv.'))).toHaveLength(8)
     expect(doc.pages[0]!.elements.filter((e) => e.type === 'button')).toHaveLength(1)
   })
 
   it('轮播比例切换 cardId 变体', () => {
-    const doc = applySettings(createDocument({ layoutId: 'com.hbm.carouselImageSixteenToNine' }), { ratio: '1:1' })
+    const doc = applySettings(createDocument({ layoutId: 'com.hbm.carouselImageSixteenToNine' }), {
+      ratio: '1:1',
+    })
     expect(doc.cardId).toBe('com.hbm.carouselQuareImage')
   })
 
@@ -106,7 +110,10 @@ describe('预检', () => {
     doc = fill(doc, 'title', { text: '国庆出游季' })
     doc = fill(doc, 'description', { text: '精选线路限时特惠，名额有限。' })
     const btn = findBySlot(doc, 'button.0')!
-    doc = updateElement(doc, btn.id, { props: { text: '立即抢购' }, event: { action: 'OPEN_URL', target: 'https://a.example.com' } })
+    doc = updateElement(doc, btn.id, {
+      props: { text: '立即抢购' },
+      event: { action: 'OPEN_URL', target: 'https://a.example.com' },
+    })
     const media = findBySlot(doc, 'media')!
     doc = updateElement(doc, media.id, { event: undefined })
     const report = precheck(doc)
@@ -115,10 +122,16 @@ describe('预检', () => {
   })
 
   it('字数超限、非 https、厂商不支持', () => {
-    let doc = createDocument({ layoutId: 'com.hbm.shortVideoImage.v2', name: '短剧', vendors: ['huawei', 'vivo'] })
+    let doc = createDocument({
+      layoutId: 'com.hbm.shortVideoImage.v2',
+      name: '短剧',
+      vendors: ['huawei', 'vivo'],
+    })
     doc = fill(doc, 'title', { text: '这是一个非常非常非常非常非常长的短剧标题' })
     const btn = findBySlot(doc, 'button.0')!
-    doc = updateElement(doc, btn.id, { event: { action: 'OPEN_URL', target: 'http://insecure.example.com' } })
+    doc = updateElement(doc, btn.id, {
+      event: { action: 'OPEN_URL', target: 'http://insecure.example.com' },
+    })
     const codes = precheck(doc).errors.map((i) => i.code)
     expect(codes).toContain('slot.maxLength')
     expect(codes).toContain('event.https')
@@ -158,7 +171,10 @@ describe('转换与适配', () => {
 
   it('分享链接编码 / 过期', async () => {
     const doc = createDocument({ layoutId: 'com.hbm.imageandtext', name: '分享' })
-    const url = await createShareUrl(doc, 'https://m.example.com/preview/share', { vendor: 'vivo', now: 1000 })
+    const url = await createShareUrl(doc, 'https://m.example.com/preview/share', {
+      vendor: 'vivo',
+      now: 1000,
+    })
     const hash = url.slice(url.indexOf('#'))
     const ok = await parseShareHash(hash, 2000)
     expect(ok.ok && ok.payload.doc.name).toBe('分享')

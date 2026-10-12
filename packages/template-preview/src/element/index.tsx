@@ -4,7 +4,18 @@ import type { TemplateDocument } from '@aim/template-schema'
 import { createRoot, type Root } from 'react-dom/client'
 import { TemplatePreview, type TemplatePreviewProps } from '../TemplatePreview'
 
-const ATTRS = ['vendor', 'mode', 'protocol', 'width', 'param-display', 'interactive', 'theme', 'chatbot-name', 'src', 'stylesheet'] as const
+const ATTRS = [
+  'vendor',
+  'mode',
+  'protocol',
+  'width',
+  'param-display',
+  'interactive',
+  'theme',
+  'chatbot-name',
+  'src',
+  'stylesheet',
+] as const
 
 /**
  * Web Component：<aim-preview>
@@ -94,7 +105,10 @@ export function defineAimPreviewElement(tagName = 'aim-preview') {
         interactive: (attr('interactive') as TemplatePreviewProps['interactive']) ?? 'native',
         theme: attr('theme') as TemplatePreviewProps['theme'],
         chatbotName: attr('chatbot-name'),
-        onAction: (e) => this.dispatchEvent(new CustomEvent('aim-action', { detail: e, bubbles: true, composed: true })),
+        onAction: (e) =>
+          this.dispatchEvent(
+            new CustomEvent('aim-action', { detail: e, bubbles: true, composed: true }),
+          ),
       }
       this.#root.render(<TemplatePreview {...props} />)
     }

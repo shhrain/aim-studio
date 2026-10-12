@@ -17,7 +17,8 @@ export function EditorPage({ id, initialLayout }: { id: string; initialLayout?: 
   const query = editorHooks.useTemplate(isNew ? undefined : id)
 
   useEffect(() => {
-    if (!isNew && query.data && loaded !== query.data.id) useEditor.getState().load(query.data.document)
+    if (!isNew && query.data && loaded !== query.data.id)
+      useEditor.getState().load(query.data.document)
   }, [isNew, query.data, loaded])
 
   useEffect(() => {

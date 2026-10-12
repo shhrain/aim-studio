@@ -2,13 +2,40 @@
 
 import { addElement } from '@aim/template-core'
 import { ELEMENT_META, ELEMENT_TYPES, VENDORS } from '@aim/template-schema'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, Dialog, DialogContent, DialogTitle, Kbd } from '@aim/ui'
-import { BookOpenIcon, EyeIcon, LayoutGridIcon, PlusIcon, Redo2Icon, SaveIcon, SendIcon, SmartphoneIcon, Undo2Icon } from 'lucide-react'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Kbd,
+} from '@aim/ui'
+import {
+  BookOpenIcon,
+  EyeIcon,
+  LayoutGridIcon,
+  PlusIcon,
+  Redo2Icon,
+  SaveIcon,
+  SendIcon,
+  SmartphoneIcon,
+  Undo2Icon,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { env } from '@/lib/api'
 import { redo, undo, useEditor } from '../store'
 
-export function CommandPalette({ saveNow, onSwitchLayout }: { saveNow: () => Promise<boolean>; onSwitchLayout: () => void }) {
+export function CommandPalette({
+  saveNow,
+  onSwitchLayout,
+}: {
+  saveNow: () => Promise<boolean>
+  onSwitchLayout: () => void
+}) {
   const open = useEditor((s) => s.paletteOpen)
   const doc = useEditor((s) => s.doc)
   const set = useEditor((s) => s.set)
@@ -76,7 +103,11 @@ export function CommandPalette({ saveNow, onSwitchLayout }: { saveNow: () => Pro
             </CommandGroup>
             <CommandGroup heading="切换预览厂商">
               {(doc?.vendors ?? []).map((v) => (
-                <CommandItem key={v} value={`厂商 ${VENDORS[v].name} ${v}`} onSelect={run(() => set({ vendor: v }))}>
+                <CommandItem
+                  key={v}
+                  value={`厂商 ${VENDORS[v].name} ${v}`}
+                  onSelect={run(() => set({ vendor: v }))}
+                >
                   <SmartphoneIcon />
                   {VENDORS[v].name}
                 </CommandItem>

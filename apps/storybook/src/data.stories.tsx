@@ -20,8 +20,8 @@ export const TemplateList: StoryObj = {
     return (
       <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
         {list.map((t) => (
-          <div key={t.tplId} className="overflow-hidden rounded-xl border bg-card">
-            <div className="max-h-72 overflow-hidden bg-muted p-2">
+          <div key={t.tplId} className="bg-card overflow-hidden rounded-xl border">
+            <div className="bg-muted max-h-72 overflow-hidden p-2">
               <TemplateThumbnail document={t.document} paramDisplay="example" />
             </div>
             <div className="space-y-1 p-3">

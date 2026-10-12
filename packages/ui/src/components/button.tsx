@@ -4,14 +4,15 @@ import * as React from 'react'
 import { cn } from '../lib/utils'
 
 export const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-destructive/30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "focus-visible:ring-ring aria-invalid:ring-destructive/30 inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 active:bg-primary/95',
-        destructive: 'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
+        default:
+          'bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 shadow-xs',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-xs',
         outline:
-          'border bg-card shadow-xs hover:border-primary/40 hover:bg-accent hover:text-accent-foreground',
+          'bg-card hover:border-primary/40 hover:bg-accent hover:text-accent-foreground border shadow-xs',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
@@ -34,8 +35,7 @@ export const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends React.ComponentProps<'button'>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
   /** 以子元素作为渲染节点（如 Next.js Link） */
   asChild?: boolean
   /** 加载中：禁用并显示转圈 */

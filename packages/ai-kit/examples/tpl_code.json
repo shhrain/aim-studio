@@ -64,7 +64,7 @@
   },
   "pages": [
     {
-      "id": "page_v4l10qefzs",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 364,
@@ -73,7 +73,7 @@
       },
       "elements": [
         {
-          "id": "el_wepf8dgtjy",
+          "id": "el_01",
           "type": "text",
           "x": 14,
           "y": 14,
@@ -96,7 +96,7 @@
           "slot": "title"
         },
         {
-          "id": "el_10rij7mh71",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 45,
@@ -118,7 +118,7 @@
           "slot": "description"
         },
         {
-          "id": "el_uxezsq7doi",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 76,
@@ -141,7 +141,7 @@
           "slot": "highlight"
         },
         {
-          "id": "el_py6qxgrwa6",
+          "id": "el_04",
           "type": "text",
           "x": 170,
           "y": 86,
@@ -163,7 +163,7 @@
           "slot": "highlightUnit"
         },
         {
-          "id": "el_o7v2bcgn79",
+          "id": "el_05",
           "type": "text",
           "x": 14,
           "y": 124,
@@ -185,7 +185,7 @@
           "slot": "kv.0.label"
         },
         {
-          "id": "el_hvxq6kmn6d",
+          "id": "el_06",
           "type": "text",
           "x": 106,
           "y": 124,
@@ -207,7 +207,7 @@
           "slot": "kv.0.value"
         },
         {
-          "id": "el_w3cctnlh11",
+          "id": "el_07",
           "type": "text",
           "x": 14,
           "y": 151,
@@ -229,7 +229,7 @@
           "slot": "kv.1.label"
         },
         {
-          "id": "el_ibcpaum3xw",
+          "id": "el_08",
           "type": "text",
           "x": 106,
           "y": 151,
@@ -251,7 +251,7 @@
           "slot": "kv.1.value"
         },
         {
-          "id": "el_m71d5ce7xi",
+          "id": "el_09",
           "type": "button",
           "x": 14,
           "y": 186,
@@ -276,7 +276,7 @@
           }
         },
         {
-          "id": "el_gaiphbel46",
+          "id": "el_10",
           "type": "button",
           "x": 177,
           "y": 186,
@@ -302,7 +302,7 @@
           }
         },
         {
-          "id": "el_ily3n1tq0z",
+          "id": "el_11",
           "type": "image",
           "x": 14,
           "y": 240,

@@ -16,7 +16,9 @@ export const http = createHttpClient({
   onUnauthorized: () => {
     clearAuth()
     if (typeof window !== 'undefined' && !location.pathname.startsWith('/auth-required')) {
-      location.replace(`/auth-required?reason=expired&redirect=${encodeURIComponent(location.pathname + location.search)}`)
+      location.replace(
+        `/auth-required?reason=expired&redirect=${encodeURIComponent(location.pathname + location.search)}`,
+      )
     }
   },
 })

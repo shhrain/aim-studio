@@ -2,7 +2,12 @@
 
 import type { TemplateSummary } from '@aim/api-client'
 import { MultiVendorPreview, TemplateThumbnail } from '@aim/template-preview'
-import { TEMPLATE_CATEGORY_LABEL, TEMPLATE_USAGE_LABEL, getLayout, type TemplateStatus } from '@aim/template-schema'
+import {
+  TEMPLATE_CATEGORY_LABEL,
+  TEMPLATE_USAGE_LABEL,
+  getLayout,
+  type TemplateStatus,
+} from '@aim/template-schema'
 import {
   Badge,
   Button,
@@ -28,7 +33,15 @@ import {
   toast,
 } from '@aim/ui'
 import { formatRelative } from '@aim/utils'
-import { CopyIcon, EyeIcon, MoreHorizontalIcon, PencilIcon, PlusIcon, SearchIcon, Trash2Icon } from 'lucide-react'
+import {
+  CopyIcon,
+  EyeIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  PlusIcon,
+  SearchIcon,
+  Trash2Icon,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDeferredValue, useState } from 'react'
@@ -44,7 +57,12 @@ export function TemplatesPage() {
   const [category, setCategory] = useState<CategoryFilter>('all')
   const [keyword, setKeyword] = useState('')
   const deferred = useDeferredValue(keyword)
-  const { data, isLoading } = editorHooks.useTemplates({ status, category, keyword: deferred, size: 60 })
+  const { data, isLoading } = editorHooks.useTemplates({
+    status,
+    category,
+    keyword: deferred,
+    size: 60,
+  })
   const list = data?.data ?? []
   const [previewing, setPreviewing] = useState<TemplateSummary | null>(null)
 
@@ -101,7 +119,11 @@ export function TemplatesPage() {
             </div>
           ) : list.length === 0 ? (
             <Empty
-              title={keyword || status !== 'all' || category !== 'all' ? '没有符合条件的模板' : '还没有模板'}
+              title={
+                keyword || status !== 'all' || category !== 'all'
+                  ? '没有符合条件的模板'
+                  : '还没有模板'
+              }
               description="从 33 种标准版式开始，几分钟即可完成一个阅信模板"
               action={
                 <Button asChild>
@@ -127,7 +149,13 @@ export function TemplatesPage() {
             <DialogTitle>预览 · {previewing?.name}</DialogTitle>
           </DialogHeader>
           <DialogBody className="max-h-[75vh]">
-            {previewing && <MultiVendorPreview document={previewing.document} paramDisplay="example" phoneWidth={220} />}
+            {previewing && (
+              <MultiVendorPreview
+                document={previewing.document}
+                paramDisplay="example"
+                phoneWidth={220}
+              />
+            )}
           </DialogBody>
         </DialogContent>
       </Dialog>
@@ -143,7 +171,7 @@ function TemplateCard({ item, onPreview }: { item: TemplateSummary; onPreview: (
   const layout = getLayout(item.layoutId)
   const status = STATUS_BADGE[item.status]
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-panel transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-float">
+    <article className="group bg-card shadow-panel hover:border-primary/30 hover:shadow-float flex flex-col overflow-hidden rounded-xl border transition hover:-translate-y-0.5">
       <button
         type="button"
         onClick={() => router.push(`/editor/${item.id}`)}
@@ -151,7 +179,7 @@ function TemplateCard({ item, onPreview }: { item: TemplateSummary; onPreview: (
         aria-label={`编辑 ${item.name}`}
       >
         <TemplateThumbnail document={item.document} paramDisplay="example" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent" />
+        <div className="from-card pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t to-transparent" />
       </button>
       <div className="flex flex-1 flex-col gap-2 border-t px-4 py-3">
         <div className="flex items-start justify-between gap-2">
@@ -162,7 +190,7 @@ function TemplateCard({ item, onPreview }: { item: TemplateSummary; onPreview: (
             {status.label}
           </Badge>
         </div>
-        <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-xs">
           <span>{layout?.name}</span>
           <span>·</span>
           <span>{TEMPLATE_CATEGORY_LABEL[item.category]}</span>
@@ -172,15 +200,24 @@ function TemplateCard({ item, onPreview }: { item: TemplateSummary; onPreview: (
           <span>{item.vendors.length} 个厂商</span>
         </div>
         {item.status === 'rejected' && item.rejectReason && (
-          <p className="line-clamp-2 rounded-md bg-destructive/8 px-2 py-1 text-xs text-destructive">驳回原因：{item.rejectReason}</p>
+          <p className="bg-destructive/8 text-destructive line-clamp-2 rounded-md px-2 py-1 text-xs">
+            驳回原因：{item.rejectReason}
+          </p>
         )}
         <div className="mt-auto flex items-center justify-between pt-1">
-          <span className="text-xs text-muted-foreground">更新于 {formatRelative(item.updatedAt)}</span>
+          <span className="text-muted-foreground text-xs">
+            更新于 {formatRelative(item.updatedAt)}
+          </span>
           <div className="flex items-center gap-1">
             <Button size="icon-xs" variant="ghost" aria-label="预览" onClick={onPreview}>
               <EyeIcon />
             </Button>
-            <Button size="icon-xs" variant="ghost" aria-label="编辑" onClick={() => router.push(`/editor/${item.id}`)}>
+            <Button
+              size="icon-xs"
+              variant="ghost"
+              aria-label="编辑"
+              onClick={() => router.push(`/editor/${item.id}`)}
+            >
               <PencilIcon />
             </Button>
             <DropdownMenu>

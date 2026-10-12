@@ -27,7 +27,9 @@ export function debounce<A extends unknown[]>(fn: (...args: A) => void, wait = 2
 }
 
 export function deepClone<T>(value: T): T {
-  return typeof structuredClone === 'function' ? structuredClone(value) : (JSON.parse(JSON.stringify(value)) as T)
+  return typeof structuredClone === 'function'
+    ? structuredClone(value)
+    : (JSON.parse(JSON.stringify(value)) as T)
 }
 
 /** 数组移动元素（不修改原数组） */

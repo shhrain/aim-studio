@@ -17,7 +17,13 @@ export interface EmbedRenderOptions {
 }
 
 export type HostMessage =
-  | { source: typeof EMBED_SOURCE; type: 'render'; document?: TemplateDocument; legacy?: { pages: string | unknown[]; cardId?: string }; options?: EmbedRenderOptions }
+  | {
+      source: typeof EMBED_SOURCE
+      type: 'render'
+      document?: TemplateDocument
+      legacy?: { pages: string | unknown[]; cardId?: string }
+      options?: EmbedRenderOptions
+    }
   | { source: typeof EMBED_SOURCE; type: 'options'; options: EmbedRenderOptions }
 
 export type ReceiverMessage =
@@ -27,5 +33,9 @@ export type ReceiverMessage =
   | { source: typeof EMBED_SOURCE; type: 'error'; message: string }
 
 export function isEmbedMessage<T extends { source: string }>(data: unknown): data is T {
-  return typeof data === 'object' && data !== null && (data as { source?: string }).source === EMBED_SOURCE
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    (data as { source?: string }).source === EMBED_SOURCE
+  )
 }

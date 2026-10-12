@@ -25,7 +25,9 @@ export function createShareLink(doc: TemplateDocument, vendor: VendorId | string
           const { id } = (await res.json()) as { id: string }
           return `${env.mobileUrl}/preview/${id}`
         } catch {
-          return createShareUrl(doc, `${env.mobileUrl}/preview/share`, { vendor: vendor as VendorId })
+          return createShareUrl(doc, `${env.mobileUrl}/preview/share`, {
+            vendor: vendor as VendorId,
+          })
         }
       })(),
     )

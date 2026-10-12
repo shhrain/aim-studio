@@ -13,7 +13,10 @@ export function base64UrlToBytes(input: string): Uint8Array {
   return bytes
 }
 
-async function pipe(bytes: Uint8Array, stream: CompressionStream | DecompressionStream): Promise<Uint8Array> {
+async function pipe(
+  bytes: Uint8Array,
+  stream: CompressionStream | DecompressionStream,
+): Promise<Uint8Array> {
   const writer = stream.writable.getWriter()
   void writer.write(bytes as Uint8Array<ArrayBuffer>)
   void writer.close()
@@ -49,7 +52,9 @@ export async function encodeJson(value: unknown): Promise<string> {
 }
 
 export async function decodeJson<T = unknown>(input: string): Promise<T> {
-  const [kind, payload = ''] = input.includes('.') ? (input.split('.', 2) as [string, string]) : ['u', input]
+  const [kind, payload = ''] = input.includes('.')
+    ? (input.split('.', 2) as [string, string])
+    : ['u', input]
   let bytes = base64UrlToBytes(payload)
   if (kind === 'z') bytes = await pipe(bytes, new DecompressionStream('deflate-raw'))
   return JSON.parse(new TextDecoder().decode(bytes)) as T

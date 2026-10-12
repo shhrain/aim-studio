@@ -28,22 +28,37 @@ export function MediaInput({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="relative flex h-16 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-muted text-muted-foreground transition hover:border-primary"
+          className="bg-muted text-muted-foreground hover:border-primary relative flex h-16 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md border transition"
           aria-label="选择素材"
         >
-          {value && type === 'image' && !placeholder ? <img src={value} alt="" className="size-full object-cover" /> : <ImageIcon className="size-5" />}
+          {value && type === 'image' && !placeholder ? (
+            <img src={value} alt="" className="size-full object-cover" />
+          ) : (
+            <ImageIcon className="size-5" />
+          )}
         </button>
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
           <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
             {placeholder || !value ? '选择素材' : '更换素材'}
           </Button>
-          <Button size="xs" variant="ghost" className="text-muted-foreground" onClick={() => setEditUrl(!editUrl)}>
+          <Button
+            size="xs"
+            variant="ghost"
+            className="text-muted-foreground"
+            onClick={() => setEditUrl(!editUrl)}
+          >
             <LinkIcon />
             使用链接
           </Button>
         </div>
       </div>
-      {editUrl && <Input value={value.startsWith('data:') ? '' : value} placeholder="https://" onChange={(e) => onChange(e.target.value)} />}
+      {editUrl && (
+        <Input
+          value={value.startsWith('data:') ? '' : value}
+          placeholder="https://"
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
       <MaterialPicker
         open={open}
         onOpenChange={setOpen}

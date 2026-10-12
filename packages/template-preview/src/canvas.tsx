@@ -43,7 +43,15 @@ export function buildFlowRows(elements: AnyElement[]): FlowRow[] {
   return rows
 }
 
-function ElementShell({ el, style, children }: { el: AnyElement; style: CSSProperties; children: ReactNode }) {
+function ElementShell({
+  el,
+  style,
+  children,
+}: {
+  el: AnyElement
+  style: CSSProperties
+  children: ReactNode
+}) {
   const { editor } = usePreview()
   const selectable = Boolean(editor?.onSelect)
   return (
@@ -143,7 +151,12 @@ export function CardCanvas({ page, className, footer }: CardCanvasProps) {
                       marginLeft: u(ml),
                       width: u(Math.min(el.w, CANVAS_WIDTH)),
                       height: auto ? 'auto' : u(el.h),
-                      minHeight: auto && el.type === 'text' ? undefined : auto ? u(Math.min(el.h, 24)) : undefined,
+                      minHeight:
+                        auto && el.type === 'text'
+                          ? undefined
+                          : auto
+                            ? u(Math.min(el.h, 24))
+                            : undefined,
                       zIndex: (el.z ?? 0) + 1,
                     }}
                   >
@@ -178,7 +191,7 @@ export function CardCanvas({ page, className, footer }: CardCanvasProps) {
   return (
     <div className={`aim-scope ${className ?? ''}`}>
       <div
-        className={`aim-card${editor ? ' aim-editing' : ''}`}
+        className={`aim-card${editor ? 'aim-editing' : ''}`}
         data-mode={page.mode}
         data-transparent={transparent || undefined}
         style={cardStyle}
@@ -186,7 +199,10 @@ export function CardCanvas({ page, className, footer }: CardCanvasProps) {
         {page.style.backgroundImage && (
           <div
             className="aim-card-bgimg"
-            style={{ backgroundImage: `url("${page.style.backgroundImage}")`, opacity: page.style.backgroundOpacity ?? 1 }}
+            style={{
+              backgroundImage: `url("${page.style.backgroundImage}")`,
+              opacity: page.style.backgroundOpacity ?? 1,
+            }}
           />
         )}
         {body}

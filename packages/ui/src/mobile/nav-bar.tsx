@@ -15,14 +15,22 @@ export interface NavBarProps extends Omit<React.ComponentProps<'header'>, 'title
 }
 
 /** 移动端顶部导航栏，自动适配刘海屏安全区 */
-export function NavBar({ title, onBack, right, tone = 'default', sticky = true, className, ...props }: NavBarProps) {
+export function NavBar({
+  title,
+  onBack,
+  right,
+  tone = 'default',
+  sticky = true,
+  className,
+  ...props
+}: NavBarProps) {
   return (
     <header
       data-slot="nav-bar"
       className={cn(
         'z-30 pt-[env(safe-area-inset-top)]',
         sticky && 'sticky top-0',
-        tone === 'default' && 'border-b bg-card/95 backdrop-blur',
+        tone === 'default' && 'bg-card/95 border-b backdrop-blur',
         tone === 'primary' && 'bg-primary text-primary-foreground',
         tone === 'transparent' && 'bg-transparent',
         className,

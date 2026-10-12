@@ -1,11 +1,19 @@
 import { createDocument, findBySlot, sampleImage, updateElement } from '@aim/template-core'
 import type { TemplateDocument } from '@aim/template-schema'
 
-function fill(doc: TemplateDocument, patches: Record<string, Record<string, unknown>>, events: Record<string, unknown> = {}) {
+function fill(
+  doc: TemplateDocument,
+  patches: Record<string, Record<string, unknown>>,
+  events: Record<string, unknown> = {},
+) {
   let next = doc
   for (const [slot, props] of Object.entries(patches)) {
     const el = findBySlot(next, slot)
-    if (el) next = updateElement(next, el.id, { props, ...(events[slot] ? { event: events[slot] as never } : {}) })
+    if (el)
+      next = updateElement(next, el.id, {
+        props,
+        ...(events[slot] ? { event: events[slot] as never } : {}),
+      })
   }
   return next
 }
@@ -16,7 +24,12 @@ const link = (p: string) => ({ action: 'OPEN_URL', target: `https://aim.example.
 export function buildSampleTemplatesLite(): TemplateDocument[] {
   return [
     fill(
-      createDocument({ id: 'demo_image', layoutId: 'com.hbm.imageandtext', name: '国庆出游季', now: 0 }),
+      createDocument({
+        id: 'demo_image',
+        layoutId: 'com.hbm.imageandtext',
+        name: '国庆出游季',
+        now: 0,
+      }),
       {
         media: { src: sampleImage(5, 342, 192, '国庆出游季', '精选线路 限时直降') },
         title: { text: '国庆出游季 · 精选线路直降' },
@@ -26,7 +39,12 @@ export function buildSampleTemplatesLite(): TemplateDocument[] {
       { 'button.0': link('travel') },
     ),
     fill(
-      createDocument({ id: 'demo_bill', layoutId: 'com.hbm.notification', name: '账单提醒', now: 0 }),
+      createDocument({
+        id: 'demo_bill',
+        layoutId: 'com.hbm.notification',
+        name: '账单提醒',
+        now: 0,
+      }),
       {
         media: { src: sampleImage(5, 342, 120, '本月账单已出') },
         title: { text: '您的 10 月账单已出' },
@@ -40,10 +58,13 @@ export function buildSampleTemplatesLite(): TemplateDocument[] {
       },
       { 'button.0': link('bill'), 'button.1': link('pay') },
     ),
-    fill(createDocument({ id: 'demo_red', layoutId: 'com.hbm.redpacket', name: '品牌红包', now: 0 }), {
-      name: { text: '梦网商城' },
-      title: { text: '恭喜发财 大吉大利' },
-      description: { text: '感谢一路相伴，送您一个专属红包。' },
-    }),
+    fill(
+      createDocument({ id: 'demo_red', layoutId: 'com.hbm.redpacket', name: '品牌红包', now: 0 }),
+      {
+        name: { text: '梦网商城' },
+        title: { text: '恭喜发财 大吉大利' },
+        description: { text: '感谢一路相伴，送您一个专属红包。' },
+      },
+    ),
   ]
 }

@@ -21,10 +21,17 @@ function Pie({ parts }: { parts: { label: string; value: number; color: string }
   })
   return (
     <div className="flex items-center gap-5">
-      <div className="relative size-32 shrink-0 rounded-full" style={{ background: `conic-gradient(${stops.join(',')})` }} role="img" aria-label="消息形态占比">
-        <div className="absolute inset-5 flex flex-col items-center justify-center rounded-full bg-card">
-          <span className="text-xl font-semibold tabular-nums">{parts.reduce((s, p) => s + p.value, 0)}</span>
-          <span className="text-[10px] text-muted-foreground">总条数</span>
+      <div
+        className="relative size-32 shrink-0 rounded-full"
+        style={{ background: `conic-gradient(${stops.join(',')})` }}
+        role="img"
+        aria-label="消息形态占比"
+      >
+        <div className="bg-card absolute inset-5 flex flex-col items-center justify-center rounded-full">
+          <span className="text-xl font-semibold tabular-nums">
+            {parts.reduce((s, p) => s + p.value, 0)}
+          </span>
+          <span className="text-muted-foreground text-[10px]">总条数</span>
         </div>
       </div>
       <ul className="space-y-2 text-sm">
@@ -32,7 +39,7 @@ function Pie({ parts }: { parts: { label: string; value: number; color: string }
           <li key={p.label} className="flex items-center gap-2">
             <span className="size-2.5 rounded-full" style={{ background: p.color }} />
             {p.label}
-            <span className="ml-auto pl-3 tabular-nums text-muted-foreground">
+            <span className="text-muted-foreground ml-auto pl-3 tabular-nums">
               {p.value}（{Math.round((p.value / total) * 100)}%）
             </span>
           </li>
@@ -63,19 +70,29 @@ export default function StatisticsPage() {
               ['成功', data.byStatus.SUCCESS, 'text-success'],
               ['失败', data.byStatus.FAILED, 'text-destructive'],
             ].map(([label, value, color]) => (
-              <div key={String(label)} className="rounded-xl bg-card p-3 text-center shadow-panel">
+              <div key={String(label)} className="bg-card shadow-panel rounded-xl p-3 text-center">
                 <div className={`text-2xl font-semibold tabular-nums ${color}`}>{value}</div>
-                <div className="text-xs text-muted-foreground">{label}</div>
+                <div className="text-muted-foreground text-xs">{label}</div>
               </div>
             ))}
           </div>
-          <section className="mx-3 rounded-xl bg-card p-4 shadow-panel">
+          <section className="bg-card shadow-panel mx-3 rounded-xl p-4">
             <h3 className="mb-3 text-sm font-medium">消息形态</h3>
-            <Pie parts={([1, 2, 3] as MessageType[]).map((t) => ({ label: MESSAGE_TYPE_LABEL[t], value: data.byType[t], color: TYPE_COLOR[t] }))} />
+            <Pie
+              parts={([1, 2, 3] as MessageType[]).map((t) => ({
+                label: MESSAGE_TYPE_LABEL[t],
+                value: data.byType[t],
+                color: TYPE_COLOR[t],
+              }))}
+            />
           </section>
           <CellGroup title="终端厂商分布">
             {data.byFactory.map((f) => (
-              <Cell key={f.factory} title={VENDORS[f.factory as VendorId]?.name ?? '未知'} value={`${f.count} 条`} />
+              <Cell
+                key={f.factory}
+                title={VENDORS[f.factory as VendorId]?.name ?? '未知'}
+                value={`${f.count} 条`}
+              />
             ))}
           </CellGroup>
         </div>

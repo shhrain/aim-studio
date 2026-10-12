@@ -36,6 +36,8 @@
     "vite": "catalog:"
   },
   "msw": {
-    "workerDirectory": ["public"]
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

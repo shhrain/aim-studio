@@ -14,7 +14,15 @@ function Field({ label, children }: { label?: string; children: React.ReactNode 
   )
 }
 
-function Control({ placeholder, arrow, styleType }: { placeholder: string; arrow?: string; styleType?: string }) {
+function Control({
+  placeholder,
+  arrow,
+  styleType,
+}: {
+  placeholder: string
+  arrow?: string
+  styleType?: string
+}) {
   return (
     <div className="aim-field-control" data-style={styleType}>
       <span>{placeholder}</span>
@@ -30,10 +38,19 @@ export function FormView({ el }: { el: TemplateElement<'form'> }) {
     <div className="aim-col" style={{ padding: `0 ${u(14)} ${u(14)}`, gap: u(12) }}>
       {el.props.fields.map((f, i) => (
         <Field key={i} label={`${f.required ? '* ' : ''}${renderTextPlain(f.label, r)}`}>
-          <Control placeholder={renderTextPlain(f.placeholder, r)} arrow={f.type === 'select' ? '▾' : f.type === 'date' ? '📅' : undefined} />
+          <Control
+            placeholder={renderTextPlain(f.placeholder, r)}
+            arrow={f.type === 'select' ? '▾' : f.type === 'date' ? '📅' : undefined}
+          />
         </Field>
       ))}
-      <div className="aim-option" data-type="checkbox" data-active={agree} onClick={() => setAgree(!agree)} style={{ cursor: 'pointer', fontSize: u(12) }}>
+      <div
+        className="aim-option"
+        data-type="checkbox"
+        data-active={agree}
+        onClick={() => setAgree(!agree)}
+        style={{ cursor: 'pointer', fontSize: u(12) }}
+      >
         <i />
         <span className="aim-t2" style={{ fontSize: u(12) }}>
           {el.props.privacyText}
@@ -50,14 +67,26 @@ export function InputView({ el }: { el: TemplateElement<'input'> | TemplateEleme
   const r = useResolver()
   return (
     <Field label={renderTextPlain(el.props.label, r)}>
-      <div className="aim-field-control" data-style={el.props.inputStyle} style={el.type === 'textarea' ? { height: u(72), alignItems: 'flex-start', paddingTop: u(8) } : undefined}>
+      <div
+        className="aim-field-control"
+        data-style={el.props.inputStyle}
+        style={
+          el.type === 'textarea'
+            ? { height: u(72), alignItems: 'flex-start', paddingTop: u(8) }
+            : undefined
+        }
+      >
         <span>{renderTextPlain(el.props.placeholder, r)}</span>
       </div>
     </Field>
   )
 }
 
-export function ChoiceView({ el }: { el: TemplateElement<'radioGroup'> | TemplateElement<'checkboxGroup'> }) {
+export function ChoiceView({
+  el,
+}: {
+  el: TemplateElement<'radioGroup'> | TemplateElement<'checkboxGroup'>
+}) {
   const r = useResolver()
   const [active, setActive] = useState<number[]>([])
   const multiple = el.type === 'checkboxGroup'
@@ -71,7 +100,15 @@ export function ChoiceView({ el }: { el: TemplateElement<'radioGroup'> | Templat
             data-type={multiple ? 'checkbox' : 'radio'}
             data-active={active.includes(i)}
             style={{ cursor: 'pointer' }}
-            onClick={() => setActive(multiple ? (active.includes(i) ? active.filter((x) => x !== i) : [...active, i]) : [i])}
+            onClick={() =>
+              setActive(
+                multiple
+                  ? active.includes(i)
+                    ? active.filter((x) => x !== i)
+                    : [...active, i]
+                  : [i],
+              )
+            }
           >
             <i />
             {renderTextPlain(o, r)}
@@ -82,7 +119,11 @@ export function ChoiceView({ el }: { el: TemplateElement<'radioGroup'> | Templat
   )
 }
 
-export function PickerView({ el }: { el: TemplateElement<'picker'> | TemplateElement<'datePicker'> | TemplateElement<'timePicker'> }) {
+export function PickerView({
+  el,
+}: {
+  el: TemplateElement<'picker'> | TemplateElement<'datePicker'> | TemplateElement<'timePicker'>
+}) {
   const r = useResolver()
   const arrow = el.type === 'picker' ? '▾' : el.type === 'datePicker' ? '📅' : '🕒'
   return (
@@ -141,9 +182,18 @@ export function ImgSelectView({ el }: { el: TemplateElement<'imgSelect'> }) {
             cursor: 'pointer',
           }}
         >
-          <img className="aim-img" src={o.src || undefined} alt="" draggable={false} style={{ height: u(119) }} />
+          <img
+            className="aim-img"
+            src={o.src || undefined}
+            alt=""
+            draggable={false}
+            style={{ height: u(119) }}
+          />
           {el.props.showTitle && (
-            <div className="aim-clamp-1" style={{ padding: `${u(6)} ${u(8)}`, fontSize: u(13), textAlign: 'center' }}>
+            <div
+              className="aim-clamp-1"
+              style={{ padding: `${u(6)} ${u(8)}`, fontSize: u(13), textAlign: 'center' }}
+            >
               {renderTextPlain(o.title, r)}
             </div>
           )}

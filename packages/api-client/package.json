@@ -1,6 +1,6 @@
 {
   "name": "@aim/api-client",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "AIM 接口契约与类型化请求层：统一 { subCode, message, data } 响应、鉴权、错误码，含 TanStack Query hooks",
   "type": "module",
   "sideEffects": false,
@@ -10,11 +10,20 @@
   },
   "publishConfig": {
     "exports": {
-      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-      "./react": { "types": "./dist/react/index.d.ts", "import": "./dist/react/index.js" }
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./react": {
+        "types": "./dist/react/index.d.ts",
+        "import": "./dist/react/index.js"
+      }
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsup src/index.ts src/react/index.ts --format esm --dts --sourcemap --clean --external react",
     "lint": "eslint src",
@@ -31,8 +40,12 @@
     "react": "^19.0.0"
   },
   "peerDependenciesMeta": {
-    "@tanstack/react-query": { "optional": true },
-    "react": { "optional": true }
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@aim/eslint-config": "workspace:*",

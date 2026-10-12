@@ -5,7 +5,8 @@ import { useEffect } from 'react'
 import { redo, undo, useEditor } from '../store'
 
 const isTyping = (t: EventTarget | null) =>
-  t instanceof HTMLElement && (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName))
+  t instanceof HTMLElement &&
+  (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName))
 
 /** 编辑器快捷键 */
 export function useHotkeys(saveNow: () => Promise<boolean>) {

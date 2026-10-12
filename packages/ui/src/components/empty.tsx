@@ -11,7 +11,15 @@ export interface EmptyProps extends Omit<React.ComponentProps<'div'>, 'title'> {
 }
 
 /** 空状态：说明原因 + 给出下一步操作 */
-export function Empty({ icon, title = '暂无数据', description, action, size = 'default', className, ...props }: EmptyProps) {
+export function Empty({
+  icon,
+  title = '暂无数据',
+  description,
+  action,
+  size = 'default',
+  className,
+  ...props
+}: EmptyProps) {
   return (
     <div
       data-slot="empty"
@@ -22,11 +30,16 @@ export function Empty({ icon, title = '暂无数据', description, action, size 
       )}
       {...props}
     >
-      <div className={cn('flex items-center justify-center rounded-full bg-muted text-muted-foreground', size === 'sm' ? 'size-10' : 'size-14')}>
+      <div
+        className={cn(
+          'bg-muted text-muted-foreground flex items-center justify-center rounded-full',
+          size === 'sm' ? 'size-10' : 'size-14',
+        )}
+      >
         {icon ?? <InboxIcon className={size === 'sm' ? 'size-5' : 'size-6'} />}
       </div>
       <div className="mt-1 text-sm font-medium">{title}</div>
-      {description && <div className="max-w-sm text-xs text-muted-foreground">{description}</div>}
+      {description && <div className="text-muted-foreground max-w-sm text-xs">{description}</div>}
       {action && <div className="mt-2">{action}</div>}
     </div>
   )

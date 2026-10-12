@@ -20,7 +20,8 @@ for (const group of GROUPS) {
   if (!existsSync(base)) continue
   for (const dir of readdirSync(base)) {
     const file = join(base, dir, 'package.json')
-    if (existsSync(file)) manifests.push({ dir: `${group}/${dir}`, pkg: JSON.parse(readFileSync(file, 'utf8')) })
+    if (existsSync(file))
+      manifests.push({ dir: `${group}/${dir}`, pkg: JSON.parse(readFileSync(file, 'utf8')) })
   }
 }
 
@@ -32,7 +33,8 @@ for (const { dir, pkg } of manifests) {
     if (section === 'peerDependencies') continue
     for (const [name, range] of Object.entries(pkg[section] ?? {})) {
       if (internal.has(name)) {
-        if (!range.startsWith('workspace:')) problems.push(`${dir}: ${name} 应使用 workspace:*（当前 ${range}）`)
+        if (!range.startsWith('workspace:'))
+          problems.push(`${dir}: ${name} 应使用 workspace:*（当前 ${range}）`)
       } else if (range !== 'catalog:' && !ALLOW_NON_CATALOG.has(name)) {
         problems.push(`${dir}: ${name} 应使用 catalog:（当前 ${range}）`)
       }

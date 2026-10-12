@@ -35,7 +35,10 @@ export const REJECT_TEXT = '拒收请回复R'
 export const PROTOCOLS = ['aim', 'rcs', 'rms'] as const
 export type Protocol = (typeof PROTOCOLS)[number]
 
-export const PROTOCOL_META: Record<Protocol, { name: string; terminal: string; sendType: 1 | 2 | 3 }> = {
+export const PROTOCOL_META: Record<
+  Protocol,
+  { name: string; terminal: string; sendType: 1 | 2 | 3 }
+> = {
   aim: { name: '阅信（AIM）', terminal: '安卓', sendType: 1 },
   rcs: { name: '5G 消息（RCS）', terminal: '苹果', sendType: 2 },
   rms: { name: '视频短信（RMS）', terminal: '其他', sendType: 3 },
@@ -44,17 +47,26 @@ export const PROTOCOL_META: Record<Protocol, { name: string; terminal: string; s
 /** 模板用途 */
 export const TEMPLATE_USAGES = ['commercial', 'test'] as const
 export type TemplateUsage = (typeof TEMPLATE_USAGES)[number]
-export const TEMPLATE_USAGE_LABEL: Record<TemplateUsage, string> = { commercial: '商用', test: '测试' }
+export const TEMPLATE_USAGE_LABEL: Record<TemplateUsage, string> = {
+  commercial: '商用',
+  test: '测试',
+}
 
 /** 模板分类 */
 export const TEMPLATE_CATEGORIES = ['service', 'notify'] as const
 export type TemplateCategory = (typeof TEMPLATE_CATEGORIES)[number]
-export const TEMPLATE_CATEGORY_LABEL: Record<TemplateCategory, string> = { service: '服务类', notify: '通知类' }
+export const TEMPLATE_CATEGORY_LABEL: Record<TemplateCategory, string> = {
+  service: '服务类',
+  notify: '通知类',
+}
 
 /** 识别类型 */
 export const RECOGNITION_TYPES = ['shortLink', 'text'] as const
 export type RecognitionType = (typeof RECOGNITION_TYPES)[number]
-export const RECOGNITION_LABEL: Record<RecognitionType, string> = { shortLink: '短链识别', text: '文本识别' }
+export const RECOGNITION_LABEL: Record<RecognitionType, string> = {
+  shortLink: '短链识别',
+  text: '文本识别',
+}
 
 /** 审核状态 */
 export const TEMPLATE_STATUSES = ['draft', 'reviewing', 'approved', 'rejected'] as const

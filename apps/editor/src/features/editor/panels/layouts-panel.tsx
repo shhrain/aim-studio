@@ -12,7 +12,7 @@ export function LayoutsPanel({ onSwitch }: { onSwitch: () => void }) {
   const layout = getLayout(doc.layoutId)
   return (
     <div className="space-y-4 p-4">
-      <div className="overflow-hidden rounded-xl border bg-card">
+      <div className="bg-card overflow-hidden rounded-xl border">
         <div className="canvas-grid max-h-56 overflow-hidden px-6 pt-4">
           <TemplateThumbnail document={doc} paramDisplay="example" />
         </div>
@@ -22,25 +22,35 @@ export function LayoutsPanel({ onSwitch }: { onSwitch: () => void }) {
             {layout && <Badge variant="outline">{LAYOUT_GROUPS[layout.group].label}</Badge>}
             {layout?.protocols.includes('rcs') && <Badge variant="success">三信融合</Badge>}
           </div>
-          <p className="text-xs text-muted-foreground">{layout?.description}</p>
+          <p className="text-muted-foreground text-xs">{layout?.description}</p>
         </div>
       </div>
       <Button variant="outline" block onClick={onSwitch}>
         <RepeatIcon />
         更换版式
       </Button>
-      <p className="text-xs leading-relaxed text-muted-foreground">更换版式时，标题、描述、主图、按钮等同名槽位的内容会自动迁移到新版式。</p>
+      <p className="text-muted-foreground text-xs leading-relaxed">
+        更换版式时，标题、描述、主图、按钮等同名槽位的内容会自动迁移到新版式。
+      </p>
       {layout && (
-        <div className="space-y-2 rounded-lg bg-muted/60 p-3 text-xs">
+        <div className="bg-muted/60 space-y-2 rounded-lg p-3 text-xs">
           <div className="font-medium">字段规范</div>
-          <ul className="space-y-1 text-muted-foreground">
+          <ul className="text-muted-foreground space-y-1">
             {layout.slots.map((s) => (
               <li key={s.key} className="flex justify-between gap-2">
                 <span>
                   {s.label}
                   {s.required && <span className="text-destructive">*</span>}
                 </span>
-                <span>{s.maxLength ? `≤${s.maxLength}字` : s.count ? `${s.count.min}-${s.count.max}项` : s.ratios ? s.ratios.map((r) => r.join(':')).join(' / ') : ''}</span>
+                <span>
+                  {s.maxLength
+                    ? `≤${s.maxLength}字`
+                    : s.count
+                      ? `${s.count.min}-${s.count.max}项`
+                      : s.ratios
+                        ? s.ratios.map((r) => r.join(':')).join(' / ')
+                        : ''}
+                </span>
               </li>
             ))}
           </ul>

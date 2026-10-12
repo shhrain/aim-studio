@@ -111,7 +111,11 @@ const description = (max: number): SlotDefinition => ({
   elementType: 'text',
   maxLength: max,
 })
-const image = (ratios: Ratio[] = [R169, R11, R34], key = 'media', label = '图片'): SlotDefinition => ({
+const image = (
+  ratios: Ratio[] = [R169, R11, R34],
+  key = 'media',
+  label = '图片',
+): SlotDefinition => ({
   key,
   label,
   elementType: 'image',
@@ -198,8 +202,22 @@ export const LAYOUTS: LayoutDefinition[] = [
     slots: [
       image([R169], 'media', '头条图片'),
       { key: 'title', label: '头条标题', elementType: 'text', maxLength: 30, required: true },
-      { key: 'item.{i}.text', label: '列表标题', elementType: 'text', maxLength: 30, required: true, repeat: { setting: 'itemCount' } },
-      { key: 'item.{i}.image', label: '列表缩略图', elementType: 'image', required: true, ratios: [R11], repeat: { setting: 'itemCount' } },
+      {
+        key: 'item.{i}.text',
+        label: '列表标题',
+        elementType: 'text',
+        maxLength: 30,
+        required: true,
+        repeat: { setting: 'itemCount' },
+      },
+      {
+        key: 'item.{i}.image',
+        label: '列表缩略图',
+        elementType: 'image',
+        required: true,
+        ratios: [R11],
+        repeat: { setting: 'itemCount' },
+      },
     ],
   },
   {
@@ -221,8 +239,22 @@ export const LAYOUTS: LayoutDefinition[] = [
       },
     ],
     slots: [
-      { key: 'item.{i}.text', label: '列表标题', elementType: 'text', maxLength: 30, required: true, repeat: { setting: 'itemCount' } },
-      { key: 'item.{i}.image', label: '列表缩略图', elementType: 'image', required: true, ratios: [R11], repeat: { setting: 'itemCount' } },
+      {
+        key: 'item.{i}.text',
+        label: '列表标题',
+        elementType: 'text',
+        maxLength: 30,
+        required: true,
+        repeat: { setting: 'itemCount' },
+      },
+      {
+        key: 'item.{i}.image',
+        label: '列表缩略图',
+        elementType: 'image',
+        required: true,
+        ratios: [R11],
+        repeat: { setting: 'itemCount' },
+      },
     ],
   },
   {
@@ -256,7 +288,13 @@ export const LAYOUTS: LayoutDefinition[] = [
       },
     },
     slots: [
-      { key: 'media', label: '轮播图', elementType: 'swiper', required: true, count: { min: 2, max: 5, path: 'items' } },
+      {
+        key: 'media',
+        label: '轮播图',
+        elementType: 'swiper',
+        required: true,
+        count: { min: 2, max: 5, path: 'items' },
+      },
       title(17),
       description(253),
       button(),
@@ -273,7 +311,13 @@ export const LAYOUTS: LayoutDefinition[] = [
     protocols: ['aim'],
     settings: [{ ...BUTTON_COUNT, defaultValue: 2 }],
     slots: [
-      { key: 'media', label: '轮播图', elementType: 'swiper', required: true, count: { min: 2, max: 5, path: 'items' } },
+      {
+        key: 'media',
+        label: '轮播图',
+        elementType: 'swiper',
+        required: true,
+        count: { min: 2, max: 5, path: 'items' },
+      },
       title(19),
       description(130),
       buttons(),
@@ -364,7 +408,13 @@ export const LAYOUTS: LayoutDefinition[] = [
     vendors: VENDOR_SETS.core,
     protocols: ['aim'],
     slots: [
-      { key: 'media', label: '视频轮播', elementType: 'swiper', required: true, count: { min: 2, max: 4, path: 'items' } },
+      {
+        key: 'media',
+        label: '视频轮播',
+        elementType: 'swiper',
+        required: true,
+        count: { min: 2, max: 4, path: 'items' },
+      },
       title(17),
       description(253),
       button(),
@@ -385,7 +435,9 @@ export const LAYOUTS: LayoutDefinition[] = [
         key: 'themeColor',
         label: '按钮配色',
         kind: 'select',
-        options: ['活力橙', '经典红', '清新绿', '湖水蓝', '尊享紫', '高级黑'].map((label, value) => ({ value, label })),
+        options: ['活力橙', '经典红', '清新绿', '湖水蓝', '尊享紫', '高级黑'].map(
+          (label, value) => ({ value, label }),
+        ),
         defaultValue: 1,
       },
     ],
@@ -465,7 +517,13 @@ export const LAYOUTS: LayoutDefinition[] = [
         label: '券与商品',
         elementType: 'ecommerceCoupon',
         required: true,
-        limits: { title: 12, subtitle: 17, 'coupon.name': 11, 'coupon.description': 32, 'items[].name': 28 },
+        limits: {
+          title: 12,
+          subtitle: 17,
+          'coupon.name': 11,
+          'coupon.description': 32,
+          'items[].name': 28,
+        },
         count: { min: 1, max: 3, path: 'items' },
       },
     ],
@@ -484,7 +542,14 @@ export const LAYOUTS: LayoutDefinition[] = [
         label: '券与商品',
         elementType: 'ecommerceCoupon',
         required: true,
-        limits: { title: 12, subtitle: 17, 'coupon.name': 11, 'coupon.description': 32, 'items[].name': 8, 'items[].tag': 4 },
+        limits: {
+          title: 12,
+          subtitle: 17,
+          'coupon.name': 11,
+          'coupon.description': 32,
+          'items[].name': 8,
+          'items[].tag': 4,
+        },
         count: { min: 3, max: 3, path: 'items' },
       },
     ],
@@ -586,8 +651,22 @@ export const LAYOUTS: LayoutDefinition[] = [
       image([[342, 120]], 'media', '顶部图片'),
       title(15),
       description(20),
-      { key: 'kv.{i}.label', label: '参数名称', elementType: 'text', maxLength: 6, required: true, repeat: { setting: 'pairCount' } },
-      { key: 'kv.{i}.value', label: '参数值', elementType: 'text', maxLength: 20, required: true, repeat: { setting: 'pairCount' } },
+      {
+        key: 'kv.{i}.label',
+        label: '参数名称',
+        elementType: 'text',
+        maxLength: 6,
+        required: true,
+        repeat: { setting: 'pairCount' },
+      },
+      {
+        key: 'kv.{i}.value',
+        label: '参数值',
+        elementType: 'text',
+        maxLength: 20,
+        required: true,
+        repeat: { setting: 'pairCount' },
+      },
       buttons(),
     ],
   },
@@ -612,10 +691,31 @@ export const LAYOUTS: LayoutDefinition[] = [
     slots: [
       title(15),
       description(20),
-      { key: 'highlight', label: '重点数值', elementType: 'text', maxLength: 12, required: true, hint: '建议使用参数，如 {#金额#}' },
+      {
+        key: 'highlight',
+        label: '重点数值',
+        elementType: 'text',
+        maxLength: 12,
+        required: true,
+        hint: '建议使用参数，如 {#金额#}',
+      },
       { key: 'highlightUnit', label: '数值说明', elementType: 'text', maxLength: 8 },
-      { key: 'kv.{i}.label', label: '参数名称', elementType: 'text', maxLength: 6, required: true, repeat: { setting: 'pairCount' } },
-      { key: 'kv.{i}.value', label: '参数值', elementType: 'text', maxLength: 20, required: true, repeat: { setting: 'pairCount' } },
+      {
+        key: 'kv.{i}.label',
+        label: '参数名称',
+        elementType: 'text',
+        maxLength: 6,
+        required: true,
+        repeat: { setting: 'pairCount' },
+      },
+      {
+        key: 'kv.{i}.value',
+        label: '参数值',
+        elementType: 'text',
+        maxLength: 20,
+        required: true,
+        repeat: { setting: 'pairCount' },
+      },
       buttons(),
       image([[342, 120]], 'media', '底部图片'),
     ],
@@ -629,30 +729,35 @@ export const LAYOUTS: LayoutDefinition[] = [
       ['com.hbm.ticket.flight', '机票类', 'flight', '航班、航站楼、登机口与座位信息'],
       ['com.hbm.ticket.direct', '直飞', 'direct', '直飞航线行程与值机提醒'],
     ] as const
-  ).map(
-    ([id, name, kind, desc]): LayoutDefinition => ({
-      id,
-      name,
-      group: 'trip',
-      category: 'notify',
-      description: desc,
-      vendors: kind === 'direct' ? VENDOR_SETS.huaweiFamily : VENDOR_SETS.core,
-      protocols: ['aim'],
-      settings: [{ ...BUTTON_COUNT, defaultValue: 2 }],
-      tags: [kind],
-      slots: [
-        title(15),
-        {
-          key: 'ticket',
-          label: '行程信息',
-          elementType: 'ticketImage',
-          required: true,
-          limits: { number: 10, 'from.name': 10, 'to.name': 10, 'grid[].label': 6, 'grid[].value': 12, tip: 60 },
+  ).map(([id, name, kind, desc]): LayoutDefinition => ({
+    id,
+    name,
+    group: 'trip',
+    category: 'notify',
+    description: desc,
+    vendors: kind === 'direct' ? VENDOR_SETS.huaweiFamily : VENDOR_SETS.core,
+    protocols: ['aim'],
+    settings: [{ ...BUTTON_COUNT, defaultValue: 2 }],
+    tags: [kind],
+    slots: [
+      title(15),
+      {
+        key: 'ticket',
+        label: '行程信息',
+        elementType: 'ticketImage',
+        required: true,
+        limits: {
+          number: 10,
+          'from.name': 10,
+          'to.name': 10,
+          'grid[].label': 6,
+          'grid[].value': 12,
+          tip: 60,
         },
-        buttons(),
-      ],
-    }),
-  ),
+      },
+      buttons(),
+    ],
+  })),
 
   /* ----------------------------- 表单 ----------------------------- */
   {
@@ -789,7 +894,10 @@ export function layoutSupportsVendor(layoutId: string, vendor: VendorId): boolea
 
 /** 按分类 → 分组 组织版式（编辑器版式库） */
 export function groupLayouts(category?: TemplateCategory) {
-  const groups = Object.entries(LAYOUT_GROUPS) as [LayoutGroup, (typeof LAYOUT_GROUPS)[LayoutGroup]][]
+  const groups = Object.entries(LAYOUT_GROUPS) as [
+    LayoutGroup,
+    (typeof LAYOUT_GROUPS)[LayoutGroup],
+  ][]
   return groups
     .filter(([, g]) => !category || g.category === category)
     .map(([key, g]) => ({ key, label: g.label, layouts: LAYOUTS.filter((l) => l.group === key) }))
@@ -797,7 +905,10 @@ export function groupLayouts(category?: TemplateCategory) {
 }
 
 /** 展开重复槽位：`kv.{i}.label` + pairCount=3 → kv.0.label, kv.1.label, kv.2.label */
-export function expandSlots(layout: LayoutDefinition, settings: Record<string, unknown>): SlotDefinition[] {
+export function expandSlots(
+  layout: LayoutDefinition,
+  settings: Record<string, unknown>,
+): SlotDefinition[] {
   const out: SlotDefinition[] = []
   const slots = layout.slots
   for (let s = 0; s < slots.length; s++) {
@@ -812,7 +923,12 @@ export function expandSlots(layout: LayoutDefinition, settings: Record<string, u
     const n = Number(settings[slot.repeat.setting] ?? 1)
     for (let i = 0; i < n; i++) {
       for (const g of group) {
-        out.push({ ...g, key: g.key.replace('{i}', String(i)), label: `${g.label}${n > 1 ? i + 1 : ''}`, repeat: undefined })
+        out.push({
+          ...g,
+          key: g.key.replace('{i}', String(i)),
+          label: `${g.label}${n > 1 ? i + 1 : ''}`,
+          repeat: undefined,
+        })
       }
     }
   }

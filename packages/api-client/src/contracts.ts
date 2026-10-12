@@ -1,5 +1,10 @@
 import type { PrecheckIssue } from '@aim/template-core'
-import type { IntegratedResult, TemplateDocument, TemplateStatus, VendorId } from '@aim/template-schema'
+import type {
+  IntegratedResult,
+  TemplateDocument,
+  TemplateStatus,
+  VendorId,
+} from '@aim/template-schema'
 
 /* ================================================================== */
 /* 移动端体验接口（/rcs/aim-experience/api/v1）                           */
@@ -52,7 +57,11 @@ export interface ExperienceTemplate {
 /** 1=AIM 阅信 2=RCS 5G消息 3=RMS 视频短信 */
 export type MessageType = 1 | 2 | 3
 
-export const MESSAGE_TYPE_LABEL: Record<MessageType, string> = { 1: '阅信', 2: '5G消息', 3: '视频短信' }
+export const MESSAGE_TYPE_LABEL: Record<MessageType, string> = {
+  1: '阅信',
+  2: '5G消息',
+  3: '视频短信',
+}
 
 export interface SendPreviewItem {
   mobile: string

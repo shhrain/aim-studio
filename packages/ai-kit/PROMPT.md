@@ -278,7 +278,7 @@ import { TemplatePreview, MultiVendorPreview, IntegratedPreview } from '@aim/tem
   "settings": {},
   "pages": [
     {
-      "id": "page_3qi1k1ujdl",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 364,
@@ -287,7 +287,7 @@ import { TemplatePreview, MultiVendorPreview, IntegratedPreview } from '@aim/tem
       },
       "elements": [
         {
-          "id": "el_13paxzkzqy",
+          "id": "el_01",
           "type": "image",
           "x": 0,
           "y": 0,
@@ -316,7 +316,7 @@ import { TemplatePreview, MultiVendorPreview, IntegratedPreview } from '@aim/tem
           }
         },
         {
-          "id": "el_t2vbt3b5w5",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 204,
@@ -339,7 +339,7 @@ import { TemplatePreview, MultiVendorPreview, IntegratedPreview } from '@aim/tem
           "slot": "title"
         },
         {
-          "id": "el_pd9df4fmo9",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 235,
@@ -361,7 +361,7 @@ import { TemplatePreview, MultiVendorPreview, IntegratedPreview } from '@aim/tem
           "slot": "description"
         },
         {
-          "id": "el_wpm2xyx762",
+          "id": "el_04",
           "type": "button",
           "x": 14,
           "y": 310,

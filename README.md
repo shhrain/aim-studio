@@ -17,22 +17,22 @@ pnpm storybook      # http://localhost:6006  组件与预览矩阵
 
 ## 仓库结构
 
-| 路径 | 说明 |
-| --- | --- |
-| `apps/editor` | Next.js 模板编辑器（PC）：版式库、画布、属性面板、参数、预检、多厂商预览、提交审核 |
-| `apps/mobile` | Next.js 5G 阅信体验 H5：模板列表/详情、测试发送、发送记录、通讯录、能力查询、扫码预览 |
-| `apps/docs` | Fumadocs 文档站：产品指南、模板规范、预览 SDK、转换协议、架构、AI 使用 |
-| `apps/storybook` | Storybook：UI 组件 + 版式 × 厂商 × 协议 预览矩阵 |
-| `packages/template-schema` | 模板协议：类型与 Zod Schema、版式目录、槽位与字数限制、事件、参数、厂商矩阵 |
-| `packages/template-core` | 模板内核：文档操作、插件注册、校验与预检、AIM→RCS/RMS 转换、旧数据适配 |
-| `packages/template-preview` | 模板预览 SDK：React 渲染器、手机壳、厂商主题、多协议、iframe 嵌入、Web Component |
-| `packages/ui` | 企业级 UI 组件（shadcn/ui + Radix + Tailwind v4） |
-| `packages/api-client` | 类型化接口层 + TanStack Query hooks |
-| `packages/mock` | MSW handlers + fixtures，浏览器 / Node / Storybook / E2E 复用 |
-| `packages/ai-kit` | 面向 AI 编程 Agent 的提示词、规则与示例 |
-| `packages/utils` | 通用工具 |
-| `tooling/*` | 共享 tsconfig / eslint / tailwind token / vitest 配置 |
-| `e2e` | Playwright 端到端与视觉回归 |
+| 路径                        | 说明                                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| `apps/editor`               | Next.js 模板编辑器（PC）：版式库、画布、属性面板、参数、预检、多厂商预览、提交审核    |
+| `apps/mobile`               | Next.js 5G 阅信体验 H5：模板列表/详情、测试发送、发送记录、通讯录、能力查询、扫码预览 |
+| `apps/docs`                 | Fumadocs 文档站：产品指南、模板规范、预览 SDK、转换协议、架构、AI 使用                |
+| `apps/storybook`            | Storybook：UI 组件 + 版式 × 厂商 × 协议 预览矩阵                                      |
+| `packages/template-schema`  | 模板协议：类型与 Zod Schema、版式目录、槽位与字数限制、事件、参数、厂商矩阵           |
+| `packages/template-core`    | 模板内核：文档操作、插件注册、校验与预检、AIM→RCS/RMS 转换、旧数据适配                |
+| `packages/template-preview` | 模板预览 SDK：React 渲染器、手机壳、厂商主题、多协议、iframe 嵌入、Web Component      |
+| `packages/ui`               | 企业级 UI 组件（shadcn/ui + Radix + Tailwind v4）                                     |
+| `packages/api-client`       | 类型化接口层 + TanStack Query hooks                                                   |
+| `packages/mock`             | MSW handlers + fixtures，浏览器 / Node / Storybook / E2E 复用                         |
+| `packages/ai-kit`           | 面向 AI 编程 Agent 的提示词、规则与示例                                               |
+| `packages/utils`            | 通用工具                                                                              |
+| `tooling/*`                 | 共享 tsconfig / eslint / tailwind token / vitest 配置                                 |
+| `e2e`                       | Playwright 端到端与视觉回归                                                           |
 
 ## 常用命令
 

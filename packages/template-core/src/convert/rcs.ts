@@ -43,7 +43,9 @@ function splitContent(content: LegacyElement[]) {
   return {
     pagesDB,
     buttons: pagesDB.filter((t) => t.type === 'button').reverse(),
-    media: pagesDB.filter((t) => t.type === 'image' || t.type === 'video' || t.type === 'audio' || t.type === 'swiper'),
+    media: pagesDB.filter(
+      (t) => t.type === 'image' || t.type === 'video' || t.type === 'audio' || t.type === 'swiper',
+    ),
     texts: pagesDB.filter((t) => t.type === 'text'),
     swiper: pagesDB.filter((t) => t.type === 'swiper'),
   }
@@ -51,27 +53,32 @@ function splitContent(content: LegacyElement[]) {
 
 export function buildActionSheet(buttons: LegacyElement[]) {
   let actionShow = false
-  const actionSheet: RcsSuggestion[] = JSON.parse(JSON.stringify(buttons || [])).map((t: LegacyElement) => {
-    if (!t.event) t.event = {}
-    if (t.event.action === 'OPEN_QUICK') t.event.action = 'OPEN_BROWSER'
-    if (t.event.action === 'OPEN_APP') t.event.action = 'OPEN_BROWSER'
-    if (UNSUPPORTED_RCS_ACTIONS[t.event.action]) {
-      actionShow = true
-      t.event.action = 'OPEN_URL'
-      t.event.target = ''
-    }
-    const type = RCS_ACTION_TYPE[t.event.action]
-    return {
-      type,
-      name: replaceSymbol(t.text),
-      actionDetail: JSON.stringify(
-        type === 'urlAction'
-          ? { url: replaceSymbol(t.event.target), application: RCS_URL_APPLICATION[t.event.action] }
-          : JSON.parse(DIALER_DETAIL),
-      ),
-      action: replaceSymbol(t.event.target),
-    }
-  })
+  const actionSheet: RcsSuggestion[] = JSON.parse(JSON.stringify(buttons || [])).map(
+    (t: LegacyElement) => {
+      if (!t.event) t.event = {}
+      if (t.event.action === 'OPEN_QUICK') t.event.action = 'OPEN_BROWSER'
+      if (t.event.action === 'OPEN_APP') t.event.action = 'OPEN_BROWSER'
+      if (UNSUPPORTED_RCS_ACTIONS[t.event.action]) {
+        actionShow = true
+        t.event.action = 'OPEN_URL'
+        t.event.target = ''
+      }
+      const type = RCS_ACTION_TYPE[t.event.action]
+      return {
+        type,
+        name: replaceSymbol(t.text),
+        actionDetail: JSON.stringify(
+          type === 'urlAction'
+            ? {
+                url: replaceSymbol(t.event.target),
+                application: RCS_URL_APPLICATION[t.event.action],
+              }
+            : JSON.parse(DIALER_DETAIL),
+        ),
+        action: replaceSymbol(t.event.target),
+      }
+    },
+  )
   const editRcsBtns: (RcsSuggestion & { btIndex: number })[] = []
   actionSheet.forEach((t, index) => {
     if (!t.action) editRcsBtns.push({ btIndex: index, ...t })
@@ -85,7 +92,12 @@ interface RedpacketCtx {
   redpacketType: 1 | 2 | 3
 }
 
-export function getMedia(cardId: string, t: LegacyElement, texts: LegacyElement[], redpacketCtx: RedpacketCtx): RcsCardContent & { descriptionRms: string } {
+export function getMedia(
+  cardId: string,
+  t: LegacyElement,
+  texts: LegacyElement[],
+  redpacketCtx: RedpacketCtx,
+): RcsCardContent & { descriptionRms: string } {
   let workTexts = texts
   const texts1 = texts.filter((item) => item.title === 'true')
   let redpacketType = redpacketCtx.redpacketType || 1
@@ -131,7 +143,10 @@ export function getMedia(cardId: string, t: LegacyElement, texts: LegacyElement[
   }
 }
 
-export function buildRedpacketOverlay({ texts = [], avatar }: { texts?: LegacyElement[]; avatar?: LegacyElement } = {}) {
+export function buildRedpacketOverlay({
+  texts = [],
+  avatar,
+}: { texts?: LegacyElement[]; avatar?: LegacyElement } = {}) {
   const scale = REDPACKET_WIDTH / AIM_CANVAS_WIDTH
   function box(el: LegacyElement | undefined, fallbackFont: number) {
     if (!el) return null
@@ -160,8 +175,15 @@ export function buildRedpacketOverlay({ texts = [], avatar }: { texts?: LegacyEl
   }
 }
 
-export function getRedpacket(cardId: string, arr: LegacyElement[], texts: LegacyElement[], buttons: LegacyElement[], params: LegacyParam[]) {
-  if (!isRedpacket(cardId)) return { content: [] as RcsCardContent[], redpacketType: 1 as const, btnFlag: false }
+export function getRedpacket(
+  cardId: string,
+  arr: LegacyElement[],
+  texts: LegacyElement[],
+  buttons: LegacyElement[],
+  params: LegacyParam[],
+) {
+  if (!isRedpacket(cardId))
+    return { content: [] as RcsCardContent[], redpacketType: 1 as const, btnFlag: false }
   const btnFlag = !!(buttons[0] && (buttons[0].event.target || '').match(PARAM_INPUT_REG))
   const foundBg = arr.find((t) => t.isBgimg)
   const img = arr.find((t) => !t.isBgimg)
@@ -169,25 +191,42 @@ export function getRedpacket(cardId: string, arr: LegacyElement[], texts: Legacy
     ...(foundBg || { type: 'image', src: '', isBgimg: true }),
     height: REDPACKET_HEIGHT,
     width: REDPACKET_WIDTH,
-    src: params.length && (params.length > 1 || !btnFlag) ? REDPACKET_BG.TYPE23 : REDPACKET_BG.TYPE1,
+    src:
+      params.length && (params.length > 1 || !btnFlag) ? REDPACKET_BG.TYPE23 : REDPACKET_BG.TYPE1,
     avatarUrl: img ? img.src : '',
   }
   const redpacketCtx: RedpacketCtx = { paramsLength: params.length, btnFlag, redpacketType: 1 }
-  const item = getMedia(cardId, bg, texts, redpacketCtx) as RcsCardContent & { descriptionRms: string }
+  const item = getMedia(cardId, bg, texts, redpacketCtx) as RcsCardContent & {
+    descriptionRms: string
+  }
   item.overlay = buildRedpacketOverlay({ texts, avatar: img })
   return { content: [item], redpacketType: redpacketCtx.redpacketType, btnFlag }
 }
 
-export function buildSourceMaterial({ cardId, content, params = [] }: { cardId: string; content: LegacyElement[]; params?: LegacyParam[] }) {
+export function buildSourceMaterial({
+  cardId,
+  content,
+  params = [],
+}: {
+  cardId: string
+  content: LegacyElement[]
+  params?: LegacyParam[]
+}) {
   const { buttons, media, texts, swiper } = splitContent(content)
   const { actionSheet, actionShow, editRcsBtns } = buildActionSheet(buttons)
-  const redpacketCtx: RedpacketCtx = { paramsLength: params.length, btnFlag: false, redpacketType: 1 }
+  const redpacketCtx: RedpacketCtx = {
+    paramsLength: params.length,
+    btnFlag: false,
+    redpacketType: 1,
+  }
   let redpacketType: 1 | 2 | 3 = 1
   let materialContent: (RcsCardContent & { descriptionRms?: string })[]
   if (SINGLE_MEDIA_IDS.includes(cardId)) {
     materialContent = media[0] ? [getMedia(cardId, media[0], texts, redpacketCtx)] : []
   } else if (swiper.length) {
-    materialContent = (swiper[0]!.swiper.swiperArr || []).map((t: LegacyElement) => getMedia(cardId, t, texts, redpacketCtx))
+    materialContent = (swiper[0]!.swiper.swiperArr || []).map((t: LegacyElement) =>
+      getMedia(cardId, t, texts, redpacketCtx),
+    )
   } else {
     const packed = getRedpacket(cardId, media, texts, buttons, params)
     materialContent = packed.content
@@ -197,14 +236,33 @@ export function buildSourceMaterial({ cardId, content, params = [] }: { cardId: 
     tplType: CARD_TPL_IDS.includes(cardId) ? 'card' : swiper.length ? 'multiCard' : 'media',
     actionSheet,
     params: params.length
-      ? params.map((t, i) => ({ pName: '${' + t.name + '}', pType: 'TEXT' as const, pLen: 100, pDesc: `${t.example}`, indices: [i] }))
+      ? params.map((t, i) => ({
+          pName: '${' + t.name + '}',
+          pType: 'TEXT' as const,
+          pLen: 100,
+          pDesc: `${t.example}`,
+          indices: [i],
+        }))
       : undefined,
     content: materialContent,
   }
-  return { sourceMaterial, actionShow, editRcsBtns, redpacketType, buttons, media, swiper, needCapture: isRedpacket(cardId) }
+  return {
+    sourceMaterial,
+    actionShow,
+    editRcsBtns,
+    redpacketType,
+    buttons,
+    media,
+    swiper,
+    needCapture: isRedpacket(cardId),
+  }
 }
 
-export function buildRcsTplContent(sourceMaterial: RcsSourceMaterial, cardId: string, redpacketType: number): RcsSourceMaterial {
+export function buildRcsTplContent(
+  sourceMaterial: RcsSourceMaterial,
+  cardId: string,
+  redpacketType: number,
+): RcsSourceMaterial {
   const tplContent: RcsSourceMaterial = JSON.parse(JSON.stringify(sourceMaterial || {}))
   if (tplContent.content) tplContent.content.forEach((t) => delete t.overlay)
   if (isRedpacket(cardId)) {

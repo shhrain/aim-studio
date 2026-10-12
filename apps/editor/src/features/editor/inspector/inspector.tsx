@@ -25,16 +25,20 @@ export function Inspector() {
 
   if (!doc) return null
   const free = doc.pages[0]?.mode === 'absolute'
-  const issues = el ? (report?.issues ?? []).filter((i) => i.elementId === el.id && i.level !== 'info') : []
+  const issues = el
+    ? (report?.issues ?? []).filter((i) => i.elementId === el.id && i.level !== 'info')
+    : []
 
   return (
-    <aside className="flex w-[340px] shrink-0 flex-col border-l bg-card">
+    <aside className="bg-card flex w-[340px] shrink-0 flex-col border-l">
       {el ? (
         <>
           <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold">{slot?.label ?? ELEMENT_META[el.type].label}</div>
-              <div className="text-[11px] text-muted-foreground">
+              <div className="truncate text-sm font-semibold">
+                {slot?.label ?? ELEMENT_META[el.type].label}
+              </div>
+              <div className="text-muted-foreground text-[11px]">
                 {ELEMENT_META[el.type].label}
                 {slot?.maxLength ? ` · 最多 ${slot.maxLength} 字` : ''}
               </div>
@@ -81,7 +85,11 @@ export function Inspector() {
           {issues.length > 0 && (
             <div className="space-y-1.5 border-b p-3">
               {issues.map((i, idx) => (
-                <Alert key={idx} variant={i.level === 'error' ? 'destructive' : 'warning'} className="py-2 text-xs">
+                <Alert
+                  key={idx}
+                  variant={i.level === 'error' ? 'destructive' : 'warning'}
+                  className="py-2 text-xs"
+                >
                   {i.message}
                 </Alert>
               ))}
@@ -102,7 +110,9 @@ export function Inspector() {
                     el,
                     slot,
                     onSet: (path: Path, value: unknown) =>
-                      mutateElement(el.id, (draft) => setIn(draft.props as Record<string, unknown>, path, value)),
+                      mutateElement(el.id, (draft) =>
+                        setIn(draft.props as Record<string, unknown>, path, value),
+                      ),
                   }}
                 />
               </TabsContent>
@@ -110,7 +120,11 @@ export function Inspector() {
                 <StyleEditor
                   el={el}
                   free={free}
-                  onStyle={(patch) => update((d) => updateElement(d, el.id, { style: patch as Record<string, unknown> }))}
+                  onStyle={(patch) =>
+                    update((d) =>
+                      updateElement(d, el.id, { style: patch as Record<string, unknown> }),
+                    )
+                  }
                   onPatch={(patch) => update((d) => updateElement(d, el.id, patch as never))}
                 />
               </TabsContent>
@@ -119,7 +133,9 @@ export function Inspector() {
                   value={el.event}
                   elementType={el.type}
                   optional={el.type !== 'button'}
-                  onChange={(event: ActionEvent | undefined) => mutateElement(el.id, (draft) => void (draft.event = event))}
+                  onChange={(event: ActionEvent | undefined) =>
+                    mutateElement(el.id, (draft) => void (draft.event = event))
+                  }
                 />
               </TabsContent>
             </ScrollArea>
@@ -128,7 +144,7 @@ export function Inspector() {
       ) : (
         <>
           <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
-            <Settings2Icon className="size-4 text-muted-foreground" />
+            <Settings2Icon className="text-muted-foreground size-4" />
             <span className="text-sm font-semibold">模板设置</span>
           </header>
           <ScrollArea className="min-h-0 flex-1">

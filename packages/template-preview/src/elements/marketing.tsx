@@ -7,9 +7,23 @@ import { u, useAct, useResolver } from '../hooks'
 import { renderTextHtml, renderTextPlain } from '../params'
 import { ECOMMERCE_PALETTE } from '../themes'
 
-function Html({ text, className, style }: { text: string | undefined; className?: string; style?: React.CSSProperties }) {
+function Html({
+  text,
+  className,
+  style,
+}: {
+  text: string | undefined
+  className?: string
+  style?: React.CSSProperties
+}) {
   const r = useResolver()
-  return <div className={className} style={style} dangerouslySetInnerHTML={{ __html: renderTextHtml(text, r) }} />
+  return (
+    <div
+      className={className}
+      style={style}
+      dangerouslySetInnerHTML={{ __html: renderTextHtml(text, r) }}
+    />
+  )
 }
 
 export function ECommerceView({ el }: { el: TemplateElement<'eCommerce'> }) {
@@ -27,7 +41,9 @@ export function ECommerceView({ el }: { el: TemplateElement<'eCommerce'> }) {
   const media =
     p.media === 'video' && p.video ? (
       <div className="aim-media" style={{ height: u(336) }}>
-        {p.video.cover && <img className="aim-media-cover" src={p.video.cover} alt="" draggable={false} />}
+        {p.video.cover && (
+          <img className="aim-media-cover" src={p.video.cover} alt="" draggable={false} />
+        )}
         <span className="aim-play" />
       </div>
     ) : (
@@ -35,7 +51,13 @@ export function ECommerceView({ el }: { el: TemplateElement<'eCommerce'> }) {
         <div className="aim-swiper-track" style={{ transform: `translateX(-${index * 100}%)` }}>
           {p.images.map((img, i) => (
             <div key={i} className="aim-swiper-slide">
-              <img className="aim-img" src={img.src || undefined} alt="" draggable={false} onClick={(e) => act(img.event, { element: el, image: img.src, e })} />
+              <img
+                className="aim-img"
+                src={img.src || undefined}
+                alt=""
+                draggable={false}
+                onClick={(e) => act(img.event, { element: el, image: img.src, e })}
+              />
             </div>
           ))}
         </div>
@@ -57,7 +79,9 @@ export function ECommerceView({ el }: { el: TemplateElement<'eCommerce'> }) {
             {p.currency}
             <span style={{ fontSize: u(24) }}>{renderTextPlain(p.price, r)}</span>
           </span>
-          {p.originalPrice && <s className="aim-t3">{p.currency + renderTextPlain(p.originalPrice, r)}</s>}
+          {p.originalPrice && (
+            <s className="aim-t3">{p.currency + renderTextPlain(p.originalPrice, r)}</s>
+          )}
           {p.tag && <span className="aim-tag">{renderTextPlain(p.tag, r)}</span>}
         </div>
         <Html text={p.title} className="aim-t1 aim-clamp-1" />
@@ -72,7 +96,13 @@ export function ECommerceView({ el }: { el: TemplateElement<'eCommerce'> }) {
                 flex: 1,
                 height: u(38),
                 ...(palette
-                  ? { background: (i === p.buttons.length - 1 ? ECOMMERCE_PALETTE.right : ECOMMERCE_PALETTE.left)[p.themeColor], color: '#fff', border: 'none' }
+                  ? {
+                      background: (i === p.buttons.length - 1
+                        ? ECOMMERCE_PALETTE.right
+                        : ECOMMERCE_PALETTE.left)[p.themeColor],
+                      color: '#fff',
+                      border: 'none',
+                    }
                   : {}),
               }}
               onClick={(e) => act(b.event, { element: el, label: b.text, e })}
@@ -94,7 +124,15 @@ export function MoreGoodsView({ el }: { el: TemplateElement<'moreGoods'> }) {
     <div className="aim-col" style={{ padding: u(12), gap: u(10) }}>
       <div className="aim-row">
         {p.showIcon && (
-          <span style={{ width: u(28), height: u(28), borderRadius: '50%', background: 'var(--aim-accent)', flexShrink: 0 }} />
+          <span
+            style={{
+              width: u(28),
+              height: u(28),
+              borderRadius: '50%',
+              background: 'var(--aim-accent)',
+              flexShrink: 0,
+            }}
+          />
         )}
         <div style={{ minWidth: 0 }}>
           <Html text={p.title} className="aim-t1 aim-clamp-1" style={{ fontSize: u(15) }} />
@@ -102,10 +140,33 @@ export function MoreGoodsView({ el }: { el: TemplateElement<'moreGoods'> }) {
         </div>
       </div>
       {p.items.map((item, i) => (
-        <div key={i} className="aim-row" style={{ background: 'var(--aim-card-bg,#fff)', borderRadius: u(10), padding: u(8), alignItems: 'stretch', gap: u(10) }}>
-          <img className="aim-img" src={item.image || undefined} alt="" draggable={false} style={{ width: u(96), height: u(96), borderRadius: u(8), flexShrink: 0 }} />
-          <div className="aim-col" style={{ flex: 1, minWidth: 0, gap: u(4), justifyContent: 'space-between' }}>
-            <Html text={item.name} className="aim-clamp-2" style={{ fontSize: u(14), fontWeight: 500 }} />
+        <div
+          key={i}
+          className="aim-row"
+          style={{
+            background: 'var(--aim-card-bg,#fff)',
+            borderRadius: u(10),
+            padding: u(8),
+            alignItems: 'stretch',
+            gap: u(10),
+          }}
+        >
+          <img
+            className="aim-img"
+            src={item.image || undefined}
+            alt=""
+            draggable={false}
+            style={{ width: u(96), height: u(96), borderRadius: u(8), flexShrink: 0 }}
+          />
+          <div
+            className="aim-col"
+            style={{ flex: 1, minWidth: 0, gap: u(4), justifyContent: 'space-between' }}
+          >
+            <Html
+              text={item.name}
+              className="aim-clamp-2"
+              style={{ fontSize: u(14), fontWeight: 500 }}
+            />
             {item.description && <Html text={item.description} className="aim-t3 aim-clamp-1" />}
             <div className="aim-row aim-between">
               <div style={{ minWidth: 0 }}>
@@ -118,7 +179,11 @@ export function MoreGoodsView({ el }: { el: TemplateElement<'moreGoods'> }) {
                   </s>
                 )}
               </div>
-              <div className="aim-btn aim-mini-btn" role="button" onClick={(e) => act(item.button.event, { element: el, label: item.button.text, e })}>
+              <div
+                className="aim-btn aim-mini-btn"
+                role="button"
+                onClick={(e) => act(item.button.event, { element: el, label: item.button.text, e })}
+              >
                 {renderTextPlain(item.button.text, r)}
               </div>
             </div>
@@ -137,22 +202,38 @@ export function EcommerceCouponView({ el }: { el: TemplateElement<'ecommerceCoup
   return (
     <div className="aim-col" style={{ padding: u(12), gap: u(10) }}>
       <div className="aim-row">
-        {p.logo && <img src={p.logo} alt="" style={{ width: u(32), height: u(32), borderRadius: '50%' }} />}
+        {p.logo && (
+          <img src={p.logo} alt="" style={{ width: u(32), height: u(32), borderRadius: '50%' }} />
+        )}
         <div style={{ minWidth: 0 }}>
           <Html text={p.title} className="aim-t1 aim-clamp-1" style={{ fontSize: u(15) }} />
           <Html text={p.subtitle} className="aim-t3 aim-clamp-1" />
         </div>
       </div>
-      <div className="aim-voucher" style={{ background: 'linear-gradient(90deg,#FF6A3D,#E84026)', color: '#fff' }}>
-        <div className="aim-voucher-left" style={{ color: '#fff', borderRightColor: 'rgba(255,255,255,.45)' }}>
+      <div
+        className="aim-voucher"
+        style={{ background: 'linear-gradient(90deg,#FF6A3D,#E84026)', color: '#fff' }}
+      >
+        <div
+          className="aim-voucher-left"
+          style={{ color: '#fff', borderRightColor: 'rgba(255,255,255,.45)' }}
+        >
           <div className="aim-voucher-amount">
             <small>¥</small>
             {renderTextPlain(p.coupon.amount, r)}
           </div>
         </div>
         <div className="aim-voucher-right">
-          <Html text={p.coupon.name} className="aim-clamp-1" style={{ fontSize: u(15), fontWeight: 600 }} />
-          <Html text={p.coupon.description} className="aim-clamp-2" style={{ fontSize: u(11), opacity: 0.9 }} />
+          <Html
+            text={p.coupon.name}
+            className="aim-clamp-1"
+            style={{ fontSize: u(15), fontWeight: 600 }}
+          />
+          <Html
+            text={p.coupon.description}
+            className="aim-clamp-2"
+            style={{ fontSize: u(11), opacity: 0.9 }}
+          />
         </div>
         <div
           role="button"
@@ -176,11 +257,31 @@ export function EcommerceCouponView({ el }: { el: TemplateElement<'ecommerceCoup
           {p.coupon.pickStyle === 'grab' ? '抢' : '领'}
         </div>
       </div>
-      <div style={horizontal ? { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: u(8) } : { display: 'flex', flexDirection: 'column', gap: u(8) }}>
+      <div
+        style={
+          horizontal
+            ? { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: u(8) }
+            : { display: 'flex', flexDirection: 'column', gap: u(8) }
+        }
+      >
         {p.items.map((item, i) =>
           horizontal ? (
-            <div key={i} className="aim-col" style={{ gap: u(4), background: 'var(--aim-card-bg,#fff)', borderRadius: u(8), padding: u(6) }}>
-              <img className="aim-img" src={item.image || undefined} alt="" style={{ height: u(90), borderRadius: u(6) }} />
+            <div
+              key={i}
+              className="aim-col"
+              style={{
+                gap: u(4),
+                background: 'var(--aim-card-bg,#fff)',
+                borderRadius: u(8),
+                padding: u(6),
+              }}
+            >
+              <img
+                className="aim-img"
+                src={item.image || undefined}
+                alt=""
+                style={{ height: u(90), borderRadius: u(6) }}
+              />
               <span className="aim-price" style={{ fontSize: u(14) }}>
                 ¥{renderTextPlain(item.price, r)}
               </span>
@@ -188,8 +289,22 @@ export function EcommerceCouponView({ el }: { el: TemplateElement<'ecommerceCoup
               {item.tag && <span className="aim-tag">{renderTextPlain(item.tag, r)}</span>}
             </div>
           ) : (
-            <div key={i} className="aim-row" style={{ background: 'var(--aim-card-bg,#fff)', borderRadius: u(10), padding: u(8), gap: u(10) }}>
-              <img className="aim-img" src={item.image || undefined} alt="" style={{ width: u(80), height: u(80), borderRadius: u(8), flexShrink: 0 }} />
+            <div
+              key={i}
+              className="aim-row"
+              style={{
+                background: 'var(--aim-card-bg,#fff)',
+                borderRadius: u(10),
+                padding: u(8),
+                gap: u(10),
+              }}
+            >
+              <img
+                className="aim-img"
+                src={item.image || undefined}
+                alt=""
+                style={{ width: u(80), height: u(80), borderRadius: u(8), flexShrink: 0 }}
+              />
               <div className="aim-col" style={{ flex: 1, minWidth: 0, gap: u(6) }}>
                 <Html text={item.name} className="aim-clamp-2" style={{ fontSize: u(13) }} />
                 <div className="aim-row aim-between">
@@ -197,7 +312,13 @@ export function EcommerceCouponView({ el }: { el: TemplateElement<'ecommerceCoup
                     ¥{renderTextPlain(item.price, r)}
                   </span>
                   {item.button && (
-                    <div className="aim-btn aim-mini-btn" role="button" onClick={(e) => act(item.button?.event, { element: el, label: item.button?.text, e })}>
+                    <div
+                      className="aim-btn aim-mini-btn"
+                      role="button"
+                      onClick={(e) =>
+                        act(item.button?.event, { element: el, label: item.button?.text, e })
+                      }
+                    >
                       {renderTextPlain(item.button.text, r)}
                     </div>
                   )}
@@ -217,7 +338,17 @@ function voucherDate(v: Voucher): string {
   return (v.dateRange ?? []).join('~')
 }
 
-function VoucherCard({ v, el, showButton, dynamic }: { v: Voucher; el: AnyElement; showButton: boolean; dynamic?: boolean }) {
+function VoucherCard({
+  v,
+  el,
+  showButton,
+  dynamic,
+}: {
+  v: Voucher
+  el: AnyElement
+  showButton: boolean
+  dynamic?: boolean
+}) {
   const r = useResolver()
   const act = useAct()
   const unit = v.voucherType === 'discount' ? '折' : ''
@@ -235,7 +366,11 @@ function VoucherCard({ v, el, showButton, dynamic }: { v: Voucher; el: AnyElemen
         <div className="aim-row" style={{ gap: u(6) }}>
           <span className="aim-tag">{renderTextPlain(v.tagName, r)}</span>
         </div>
-        <div className="aim-clamp-2" style={{ fontSize: u(13), fontWeight: 600 }} dangerouslySetInnerHTML={{ __html: renderTextHtml(v.name, r) }} />
+        <div
+          className="aim-clamp-2"
+          style={{ fontSize: u(13), fontWeight: 600 }}
+          dangerouslySetInnerHTML={{ __html: renderTextHtml(v.name, r) }}
+        />
         <div className="aim-t3" style={{ fontSize: u(11) }}>
           {voucherDate(v)}
         </div>
@@ -258,8 +393,18 @@ function VoucherCard({ v, el, showButton, dynamic }: { v: Voucher; el: AnyElemen
 
 export function CardVoucherView({ el }: { el: TemplateElement<'cardVoucher'> }) {
   return (
-    <div className="aim-col" style={{ padding: u(12), background: 'var(--aim-card-bg,#fff)', borderRadius: u(14) }}>
-      {el.props.image && <img className="aim-img" src={el.props.image} alt="" style={{ height: u(100), borderRadius: u(8) }} />}
+    <div
+      className="aim-col"
+      style={{ padding: u(12), background: 'var(--aim-card-bg,#fff)', borderRadius: u(14) }}
+    >
+      {el.props.image && (
+        <img
+          className="aim-img"
+          src={el.props.image}
+          alt=""
+          style={{ height: u(100), borderRadius: u(8) }}
+        />
+      )}
       <VoucherCard v={el.props} el={el} showButton dynamic={el.props.dynamicButton} />
     </div>
   )
@@ -271,12 +416,20 @@ export function CardVouchersView({ el }: { el: TemplateElement<'cardVouchers'> }
   const p = el.props
   return (
     <div className="aim-col" style={{ padding: u(12), gap: u(10) }}>
-      <div className="aim-t1 aim-clamp-1" dangerouslySetInnerHTML={{ __html: renderTextHtml(p.title, r) }} />
+      <div
+        className="aim-t1 aim-clamp-1"
+        dangerouslySetInnerHTML={{ __html: renderTextHtml(p.title, r) }}
+      />
       {p.items.map((v, i) => (
         <VoucherCard key={i} v={v} el={el} showButton={p.buttonMode === 'each'} />
       ))}
       {p.buttonMode === 'bottom' && p.button && (
-        <div className="aim-btn aim-voucher-btn" role="button" style={{ height: u(40) }} onClick={(e) => act(p.button?.event, { element: el, label: p.button?.text, e })}>
+        <div
+          className="aim-btn aim-voucher-btn"
+          role="button"
+          style={{ height: u(40) }}
+          onClick={(e) => act(p.button?.event, { element: el, label: p.button?.text, e })}
+        >
           {renderTextPlain(p.button.text, r)}
         </div>
       )}
@@ -295,10 +448,31 @@ export function CountdownView({ el }: { el: TemplateElement<'countdown'> }) {
   }, [thumbnail])
   const left = Math.max(0, el.props.endTime - now)
   const s = Math.floor(left / 1000)
-  const parts = [Math.floor(s / 86400), Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60]
-  const box = { minWidth: u(26), height: u(26), padding: `0 ${u(4)}`, borderRadius: u(4), background: '#1F2329', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontVariantNumeric: 'tabular-nums' } as const
+  const parts = [
+    Math.floor(s / 86400),
+    Math.floor((s % 86400) / 3600),
+    Math.floor((s % 3600) / 60),
+    s % 60,
+  ]
+  const box = {
+    minWidth: u(26),
+    height: u(26),
+    padding: `0 ${u(4)}`,
+    borderRadius: u(4),
+    background: '#1F2329',
+    color: '#fff',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 600,
+    fontVariantNumeric: 'tabular-nums',
+  } as const
   return (
-    <div className="aim-row" style={{ height: '100%', justifyContent: 'center', gap: u(5), fontSize: u(13) }} onClick={(e) => act(el.event, { element: el, e })}>
+    <div
+      className="aim-row"
+      style={{ height: '100%', justifyContent: 'center', gap: u(5), fontSize: u(13) }}
+      onClick={(e) => act(el.event, { element: el, e })}
+    >
       <span className="aim-t2">{el.props.label}</span>
       {parts.map((n, i) => (
         <span key={i} className="aim-row" style={{ gap: u(4) }}>

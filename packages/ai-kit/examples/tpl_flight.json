@@ -49,7 +49,7 @@
   },
   "pages": [
     {
-      "id": "page_dqdjhctkzx",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 345,
@@ -58,7 +58,7 @@
       },
       "elements": [
         {
-          "id": "el_zb8s5nmnwr",
+          "id": "el_01",
           "type": "text",
           "x": 14,
           "y": 14,
@@ -81,7 +81,7 @@
           "slot": "title"
         },
         {
-          "id": "el_e6lffnd6eg",
+          "id": "el_02",
           "type": "ticketImage",
           "x": 0,
           "y": 49,
@@ -131,7 +131,7 @@
           "slot": "ticket"
         },
         {
-          "id": "el_ly4wi7kn05",
+          "id": "el_03",
           "type": "button",
           "x": 14,
           "y": 291,
@@ -156,7 +156,7 @@
           }
         },
         {
-          "id": "el_1ascxfom7s",
+          "id": "el_04",
           "type": "button",
           "x": 177,
           "y": 291,

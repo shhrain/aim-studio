@@ -45,34 +45,70 @@ function settleReview(s: StoredTemplate) {
   const report = precheck(s.document)
   const reject = !report.passed || hashOf(s.document.id + s.submittedAt) % 4 === 0
   s.status = reject ? 'rejected' : 'approved'
-  s.rejectReason = reject ? (report.errors[0]?.message ?? '图片清晰度不足，请更换高清素材后重新提交') : undefined
+  s.rejectReason = reject
+    ? (report.errors[0]?.message ?? '图片清晰度不足，请更换高清素材后重新提交')
+    : undefined
 }
 
 /** 深度检测：模拟图片质量 / 链接可达性 / 文案合规 */
-function deepIssues(doc: TemplateDocument): { issues: PrecheckIssue[]; dimensions: DeepPrecheckTask['dimensions'] } {
+function deepIssues(doc: TemplateDocument): {
+  issues: PrecheckIssue[]
+  dimensions: DeepPrecheckTask['dimensions']
+} {
   const issues: PrecheckIssue[] = []
   const json = JSON.stringify(doc.pages)
   const links = [...json.matchAll(/"target":"(https?:[^"]+)"/g)].map((m) => m[1]!)
   for (const l of links) {
-    if (!isHttpsUrl(l)) issues.push({ code: 'deep.link', level: 'error', message: `链接不安全：${truncate(l, 40)}` })
+    if (!isHttpsUrl(l))
+      issues.push({ code: 'deep.link', level: 'error', message: `链接不安全：${truncate(l, 40)}` })
     else if (l.includes('example.com') && hashOf(l) % 7 === 0)
-      issues.push({ code: 'deep.link', level: 'warning', message: `链接响应较慢（>3s）：${truncate(l, 40)}` })
+      issues.push({
+        code: 'deep.link',
+        level: 'warning',
+        message: `链接响应较慢（>3s）：${truncate(l, 40)}`,
+      })
   }
   const images = doc.pages.flatMap((p) => p.elements).filter((e) => e.type === 'image')
   for (const img of images) {
     if (img.type === 'image' && isPlaceholderSrc(img.props.src))
-      issues.push({ code: 'deep.image', level: 'error', elementId: img.id, message: '检测到默认占位图，请替换为实际素材' })
+      issues.push({
+        code: 'deep.image',
+        level: 'error',
+        elementId: img.id,
+        message: '检测到默认占位图，请替换为实际素材',
+      })
     else if (img.type === 'image' && img.w >= 300 && hashOf(img.props.src.slice(-40)) % 5 === 0)
-      issues.push({ code: 'deep.image', level: 'warning', elementId: img.id, message: '图片分辨率偏低，建议使用宽度 ≥ 1080px 的素材' })
+      issues.push({
+        code: 'deep.image',
+        level: 'warning',
+        elementId: img.id,
+        message: '图片分辨率偏低，建议使用宽度 ≥ 1080px 的素材',
+      })
   }
   const textLen = charLength(json.replace(/<[^>]+>/g, ''))
-  if (textLen > 6000) issues.push({ code: 'deep.size', level: 'warning', message: '模板内容较大，可能影响终端加载速度' })
-  const score = (code: string) => Math.max(60, 100 - issues.filter((i) => i.code === code).length * 15)
+  if (textLen > 6000)
+    issues.push({
+      code: 'deep.size',
+      level: 'warning',
+      message: '模板内容较大，可能影响终端加载速度',
+    })
+  const score = (code: string) =>
+    Math.max(60, 100 - issues.filter((i) => i.code === code).length * 15)
   return {
     issues,
     dimensions: [
-      { key: 'image', label: '图片质量', score: score('deep.image'), passed: !issues.some((i) => i.code === 'deep.image' && i.level === 'error') },
-      { key: 'link', label: '链接可达性', score: score('deep.link'), passed: !issues.some((i) => i.code === 'deep.link' && i.level === 'error') },
+      {
+        key: 'image',
+        label: '图片质量',
+        score: score('deep.image'),
+        passed: !issues.some((i) => i.code === 'deep.image' && i.level === 'error'),
+      },
+      {
+        key: 'link',
+        label: '链接可达性',
+        score: score('deep.link'),
+        passed: !issues.some((i) => i.code === 'deep.link' && i.level === 'error'),
+      },
       { key: 'content', label: '文案合规', score: 96, passed: true },
       { key: 'size', label: '加载性能', score: score('deep.size'), passed: true },
     ],
@@ -112,7 +148,11 @@ export const editorHandlers = [
     list.sort((a, b) => b.document.meta.updatedAt - a.document.meta.updatedAt)
     const page = Number(sp.get('page') ?? 1)
     const size = Number(sp.get('size') ?? 24)
-    return ok(list.slice((page - 1) * size, page * size).map(summary), { total: list.length, pageIndex: page, pageSize: size })
+    return ok(list.slice((page - 1) * size, page * size).map(summary), {
+      total: list.length,
+      pageIndex: page,
+      pageSize: size,
+    })
   }),
 
   http.get(`${P}/templates/:id`, async ({ params }) => {
@@ -130,9 +170,13 @@ export const editorHandlers = [
     if (blocked) return blocked
     const doc = (await request.json()) as TemplateDocument
     const parsed = parseTemplateDocument(doc)
-    if (!parsed.success) return fail(SUB_CODE.PARAM, `模板结构不合法：${parsed.error.issues[0]?.message}`)
+    if (!parsed.success)
+      return fail(SUB_CODE.PARAM, `模板结构不合法：${parsed.error.issues[0]?.message}`)
     const db = await getDb()
-    db.templates[doc.id] = { document: { ...doc, meta: { ...doc.meta, updatedAt: Date.now() } }, status: 'draft' }
+    db.templates[doc.id] = {
+      document: { ...doc, meta: { ...doc.meta, updatedAt: Date.now() } },
+      status: 'draft',
+    }
     commit()
     return ok(summary(db.templates[doc.id]!))
   }),
@@ -144,7 +188,13 @@ export const editorHandlers = [
     const db = await getDb()
     const prev = db.templates[String(params.id)]
     if (prev?.status === 'reviewing') return fail(SUB_CODE.PARAM, '模板审核中，暂不可修改')
-    db.templates[String(params.id)] = { document: { ...doc, meta: { ...doc.meta, updatedAt: Date.now() } }, status: prev?.status === 'approved' || prev?.status === 'rejected' ? 'draft' : (prev?.status ?? 'draft') }
+    db.templates[String(params.id)] = {
+      document: { ...doc, meta: { ...doc.meta, updatedAt: Date.now() } },
+      status:
+        prev?.status === 'approved' || prev?.status === 'rejected'
+          ? 'draft'
+          : (prev?.status ?? 'draft'),
+    }
     commit()
     return ok(summary(db.templates[String(params.id)]!))
   }),
@@ -179,7 +229,15 @@ export const editorHandlers = [
     const db = await getDb()
     const now = Date.now()
     db.templates[String(params.id)] = {
-      document: { ...body.document, meta: { ...body.document.meta, updatedAt: now, submittedAt: now, tplId: body.document.meta.tplId ?? `T${now}` } },
+      document: {
+        ...body.document,
+        meta: {
+          ...body.document.meta,
+          updatedAt: now,
+          submittedAt: now,
+          tplId: body.document.meta.tplId ?? `T${now}`,
+        },
+      },
       status: 'reviewing',
       submittedAt: now,
     }
@@ -203,7 +261,11 @@ export const editorHandlers = [
     if (blocked) return blocked
     const body = (await request.json()) as UploadMaterialBody
     const limit = body.type === 'image' ? 2 * 1024 * 1024 : 10 * 1024 * 1024
-    if (body.size > limit) return fail(SUB_CODE.PARAM, `文件过大，${body.type === 'image' ? '图片不超过 2MB' : '视频不超过 10MB'}`)
+    if (body.size > limit)
+      return fail(
+        SUB_CODE.PARAM,
+        `文件过大，${body.type === 'image' ? '图片不超过 2MB' : '视频不超过 10MB'}`,
+      )
     const db = await getDb()
     const material: Material = { ...body, id: uid('mat'), createdAt: Date.now() }
     db.materials.unshift(material)
@@ -231,8 +293,19 @@ export const editorHandlers = [
     const task = tasks.get(String(params.taskId))
     if (!task) return fail(SUB_CODE.NOT_FOUND, '检测任务不存在或已过期')
     const progress = Math.min(100, Math.round(((Date.now() - task.startedAt) / 4_000) * 100))
-    if (progress < 100) return ok<DeepPrecheckTask>({ taskId: String(params.taskId), status: 'running', progress, issues: [] })
-    return ok<DeepPrecheckTask>({ taskId: String(params.taskId), status: 'done', progress: 100, ...deepIssues(task.doc) })
+    if (progress < 100)
+      return ok<DeepPrecheckTask>({
+        taskId: String(params.taskId),
+        status: 'running',
+        progress,
+        issues: [],
+      })
+    return ok<DeepPrecheckTask>({
+      taskId: String(params.taskId),
+      status: 'done',
+      progress: 100,
+      ...deepIssues(task.doc),
+    })
   }),
 
   http.post(`${P}/tools/link-check`, async ({ request }) => {
@@ -241,7 +314,17 @@ export const editorHandlers = [
     const { url } = (await request.json()) as { url: string }
     const https = isHttpsUrl(url)
     const reachable = https && hashOf(url) % 9 !== 0
-    return ok({ url, https, reachable, status: reachable ? 200 : 404, message: !https ? '链接需以 https:// 开头' : reachable ? '链接可正常访问' : '链接无法访问（404），请检查地址' })
+    return ok({
+      url,
+      https,
+      reachable,
+      status: reachable ? 200 : 404,
+      message: !https
+        ? '链接需以 https:// 开头'
+        : reachable
+          ? '链接可正常访问'
+          : '链接无法访问（404），请检查地址',
+    })
   }),
 
   http.post(`${P}/ai/copywriting`, async ({ request }) => {
@@ -251,7 +334,9 @@ export const editorHandlers = [
     const topic = body.prompt.trim().slice(0, 8) || body.layoutName
     const bank = AI_BANK[body.field]
     const seed = hashOf(body.prompt + body.field)
-    const candidates = Array.from({ length: body.count ?? 3 }, (_, i) => bank[(seed + i) % bank.length]!(topic))
+    const candidates = Array.from({ length: body.count ?? 3 }, (_, i) =>
+      bank[(seed + i) % bank.length]!(topic),
+    )
       .map((s) => truncate(s, body.maxLength, ''))
       .filter((s, i, arr) => arr.indexOf(s) === i)
     return ok({ candidates })

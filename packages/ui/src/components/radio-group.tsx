@@ -4,22 +4,34 @@ import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 import * as React from 'react'
 import { cn } from '../lib/utils'
 
-export function RadioGroup({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
-  return <RadioGroupPrimitive.Root data-slot="radio-group" className={cn('grid gap-2.5', className)} {...props} />
+export function RadioGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+  return (
+    <RadioGroupPrimitive.Root
+      data-slot="radio-group"
+      className={cn('grid gap-2.5', className)}
+      {...props}
+    />
+  )
 }
 
-export function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
+export function RadioGroupItem({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        'aspect-square size-4 shrink-0 rounded-full border border-input bg-card shadow-xs transition outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary',
+        'border-input bg-card focus-visible:ring-ring data-[state=checked]:border-primary aspect-square size-4 shrink-0 rounded-full border shadow-xs transition outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <span className="size-2 rounded-full bg-primary" />
+        <span className="bg-primary size-2 rounded-full" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )
@@ -44,7 +56,10 @@ export function RadioOptions<T extends string>({
     <RadioGroup
       value={value}
       onValueChange={(v) => onValueChange(v as T)}
-      className={cn(orientation === 'horizontal' ? 'flex flex-wrap gap-x-5 gap-y-2' : 'grid', className)}
+      className={cn(
+        orientation === 'horizontal' ? 'flex flex-wrap gap-x-5 gap-y-2' : 'grid',
+        className,
+      )}
     >
       {options.map((o) => (
         <label

@@ -15,8 +15,10 @@ export function CellGroup({
 }) {
   return (
     <section className={cn(inset && 'mx-3', className)}>
-      {title && <h3 className="px-1 pt-4 pb-2 text-xs text-muted-foreground">{title}</h3>}
-      <div className={cn('divide-y overflow-hidden bg-card', inset && 'rounded-xl')}>{children}</div>
+      {title && <h3 className="text-muted-foreground px-1 pt-4 pb-2 text-xs">{title}</h3>}
+      <div className={cn('bg-card divide-y overflow-hidden', inset && 'rounded-xl')}>
+        {children}
+      </div>
     </section>
   )
 }
@@ -31,7 +33,16 @@ export interface CellProps extends Omit<React.ComponentProps<'div'>, 'title'> {
 }
 
 /** 列表单元格：标题 + 描述 + 右侧值 + 箭头 */
-export function Cell({ title, label, value, icon, arrow, onClick, className, ...props }: CellProps) {
+export function Cell({
+  title,
+  label,
+  value,
+  icon,
+  arrow,
+  onClick,
+  className,
+  ...props
+}: CellProps) {
   const interactive = Boolean(onClick)
   return (
     <div
@@ -41,18 +52,18 @@ export function Cell({ title, label, value, icon, arrow, onClick, className, ...
       onKeyDown={(e) => interactive && (e.key === 'Enter' || e.key === ' ') && onClick?.()}
       className={cn(
         'flex min-h-12 items-center gap-3 px-4 py-3 text-[15px]',
-        interactive && 'cursor-pointer active:bg-muted',
+        interactive && 'active:bg-muted cursor-pointer',
         className,
       )}
       {...props}
     >
-      {icon && <span className="shrink-0 text-muted-foreground [&_svg]:size-5">{icon}</span>}
+      {icon && <span className="text-muted-foreground shrink-0 [&_svg]:size-5">{icon}</span>}
       <div className="min-w-0 flex-1">
         <div className="truncate">{title}</div>
-        {label && <div className="mt-0.5 truncate text-xs text-muted-foreground">{label}</div>}
+        {label && <div className="text-muted-foreground mt-0.5 truncate text-xs">{label}</div>}
       </div>
-      {value != null && <div className="shrink-0 text-sm text-muted-foreground">{value}</div>}
-      {arrow && <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground/70" />}
+      {value != null && <div className="text-muted-foreground shrink-0 text-sm">{value}</div>}
+      {arrow && <ChevronRightIcon className="text-muted-foreground/70 size-4 shrink-0" />}
     </div>
   )
 }

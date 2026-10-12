@@ -38,7 +38,13 @@ export function placeholderImage(width = 342, height = 192, label = '点击替�
 }
 
 /** 示例图片（渐变 + 几何装饰 + 标题），seed 决定配色 */
-export function sampleImage(seed: number, width = 342, height = 192, title = '', subtitle = ''): string {
+export function sampleImage(
+  seed: number,
+  width = 342,
+  height = 192,
+  title = '',
+  subtitle = '',
+): string {
   const [a, b] = PALETTES[Math.abs(seed) % PALETTES.length]!
   const r = Math.min(width, height)
   return encode(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
@@ -77,9 +83,14 @@ export function redpacketBackground(width = 342, height = 452): string {
 }
 
 export function isPlaceholderSrc(src: string | undefined): boolean {
-  return !src || src.includes(PLACEHOLDER_MARK) || src.includes(encodeURIComponent(PLACEHOLDER_MARK))
+  return (
+    !src || src.includes(PLACEHOLDER_MARK) || src.includes(encodeURIComponent(PLACEHOLDER_MARK))
+  )
 }
 
 function escapeXml(s: string) {
-  return s.replace(/[<>&"']/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' })[c]!)
+  return s.replace(
+    /[<>&"']/g,
+    (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' })[c]!,
+  )
 }

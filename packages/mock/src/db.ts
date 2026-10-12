@@ -23,7 +23,15 @@ const KEY = 'aim-mock-db'
 const VERSION = 3
 const hasIdb = () => typeof indexedDB !== 'undefined'
 
-const STATUSES: TemplateStatus[] = ['approved', 'approved', 'reviewing', 'approved', 'draft', 'approved', 'rejected']
+const STATUSES: TemplateStatus[] = [
+  'approved',
+  'approved',
+  'reviewing',
+  'approved',
+  'draft',
+  'approved',
+  'rejected',
+]
 
 export function createSeed(now = Date.now()): MockDb {
   const templates: Record<string, StoredTemplate> = {}

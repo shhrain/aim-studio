@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ApiError, createHttpClient } from './http'
 
-const jsonResponse = (body: unknown) => new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } })
+const jsonResponse = (body: unknown) =>
+  new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } })
 
 describe('createHttpClient', () => {
   it('携带 AuthorizationCode 并返回 data', async () => {
@@ -15,7 +16,11 @@ describe('createHttpClient', () => {
   it('subCode 9001 触发 onUnauthorized', async () => {
     const onUnauthorized = vi.fn()
     const onError = vi.fn()
-    const http = createHttpClient({ fetch: async () => jsonResponse({ subCode: 9001, message: '登录失效', data: null }), onUnauthorized, onError })
+    const http = createHttpClient({
+      fetch: async () => jsonResponse({ subCode: 9001, message: '登录失效', data: null }),
+      onUnauthorized,
+      onError,
+    })
     await expect(http.get('/x')).rejects.toBeInstanceOf(ApiError)
     expect(onUnauthorized).toHaveBeenCalled()
     expect(onError).not.toHaveBeenCalled()
@@ -23,8 +28,14 @@ describe('createHttpClient', () => {
 
   it('业务错误触发 onError，silent 不触发', async () => {
     const onError = vi.fn()
-    const http = createHttpClient({ fetch: async () => jsonResponse({ subCode: 1003, message: '', data: null }), onError })
-    await expect(http.get('/x')).rejects.toMatchObject({ subCode: 1003, message: '操作过于频繁，请稍后再试' })
+    const http = createHttpClient({
+      fetch: async () => jsonResponse({ subCode: 1003, message: '', data: null }),
+      onError,
+    })
+    await expect(http.get('/x')).rejects.toMatchObject({
+      subCode: 1003,
+      message: '操作过于频繁，请稍后再试',
+    })
     await expect(http.get('/x', { silent: true })).rejects.toBeTruthy()
     expect(onError).toHaveBeenCalledTimes(1)
   })

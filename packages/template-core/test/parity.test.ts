@@ -10,7 +10,10 @@ beforeAll(() => {
   vi.useFakeTimers()
   vi.setSystemTime(new Date('2026-10-12T10:00:00+08:00'))
   // jsdom 未实现 innerText，参考实现依赖它
-  if (!('innerText' in HTMLElement.prototype) || Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerText') === undefined) {
+  if (
+    !('innerText' in HTMLElement.prototype) ||
+    Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerText') === undefined
+  ) {
     Object.defineProperty(HTMLElement.prototype, 'innerText', {
       configurable: true,
       get(this: HTMLElement) {
@@ -45,11 +48,18 @@ describe('转换关键规则', () => {
   it('fixed 模式修正多层转义的参数链接', () => {
     const f = byName('红包 type1')
     const legacy = convertToProtocols({ cardId: f.cardId, content: f.content, params: f.params })
-    const fixed = convertToProtocols({ cardId: f.cardId, content: f.content, params: f.params, mode: 'fixed' })
+    const fixed = convertToProtocols({
+      cardId: f.cardId,
+      content: f.content,
+      params: f.params,
+      mode: 'fixed',
+    })
     expect(JSON.stringify(legacy.rcsTplContent)).toContain('{#link#}')
     expect(JSON.stringify(fixed.rcsTplContent)).not.toContain('{#link#}')
     // 红包 type1 的按钮保留在 actionSheet
-    expect(JSON.parse(fixed.rcsTplContent.actionSheet?.[0]?.actionDetail ?? '{}').url).toBe('${link}')
+    expect(JSON.parse(fixed.rcsTplContent.actionSheet?.[0]?.actionDetail ?? '{}').url).toBe(
+      '${link}',
+    )
   })
 
   it('参数节点导出为 ${x}', () => {
@@ -63,7 +73,9 @@ describe('转换关键规则', () => {
     const r = run('视频')
     const suggestion = r.rcsTplContent.content[0]!.buttons![0]!
     expect(JSON.parse(suggestion.actionDetail).application).toBe('browser')
-    expect(JSON.stringify(r.rmsTplContent)).toContain('https://twise.cn/toApp.html?toApp=demo://home')
+    expect(JSON.stringify(r.rmsTplContent)).toContain(
+      'https://twise.cn/toApp.html?toApp=demo://home',
+    )
   })
 
   it('轮播为 multiCard，快应用转 hapjs.org，拒收文案被剔除', () => {

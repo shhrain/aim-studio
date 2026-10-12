@@ -6,18 +6,18 @@ icon: Wrench
 
 ## 技术栈
 
-| 类别 | 选型 |
-| --- | --- |
-| 包管理 | pnpm workspace + **catalog**（全仓库统一依赖版本） |
-| 任务编排 | Turborepo 2（依赖图构建、缓存、远程缓存） |
-| 版本发布 | Changesets（linked：schema / core / preview） |
-| 应用框架 | Next.js 16（App Router、Turbopack、`proxy.ts`）、React 19 |
-| 样式 | Tailwind CSS v4（`@theme` token）、shadcn/ui + Radix |
-| 状态 / 数据 | Zustand + Immer + zundo、TanStack Query 5 |
-| 校验 | Zod 4 |
-| 文档 | Fumadocs（llms.txt、Markdown 内容协商）、Storybook 9、TypeDoc |
-| 测试 | Vitest 4 + Testing Library、Playwright（E2E + 截图对比） |
-| 规范 | TypeScript strict、ESLint 9 flat config、Prettier、lefthook + commitlint |
+| 类别        | 选型                                                                     |
+| ----------- | ------------------------------------------------------------------------ |
+| 包管理      | pnpm workspace + **catalog**（全仓库统一依赖版本）                       |
+| 任务编排    | Turborepo 2（依赖图构建、缓存、远程缓存）                                |
+| 版本发布    | Changesets（linked：schema / core / preview）                            |
+| 应用框架    | Next.js 16（App Router、Turbopack、`proxy.ts`）、React 19                |
+| 样式        | Tailwind CSS v4（`@theme` token）、shadcn/ui + Radix                     |
+| 状态 / 数据 | Zustand + Immer + zundo、TanStack Query 5                                |
+| 校验        | Zod 4                                                                    |
+| 文档        | Fumadocs（llms.txt、Markdown 内容协商）、Storybook 9、TypeDoc            |
+| 测试        | Vitest 4 + Testing Library、Playwright（E2E + 截图对比）                 |
+| 规范        | TypeScript strict、ESLint 9 flat config、Prettier、lefthook + commitlint |
 
 ## 依赖规范
 
@@ -27,11 +27,11 @@ pnpm check:deps   # 外部依赖必须使用 catalog:，内部包必须使用 wo
 
 ## Turborepo 任务
 
-| 任务 | 说明 |
-| --- | --- |
-| `build` | 依赖先行（`^build`），输出 `dist/`、`.next/`、`storybook-static/` |
-| `typecheck` / `lint` / `test` | 可并行、带缓存 |
-| `dev` / `storybook` | 常驻任务，不缓存 |
+| 任务                          | 说明                                                              |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `build`                       | 依赖先行（`^build`），输出 `dist/`、`.next/`、`storybook-static/` |
+| `typecheck` / `lint` / `test` | 可并行、带缓存                                                    |
+| `dev` / `storybook`           | 常驻任务，不缓存                                                  |
 
 ## 发版流程
 

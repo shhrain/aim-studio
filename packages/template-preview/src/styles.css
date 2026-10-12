@@ -18,7 +18,8 @@
 }
 
 .aim-root {
-  --aim-font: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', system-ui, sans-serif;
+  --aim-font:
+    'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', system-ui, sans-serif;
   --aim-text: #1f2329;
   --aim-text-2: #646a73;
   --aim-text-3: #8f959e;
@@ -653,8 +654,10 @@
   overflow: hidden;
   border-radius: calc(var(--u) * 10);
   background:
-    linear-gradient(135deg, transparent 47%, #fff 47%, #fff 53%, transparent 53%) 0 0 / calc(var(--u) * 90) calc(var(--u) * 90),
-    linear-gradient(45deg, transparent 47%, #fdfdfd 47%, #fdfdfd 52%, transparent 52%) 0 0 / calc(var(--u) * 60) calc(var(--u) * 60),
+    linear-gradient(135deg, transparent 47%, #fff 47%, #fff 53%, transparent 53%) 0 0 /
+      calc(var(--u) * 90) calc(var(--u) * 90),
+    linear-gradient(45deg, transparent 47%, #fdfdfd 47%, #fdfdfd 52%, transparent 52%) 0 0 /
+      calc(var(--u) * 60) calc(var(--u) * 60),
     #e8eef3;
 }
 .aim-map-pin {
@@ -903,7 +906,12 @@
 }
 .aim-skeleton {
   border-radius: 12px;
-  background: linear-gradient(90deg, var(--aim-fill) 25%, color-mix(in srgb, var(--aim-fill) 50%, #fff) 37%, var(--aim-fill) 63%);
+  background: linear-gradient(
+    90deg,
+    var(--aim-fill) 25%,
+    color-mix(in srgb, var(--aim-fill) 50%, #fff) 37%,
+    var(--aim-fill) 63%
+  );
   background-size: 400% 100%;
   animation: aim-shimmer 1.4s ease infinite;
 }

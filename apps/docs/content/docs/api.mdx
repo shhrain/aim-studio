@@ -8,43 +8,43 @@ icon: Code
 
 ## @aim/template-schema
 
-| 导出 | 说明 |
-| --- | --- |
-| `LAYOUTS` / `getLayout` / `groupLayouts` / `expandSlots` / `resolveCardId` | 版式目录与查询 |
-| `ELEMENT_TYPES` / `ELEMENT_META` / `elementPropsSchemas` | 元素类型与 props Schema |
-| `ACTIONS` / `ACTION_TYPES` / `actionsFor` / `createActionEvent` | 点击事件定义 |
-| `VENDORS` / `VENDOR_IDS` / `vendorFromLegacy` | 厂商 |
-| `extractParams` / `paramToken` / `paramsToTplVariables` | 参数语法 |
-| `templateDocumentSchema` / `parseTemplateDocument` | 文档结构校验 |
+| 导出                                                                       | 说明                    |
+| -------------------------------------------------------------------------- | ----------------------- |
+| `LAYOUTS` / `getLayout` / `groupLayouts` / `expandSlots` / `resolveCardId` | 版式目录与查询          |
+| `ELEMENT_TYPES` / `ELEMENT_META` / `elementPropsSchemas`                   | 元素类型与 props Schema |
+| `ACTIONS` / `ACTION_TYPES` / `actionsFor` / `createActionEvent`            | 点击事件定义            |
+| `VENDORS` / `VENDOR_IDS` / `vendorFromLegacy`                              | 厂商                    |
+| `extractParams` / `paramToken` / `paramsToTplVariables`                    | 参数语法                |
+| `templateDocumentSchema` / `parseTemplateDocument`                         | 文档结构校验            |
 
 ## @aim/template-core
 
-| 导出 | 说明 |
-| --- | --- |
-| `createDocument` / `applySettings` / `updateElement` / `addElement` / `removeElement` / `duplicateElement` / `arrangeElement` / `toFreeLayout` | 文档操作 |
-| `syncParams` / `renameParam` / `dedupeParams` / `collectUsedParams` | 参数管理 |
-| `precheck` / `issuesByElement` | 预检 |
-| `convertDocument` / `convertToProtocols` / `buildSubmitPayload` / `applyCapturedImage` | 三信融合 |
-| `fromLegacyPages` / `toLegacyPages` / `toLegacyContent` | 旧数据适配 |
-| `createShareUrl` / `parseShareHash` | 扫码预览链接 |
-| `registerPlugin` / `define*` / `registry` | 插件机制 |
+| 导出                                                                                                                                           | 说明         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `createDocument` / `applySettings` / `updateElement` / `addElement` / `removeElement` / `duplicateElement` / `arrangeElement` / `toFreeLayout` | 文档操作     |
+| `syncParams` / `renameParam` / `dedupeParams` / `collectUsedParams`                                                                            | 参数管理     |
+| `precheck` / `issuesByElement`                                                                                                                 | 预检         |
+| `convertDocument` / `convertToProtocols` / `buildSubmitPayload` / `applyCapturedImage`                                                         | 三信融合     |
+| `fromLegacyPages` / `toLegacyPages` / `toLegacyContent`                                                                                        | 旧数据适配   |
+| `createShareUrl` / `parseShareHash`                                                                                                            | 扫码预览链接 |
+| `registerPlugin` / `define*` / `registry`                                                                                                      | 插件机制     |
 
 ## @aim/template-preview
 
-| 导出 | 说明 |
-| --- | --- |
-| `TemplatePreview` / `TemplateThumbnail` | 预览组件 |
-| `MultiVendorPreview` / `IntegratedPreview` | 组合预览 |
-| `CardCanvas` / `PhoneShell` / `RcsView` / `RmsView` | 底层组件 |
-| `defineVendorTheme` / `definePreviewElement` | 扩展 |
-| `@aim/template-preview/embed` | `createPreviewEmbed`（宿主端） |
-| `@aim/template-preview/embed/receiver` | `PreviewReceiver`（iframe 接收端） |
-| `@aim/template-preview/element` | `defineAimPreviewElement`（Web Component） |
+| 导出                                                | 说明                                       |
+| --------------------------------------------------- | ------------------------------------------ |
+| `TemplatePreview` / `TemplateThumbnail`             | 预览组件                                   |
+| `MultiVendorPreview` / `IntegratedPreview`          | 组合预览                                   |
+| `CardCanvas` / `PhoneShell` / `RcsView` / `RmsView` | 底层组件                                   |
+| `defineVendorTheme` / `definePreviewElement`        | 扩展                                       |
+| `@aim/template-preview/embed`                       | `createPreviewEmbed`（宿主端）             |
+| `@aim/template-preview/embed/receiver`              | `PreviewReceiver`（iframe 接收端）         |
+| `@aim/template-preview/element`                     | `defineAimPreviewElement`（Web Component） |
 
 ## @aim/api-client
 
-| 导出 | 说明 |
-| --- | --- |
-| `createHttpClient` / `ApiError` / `SUB_CODE` | 请求层 |
-| `createExperienceApi` / `createEditorApi` | 接口 |
-| `@aim/api-client/react` | `createQueryClient`、`createEditorHooks`、`createExperienceHooks`、`queryKeys` |
+| 导出                                         | 说明                                                                           |
+| -------------------------------------------- | ------------------------------------------------------------------------------ |
+| `createHttpClient` / `ApiError` / `SUB_CODE` | 请求层                                                                         |
+| `createExperienceApi` / `createEditorApi`    | 接口                                                                           |
+| `@aim/api-client/react`                      | `createQueryClient`、`createEditorHooks`、`createExperienceHooks`、`queryKeys` |

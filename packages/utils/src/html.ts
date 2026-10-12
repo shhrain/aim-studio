@@ -1,10 +1,30 @@
 import DOMPurify from 'dompurify'
 
 /** 模板富文本允许的标签（与编辑器工具栏能力一致） */
-export const ALLOWED_TAGS = ['b', 'strong', 'i', 'em', 'u', 's', 'br', 'span', 'p', 'div', 'font', 'sup', 'sub']
+export const ALLOWED_TAGS = [
+  'b',
+  'strong',
+  'i',
+  'em',
+  'u',
+  's',
+  'br',
+  'span',
+  'p',
+  'div',
+  'font',
+  'sup',
+  'sub',
+]
 export const ALLOWED_ATTR = ['style', 'color', 'class', 'data-param']
 
-const ENTITY: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }
+const ENTITY: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}
 
 /** 转义为纯文本 HTML */
 export function escapeHtml(input: string): string {

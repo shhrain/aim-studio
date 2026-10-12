@@ -24,17 +24,32 @@ export function MaterialsPanel() {
       return toast.success('已替换图片')
     }
     if (el?.type === 'video' && m.type === 'video') {
-      update((d) => updateElement(d, el.id, { props: { src: m.url, cover: m.cover ?? '', duration: m.duration } }))
+      update((d) =>
+        updateElement(d, el.id, {
+          props: { src: m.url, cover: m.cover ?? '', duration: m.duration },
+        }),
+      )
       return toast.success('已替换视频')
     }
     let id: string | undefined
     update((d) => {
       const r =
         m.type === 'image'
-          ? addElement(d, 'image', { props: { src: m.url }, h: m.width && m.height ? Math.round((342 * m.height) / m.width) : 192, w: 342, x: 0 })
+          ? addElement(d, 'image', {
+              props: { src: m.url },
+              h: m.width && m.height ? Math.round((342 * m.height) / m.width) : 192,
+              w: 342,
+              x: 0,
+            })
           : m.type === 'video'
-            ? addElement(d, 'video', { props: { src: m.url, cover: m.cover ?? '', duration: m.duration }, w: 342, x: 0 })
-            : addElement(d, 'audio', { props: { src: m.url, title: m.name, duration: (m.duration ?? 30) * 1000 } })
+            ? addElement(d, 'video', {
+                props: { src: m.url, cover: m.cover ?? '', duration: m.duration },
+                w: 342,
+                x: 0,
+              })
+            : addElement(d, 'audio', {
+                props: { src: m.url, title: m.name, duration: (m.duration ?? 30) * 1000 },
+              })
       id = r.element.id
       return r.doc
     })
@@ -60,14 +75,24 @@ export function MaterialsPanel() {
           上传
         </Button>
       </div>
-      <p className="text-[11px] text-muted-foreground">选中画布中的图片 / 视频后点击素材即可替换。</p>
+      <p className="text-muted-foreground text-[11px]">
+        选中画布中的图片 / 视频后点击素材即可替换。
+      </p>
       <div className="grid grid-cols-2 gap-2">
         {isLoading
           ? Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="aspect-video" />)
           : data?.map((m) => (
-              <button key={m.id} type="button" onClick={() => apply(m)} className="group overflow-hidden rounded-lg border text-left transition hover:border-primary" title={m.name}>
-                <div className="relative aspect-video bg-muted">
-                  {(m.cover || m.type === 'image') && <img src={m.cover ?? m.url} alt={m.name} className="size-full object-cover" />}
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => apply(m)}
+                className="group hover:border-primary overflow-hidden rounded-lg border text-left transition"
+                title={m.name}
+              >
+                <div className="bg-muted relative aspect-video">
+                  {(m.cover || m.type === 'image') && (
+                    <img src={m.cover ?? m.url} alt={m.name} className="size-full object-cover" />
+                  )}
                   {m.type !== 'image' && (
                     <span className="absolute inset-0 flex items-center justify-center">
                       <PlayIcon className="size-5 text-white drop-shadow" />

@@ -33,7 +33,10 @@ const meta: Meta<typeof Button> = {
   component: Button,
   args: { children: '提交审核', variant: 'default', size: 'default' },
   argTypes: {
-    variant: { control: 'select', options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link', 'soft'] },
+    variant: {
+      control: 'select',
+      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link', 'soft'],
+    },
     size: { control: 'select', options: ['xs', 'sm', 'default', 'lg', 'xl'] },
   },
 }
@@ -68,25 +71,44 @@ export const Feedback: StoryObj = {
   render: () => (
     <div className="w-[560px] space-y-4">
       <div className="flex flex-wrap gap-2">
-        {(['secondary', 'soft', 'success', 'warning', 'destructive', 'info', 'outline'] as const).map((v) => (
+        {(
+          ['secondary', 'soft', 'success', 'warning', 'destructive', 'info', 'outline'] as const
+        ).map((v) => (
           <Badge key={v} variant={v} dot>
             {v}
           </Badge>
         ))}
       </div>
-      <Alert variant="info" title="提示">链接需以 https:// 开头</Alert>
-      <Alert variant="warning" title="苹果端不支持">复制事件提交时需补填替代链接</Alert>
-      <Alert variant="destructive" title="校验失败">标题超出 3 个字</Alert>
+      <Alert variant="info" title="提示">
+        链接需以 https:// 开头
+      </Alert>
+      <Alert variant="warning" title="苹果端不支持">
+        复制事件提交时需补填替代链接
+      </Alert>
+      <Alert variant="destructive" title="校验失败">
+        标题超出 3 个字
+      </Alert>
       <Progress value={62} />
       <div className="flex gap-2">
         <Button onClick={() => toast.success('已保存')}>成功 Toast</Button>
         <Button variant="outline" onClick={() => toast.error('网络异常，请检查网络后重试')}>
           错误 Toast
         </Button>
-        <ConfirmDialog trigger={<Button variant="destructive">删除模板</Button>} destructive title="删除「国庆出游季」？" description="删除后不可恢复。" confirmText="删除" onConfirm={() => void toast.success('已删除')} />
+        <ConfirmDialog
+          trigger={<Button variant="destructive">删除模板</Button>}
+          destructive
+          title="删除「国庆出游季」？"
+          description="删除后不可恢复。"
+          confirmText="删除"
+          onConfirm={() => void toast.success('已删除')}
+        />
       </div>
       <Skeleton className="h-16" />
-      <Empty title="还没有模板" description="从 33 种标准版式开始" action={<Button size="sm">新建模板</Button>} />
+      <Empty
+        title="还没有模板"
+        description="从 33 种标准版式开始"
+        action={<Button size="sm">新建模板</Button>}
+      />
     </div>
   ),
 }
@@ -107,19 +129,51 @@ export const Form: StoryObj = {
         </CardHeader>
         <CardContent className="space-y-4">
           <Field label="模板名称" required>
-            <Input value={name} onChange={(e) => setName(e.target.value)} maxLength={20} showCount />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              maxLength={20}
+              showCount
+            />
           </Field>
           <Field label="描述" error={[...desc].length > 69 ? '超出 69 字' : undefined}>
-            <Textarea value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={80} showCount />
+            <Textarea
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              maxLength={80}
+              showCount
+            />
           </Field>
           <Field label="用途">
-            <Segmented block value={usage} onValueChange={setUsage} options={[{ value: 'commercial', label: '商用' }, { value: 'test', label: '测试' }]} />
+            <Segmented
+              block
+              value={usage}
+              onValueChange={setUsage}
+              options={[
+                { value: 'commercial', label: '商用' },
+                { value: 'test', label: '测试' },
+              ]}
+            />
           </Field>
           <Field label="识别类型">
-            <RadioOptions value={rec} onValueChange={setRec} options={[{ value: 'shortLink', label: '短链识别' }, { value: 'text', label: '文本识别' }]} />
+            <RadioOptions
+              value={rec}
+              onValueChange={setRec}
+              options={[
+                { value: 'shortLink', label: '短链识别' },
+                { value: 'text', label: '文本识别' },
+              ]}
+            />
           </Field>
           <Field label="预览厂商">
-            <SimpleSelect value={vendor} onValueChange={setVendor} options={[{ value: 'huawei', label: '华为' }, { value: 'vivo', label: 'vivo' }]} />
+            <SimpleSelect
+              value={vendor}
+              onValueChange={setVendor}
+              options={[
+                { value: 'huawei', label: '华为' },
+                { value: 'vivo', label: 'vivo' },
+              ]}
+            />
           </Field>
           <label className="flex items-center justify-between text-sm">
             自动保存
@@ -135,7 +189,10 @@ export const Navigation: StoryObj = {
   name: '导航',
   render: () => (
     <div className="space-y-6">
-      <Steps current={1} items={[{ title: '选择版式' }, { title: '编辑模板' }, { title: '提交审核' }]} />
+      <Steps
+        current={1}
+        items={[{ title: '选择版式' }, { title: '编辑模板' }, { title: '提交审核' }]}
+      />
       <Tabs defaultValue="all">
         <TabsList>
           <TabsTrigger value="all">全部</TabsTrigger>

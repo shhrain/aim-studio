@@ -10,13 +10,13 @@ catalog:
   react-dom: 19.3.0
   next: 16.4.0
   typescript: 5.9.3
-  "@types/react": 19.3.0
-  "@types/react-dom": 19.3.0
-  "@types/node": 22.20.5
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
+  '@types/node': 22.20.5
   # styling
   tailwindcss: 4.3.3
-  "@tailwindcss/postcss": 4.3.3
-  "@tailwindcss/vite": 4.3.3
+  '@tailwindcss/postcss': 4.3.3
+  '@tailwindcss/vite': 4.3.3
   postcss: 8.5.29
   tw-animate-css: 1.4.0
   class-variance-authority: 0.7.1
@@ -29,15 +29,15 @@ catalog:
   cmdk: 1.1.1
   vaul: 1.1.2
   qrcode.react: 4.2.0
-  "@dnd-kit/core": 6.3.1
-  "@dnd-kit/sortable": 10.0.0
-  "@dnd-kit/utilities": 3.2.2
+  '@dnd-kit/core': 6.3.1
+  '@dnd-kit/sortable': 10.0.0
+  '@dnd-kit/utilities': 3.2.2
   # data / state
   zod: 4.6.6
   zustand: 5.0.15
   immer: 11.1.21
   zundo: 2.3.0
-  "@tanstack/react-query": 5.104.2
+  '@tanstack/react-query': 5.104.2
   msw: 2.15.0
   idb-keyval: 6.3.0
   dompurify: 3.4.16
@@ -46,40 +46,40 @@ catalog:
   tsup: 8.5.1
   tsx: 4.23.15
   vite: 7.3.7
-  "@vitejs/plugin-react": 5.2.0
+  '@vitejs/plugin-react': 5.2.0
   vitest: 4.1.11
-  "@vitest/coverage-v8": 4.1.11
+  '@vitest/coverage-v8': 4.1.11
   jsdom: 27.4.0
-  "@testing-library/react": 16.3.3
-  "@testing-library/jest-dom": 6.10.0
-  "@testing-library/user-event": 14.6.7
-  "@playwright/test": 1.64.0
+  '@testing-library/react': 16.3.3
+  '@testing-library/jest-dom': 6.10.0
+  '@testing-library/user-event': 14.6.7
+  '@playwright/test': 1.64.0
   # lint / format
   eslint: 9.39.5
-  "@eslint/js": 9.39.5
+  '@eslint/js': 9.39.5
   typescript-eslint: 8.71.1
   eslint-plugin-react: 7.37.5
   eslint-plugin-react-hooks: 7.1.1
-  "@next/eslint-plugin-next": 16.4.0
+  '@next/eslint-plugin-next': 16.4.0
   eslint-config-prettier: 10.1.8
   globals: 17.13.0
   prettier: 3.9.10
   prettier-plugin-tailwindcss: 0.8.1
   # repo tooling
   turbo: 2.11.7
-  "@changesets/cli": 2.31.1
-  "@commitlint/cli": 21.2.3
-  "@commitlint/config-conventional": 21.2.3
+  '@changesets/cli': 2.31.1
+  '@commitlint/cli': 21.2.3
+  '@commitlint/config-conventional': 21.2.3
   lefthook: 2.2.1
   plop: 4.0.5
   # docs
   fumadocs-core: 16.17.1
   fumadocs-mdx: 15.4.7
   fumadocs-ui: npm:@fumadocs/base-ui@16.17.1
-  "@types/mdx": 2.0.14
+  '@types/mdx': 2.0.14
   typedoc: 0.28.20
   # storybook
   storybook: 9.1.20
-  "@storybook/react-vite": 9.1.20
-  "@storybook/addon-docs": 9.1.20
+  '@storybook/react-vite': 9.1.20
+  '@storybook/addon-docs': 9.1.20
   msw-storybook-addon: 2.0.7

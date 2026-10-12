@@ -8,15 +8,15 @@ icon: FileJson
 interface TemplateDocument {
   schemaVersion: 1
   id: string
-  name: string                       // ≤ 20 字
-  usage: 'commercial' | 'test'       // 商用 / 测试
-  category: 'service' | 'notify'     // 服务类 / 通知类
-  layoutId: string                   // 版式 ID
-  cardId: string                     // 实际下发 cardId
-  vendors: VendorId[]                // 发送厂商
-  recognition: 'shortLink' | 'text'  // 短链识别 / 文本识别
+  name: string // ≤ 20 字
+  usage: 'commercial' | 'test' // 商用 / 测试
+  category: 'service' | 'notify' // 服务类 / 通知类
+  layoutId: string // 版式 ID
+  cardId: string // 实际下发 cardId
+  vendors: VendorId[] // 发送厂商
+  recognition: 'shortLink' | 'text' // 短链识别 / 文本识别
   params: TemplateParam[]
-  settings: Record<string, unknown>  // 版式设置
+  settings: Record<string, unknown> // 版式设置
   pages: TemplatePage[]
   meta: { status; createdAt; updatedAt; submittedAt?; rejectReason?; tplId? }
 }
@@ -24,7 +24,13 @@ interface TemplateDocument {
 interface TemplatePage {
   id: string
   mode: 'flow' | 'absolute'
-  style: { height: number; backgroundColor?: string; backgroundImage?: string; backgroundOpacity?: number; borderRadius?: number }
+  style: {
+    height: number
+    backgroundColor?: string
+    backgroundImage?: string
+    backgroundOpacity?: number
+    borderRadius?: number
+  }
   elements: Element[]
 }
 ```
@@ -37,17 +43,17 @@ interface TemplatePage {
 
 ## 元素通用字段
 
-| 字段 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | `string` | 唯一 ID |
-| `type` | `ElementType` | 元素类型，见 [元素](/docs/spec/elements) |
-| `slot` | `string?` | 结构化版式中的槽位 key，见 [版式](/docs/spec/layouts) |
-| `x / y / w / h` | `number` | 画布坐标与尺寸 |
-| `z` / `angle` | `number` | 层级 / 旋转角度 |
-| `visible` / `locked` | `boolean` | 是否显示 / 是否锁定位置 |
-| `style` | `ElementStyle` | 颜色、字号、行高、对齐、行数限制、圆角、内边距、透明度、边框 |
-| `event` | `ActionEvent?` | 点击事件，见 [点击事件](/docs/spec/actions) |
-| `props` | `ElementPropsMap[type]` | 类型相关属性 |
+| 字段                 | 类型                    | 说明                                                         |
+| -------------------- | ----------------------- | ------------------------------------------------------------ |
+| `id`                 | `string`                | 唯一 ID                                                      |
+| `type`               | `ElementType`           | 元素类型，见 [元素](/docs/spec/elements)                     |
+| `slot`               | `string?`               | 结构化版式中的槽位 key，见 [版式](/docs/spec/layouts)        |
+| `x / y / w / h`      | `number`                | 画布坐标与尺寸                                               |
+| `z` / `angle`        | `number`                | 层级 / 旋转角度                                              |
+| `visible` / `locked` | `boolean`               | 是否显示 / 是否锁定位置                                      |
+| `style`              | `ElementStyle`          | 颜色、字号、行高、对齐、行数限制、圆角、内边距、透明度、边框 |
+| `event`              | `ActionEvent?`          | 点击事件，见 [点击事件](/docs/spec/actions)                  |
+| `props`              | `ElementPropsMap[type]` | 类型相关属性                                                 |
 
 ## 校验
 
@@ -56,16 +62,24 @@ import { parseTemplateDocument } from '@aim/template-schema'
 import { precheck } from '@aim/template-core'
 
 const parsed = parseTemplateDocument(json) // 结构校验（Zod）
-const report = precheck(parsed.data)       // 质量校验（字数、事件、参数、厂商…）
+const report = precheck(parsed.data) // 质量校验（字数、事件、参数、厂商…）
 ```
 
 ## 创建与修改
 
 ```ts
-import { createDocument, applySettings, findBySlot, updateElement, addElement } from '@aim/template-core'
+import {
+  createDocument,
+  applySettings,
+  findBySlot,
+  updateElement,
+  addElement,
+} from '@aim/template-core'
 
 let doc = createDocument({ layoutId: 'com.hbm.imageandtext', name: '国庆出游季' })
-doc = updateElement(doc, findBySlot(doc, 'title')!.id, { props: { text: '国庆出游季 · 精选线路直降' } })
-doc = applySettings(doc, { buttonCount: 2 })      // 调整版式设置时保留已填写内容
-doc = addElement(doc, 'countdown').doc            // 追加元素
+doc = updateElement(doc, findBySlot(doc, 'title')!.id, {
+  props: { text: '国庆出游季 · 精选线路直降' },
+})
+doc = applySettings(doc, { buttonCount: 2 }) // 调整版式设置时保留已填写内容
+doc = addElement(doc, 'countdown').doc // 追加元素
 ```

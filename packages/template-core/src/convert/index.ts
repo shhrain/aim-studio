@@ -2,13 +2,33 @@ import type { IntegratedResult, SubmitPayload, TemplateDocument } from '@aim/tem
 import { CAROUSEL_IDS, INTEGRATED_CARD_IDS } from './constants'
 import { toLegacyContent } from './legacy'
 import { htmlParamsToTpl } from './params'
-import { buildRcsTplContent, buildSourceMaterial, isCarousel, type LegacyElement, type LegacyParam } from './rcs'
+import {
+  buildRcsTplContent,
+  buildSourceMaterial,
+  isCarousel,
+  type LegacyElement,
+  type LegacyParam,
+} from './rcs'
 import { buildRmsTplContent, getMediaContent } from './rms'
 
 export * from './constants'
 export * from './legacy'
-export { getTextParam, htmlParamsToTpl, isValidHttpsUrl, replaceSymbol, stripDynamicParams, stripReject } from './params'
-export { buildActionSheet, buildRcsTplContent, buildRedpacketOverlay, buildSourceMaterial, isCarousel, isRedpacket } from './rcs'
+export {
+  getTextParam,
+  htmlParamsToTpl,
+  isValidHttpsUrl,
+  replaceSymbol,
+  stripDynamicParams,
+  stripReject,
+} from './params'
+export {
+  buildActionSheet,
+  buildRcsTplContent,
+  buildRedpacketOverlay,
+  buildSourceMaterial,
+  isCarousel,
+  isRedpacket,
+} from './rcs'
 export type { LegacyElement, LegacyParam } from './rcs'
 export { buildRmsTplContent, getMediaContent, mergeAdjacentTextFrames } from './rms'
 
@@ -29,7 +49,8 @@ export function convertToProtocols({
   mode?: 'legacy' | 'fixed'
 }): IntegratedResult {
   const rcs = buildSourceMaterial({ cardId, content, params })
-  const mediaForRms = isCarousel(cardId) && rcs.swiper[0] ? rcs.swiper[0].swiper.swiperArr : rcs.media
+  const mediaForRms =
+    isCarousel(cardId) && rcs.swiper[0] ? rcs.swiper[0].swiper.swiperArr : rcs.media
   const rms = getMediaContent({
     cardId,
     sourceMaterial: rcs.sourceMaterial,
@@ -38,7 +59,10 @@ export function convertToProtocols({
     redpacketType: rcs.redpacketType,
     mode,
   })
-  const rcsTplContent = htmlParamsToTpl(buildRcsTplContent(rcs.sourceMaterial, cardId, rcs.redpacketType), mode)
+  const rcsTplContent = htmlParamsToTpl(
+    buildRcsTplContent(rcs.sourceMaterial, cardId, rcs.redpacketType),
+    mode,
+  )
   const rmsTpl = htmlParamsToTpl(buildRmsTplContent(rms.mediaContent, params), mode)
   return {
     sourceMaterial: rcs.sourceMaterial,
@@ -71,7 +95,10 @@ export function convertDocument(doc: TemplateDocument): IntegratedResult | null 
 }
 
 /** 红包截图完成后回填审核图 */
-export function applyCapturedImage(result: IntegratedResult, { rmsSrc, rcsSrc }: { rmsSrc?: string; rcsSrc?: string }): IntegratedResult {
+export function applyCapturedImage(
+  result: IntegratedResult,
+  { rmsSrc, rcsSrc }: { rmsSrc?: string; rcsSrc?: string },
+): IntegratedResult {
   const next: IntegratedResult = JSON.parse(JSON.stringify(result))
   if (next.mediaContent?.[0] && rmsSrc) next.mediaContent[0].src = rmsSrc
   const rcsFirst = next.sourceMaterial?.content?.[0]
@@ -93,7 +120,13 @@ export function applyCapturedImage(result: IntegratedResult, { rmsSrc, rcsSrc }:
 /** 组装提交审核载荷 */
 export function buildSubmitPayload(
   result: IntegratedResult,
-  extras: { tplName?: string; chatbotNameId?: string; chatbotName?: string; rmsTitle?: string; signature?: string } = {},
+  extras: {
+    tplName?: string
+    chatbotNameId?: string
+    chatbotName?: string
+    rmsTitle?: string
+    signature?: string
+  } = {},
 ): SubmitPayload {
   return {
     rcsTplRequest: {

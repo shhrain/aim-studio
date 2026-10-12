@@ -8,36 +8,36 @@ description: TemplatePreview、MultiVendorPreview、IntegratedPreview、Template
 ```tsx
 import { TemplatePreview } from '@aim/template-preview'
 
-<TemplatePreview
-  document={doc}               // TemplateDocument；或 legacy={{ pages, cardId }}
-  protocol="aim"               // aim | rcs | rms
-  vendor="vivo"                // 厂商皮肤
-  mode="phone"                 // phone | bare | fluid | thumbnail
-  width={300}                  // phone 默认 300，其余默认 100%
-  params={{ 姓名: '张三' }}     // 参数真实值
-  paramDisplay="value"         // value | example | token
-  interactive="intercept"      // intercept | native | none
+;<TemplatePreview
+  document={doc} // TemplateDocument；或 legacy={{ pages, cardId }}
+  protocol="aim" // aim | rcs | rms
+  vendor="vivo" // 厂商皮肤
+  mode="phone" // phone | bare | fluid | thumbnail
+  width={300} // phone 默认 300，其余默认 100%
+  params={{ 姓名: '张三' }} // 参数真实值
+  paramDisplay="value" // value | example | token
+  interactive="intercept" // intercept | native | none
   onAction={(e) => track(e.event)}
-  theme="light"                // light | dark
+  theme="light" // light | dark
   chatbotName="梦网商城"
 />
 ```
 
 ### 属性
 
-| 属性 | 类型 | 默认 | 说明 |
-| --- | --- | --- | --- |
-| `document` | `TemplateDocument` | – | 模板文档 |
-| `legacy` | `{ pages, cardId?, params? }` | – | 旧编辑器数据，自动适配 |
-| `protocol` | `'aim' \| 'rcs' \| 'rms'` | `aim` | 不支持三信融合的版式会显示提示 |
-| `vendor` | `VendorId` | `huawei` | 版式不支持该厂商时显示“暂不支持”，可用 `ignoreVendorSupport` 强制渲染 |
-| `mode` | `PreviewMode` | `phone` | 见概览 |
-| `paramDisplay` | `ParamDisplay` | `value` | `token` 适合编辑态 |
-| `interactive` | `InteractiveMode` | `intercept` | `native` 适合真机预览页 |
-| `onAction` | `(e) => void` | – | `e.event` 为点击事件，`e.label` 为按钮文案 |
-| `showTime` | `boolean` | 依模式 | 是否显示消息时间 |
-| `loading` | `boolean` | – | 骨架屏 |
-| `editor` | `EditorBridge` | – | 编辑器桥接，见 [编辑器桥接](/docs/sdk/editor-bridge) |
+| 属性           | 类型                          | 默认        | 说明                                                                  |
+| -------------- | ----------------------------- | ----------- | --------------------------------------------------------------------- |
+| `document`     | `TemplateDocument`            | –           | 模板文档                                                              |
+| `legacy`       | `{ pages, cardId?, params? }` | –           | 旧编辑器数据，自动适配                                                |
+| `protocol`     | `'aim' \| 'rcs' \| 'rms'`     | `aim`       | 不支持三信融合的版式会显示提示                                        |
+| `vendor`       | `VendorId`                    | `huawei`    | 版式不支持该厂商时显示“暂不支持”，可用 `ignoreVendorSupport` 强制渲染 |
+| `mode`         | `PreviewMode`                 | `phone`     | 见概览                                                                |
+| `paramDisplay` | `ParamDisplay`                | `value`     | `token` 适合编辑态                                                    |
+| `interactive`  | `InteractiveMode`             | `intercept` | `native` 适合真机预览页                                               |
+| `onAction`     | `(e) => void`                 | –           | `e.event` 为点击事件，`e.label` 为按钮文案                            |
+| `showTime`     | `boolean`                     | 依模式      | 是否显示消息时间                                                      |
+| `loading`      | `boolean`                     | –           | 骨架屏                                                                |
+| `editor`       | `EditorBridge`                | –           | 编辑器桥接，见 [编辑器桥接](/docs/sdk/editor-bridge)                  |
 
 ## 多厂商并排
 

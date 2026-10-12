@@ -31,7 +31,9 @@ export function Field({
       data-slot="field"
       data-invalid={error ? true : undefined}
       className={cn(
-        orientation === 'vertical' ? 'flex flex-col gap-1.5' : 'grid grid-cols-[96px_1fr] items-center gap-3',
+        orientation === 'vertical'
+          ? 'flex flex-col gap-1.5'
+          : 'grid grid-cols-[96px_1fr] items-center gap-3',
         className,
       )}
       {...props}
@@ -39,20 +41,20 @@ export function Field({
       {(label || extra) && (
         <div className="flex min-h-5 items-center justify-between gap-2">
           {label && (
-            <label htmlFor={htmlFor} className="text-[13px] font-medium text-foreground/90">
-              {required && <span className="mr-0.5 text-destructive">*</span>}
+            <label htmlFor={htmlFor} className="text-foreground/90 text-[13px] font-medium">
+              {required && <span className="text-destructive mr-0.5">*</span>}
               {label}
             </label>
           )}
-          {extra && <div className="text-xs text-muted-foreground">{extra}</div>}
+          {extra && <div className="text-muted-foreground text-xs">{extra}</div>}
         </div>
       )}
       <div className="flex min-w-0 flex-col gap-1.5">
         {children}
         {error ? (
-          <p className="text-xs text-destructive">{error}</p>
+          <p className="text-destructive text-xs">{error}</p>
         ) : description ? (
-          <p className="text-xs leading-relaxed text-muted-foreground">{description}</p>
+          <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
         ) : null}
       </div>
     </div>
@@ -75,7 +77,7 @@ export function FieldGroup({
     <section className={cn('flex flex-col gap-3.5', className)}>
       {(title || extra) && (
         <header className="flex items-center justify-between">
-          <h4 className="text-xs font-semibold tracking-wide text-muted-foreground">{title}</h4>
+          <h4 className="text-muted-foreground text-xs font-semibold tracking-wide">{title}</h4>
           {extra}
         </header>
       )}

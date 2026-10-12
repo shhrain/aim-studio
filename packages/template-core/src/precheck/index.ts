@@ -18,14 +18,26 @@ export function precheck(doc: TemplateDocument, options: { only?: string[] } = {
     try {
       issues.push(...rule.run(doc))
     } catch (err) {
-      issues.push({ code: `${rule.code}.crash`, level: 'warning', message: `规则「${rule.description}」执行异常：${(err as Error).message}` })
+      issues.push({
+        code: `${rule.code}.crash`,
+        level: 'warning',
+        message: `规则「${rule.description}」执行异常：${(err as Error).message}`,
+      })
     }
   }
   const errors = issues.filter((i) => i.level === 'error')
   const warnings = issues.filter((i) => i.level === 'warning')
   const infos = issues.filter((i) => i.level === 'info')
   const score = Math.max(0, 100 - issues.reduce((s, i) => s + WEIGHT[i.level], 0))
-  return { passed: errors.length === 0, score, errors, warnings, infos, issues, checkedAt: Date.now() }
+  return {
+    passed: errors.length === 0,
+    score,
+    errors,
+    warnings,
+    infos,
+    issues,
+    checkedAt: Date.now(),
+  }
 }
 
 /** 按元素聚合问题（画布上标红用） */

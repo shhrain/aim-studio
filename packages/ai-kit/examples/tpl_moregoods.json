@@ -18,7 +18,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_20swg59r6k",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 440,
@@ -27,7 +27,7 @@
       },
       "elements": [
         {
-          "id": "el_l84z5o6rd3",
+          "id": "el_01",
           "type": "moreGoods",
           "x": 0,
           "y": 0,

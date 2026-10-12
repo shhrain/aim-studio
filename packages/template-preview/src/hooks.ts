@@ -7,7 +7,8 @@ import { usePreview } from './context'
 import type { ParamResolver } from './params'
 
 /** 画布单位：u(14) → calc(var(--u) * 14) */
-export const u = (n: number | undefined) => (n == null ? undefined : `calc(var(--u) * ${Math.round(n * 100) / 100})`)
+export const u = (n: number | undefined) =>
+  n == null ? undefined : `calc(var(--u) * ${Math.round(n * 100) / 100})`
 
 export function useResolver(): ParamResolver {
   const { doc, paramDisplay, paramValues } = usePreview()
@@ -25,7 +26,10 @@ export function useResolver(): ParamResolver {
 export function useAct() {
   const ctx = usePreview()
   const resolver = useResolver()
-  return (event: ActionEvent | undefined, opts: { element?: AnyElement; label?: string; image?: string; e?: React.MouseEvent } = {}) => {
+  return (
+    event: ActionEvent | undefined,
+    opts: { element?: AnyElement; label?: string; image?: string; e?: React.MouseEvent } = {},
+  ) => {
     if (!event || ctx.editor) return
     opts.e?.stopPropagation()
     dispatchAction({ event, element: opts.element, label: opts.label }, ctx, resolver, opts.image)

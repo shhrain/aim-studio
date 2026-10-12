@@ -1,7 +1,7 @@
 @import '@aim/ui/globals.css';
 @import '@aim/template-preview/styles.css';
 
-@source "../";
+@source '../';
 
 /*
  * 流式 rem：以 375 设计宽为基准（1rem = 16px @375），

@@ -1,4 +1,9 @@
-import { CANVAS_WIDTH, type AnyElement, type ElementType, type TemplateElement } from '@aim/template-schema'
+import {
+  CANVAS_WIDTH,
+  type AnyElement,
+  type ElementType,
+  type TemplateElement,
+} from '@aim/template-schema'
 import { createElement, type CreateElementOptions } from '../elements/factory'
 
 export const PAD = 14
@@ -25,7 +30,10 @@ export class FlowBuilder {
     return this
   }
 
-  add<T extends ElementType>(type: T, options: CreateElementOptions<T> & { gapAfter?: number } = {}): TemplateElement<T> {
+  add<T extends ElementType>(
+    type: T,
+    options: CreateElementOptions<T> & { gapAfter?: number } = {},
+  ): TemplateElement<T> {
     const el = createElement(type, { x: 0, ...options, y: options.y ?? this.y, z: this.z++ })
     this.elements.push(el as AnyElement)
     this.y = el.y + el.h + (options.gapAfter ?? 0)
@@ -33,14 +41,25 @@ export class FlowBuilder {
   }
 
   /** 同一行并排（y 相同）：按 widths 比例分配，gap 为列间距 */
-  row<T extends ElementType>(type: T, items: CreateElementOptions<T>[], options: { h: number; gap?: number; x?: number; width?: number; gapAfter?: number }) {
+  row<T extends ElementType>(
+    type: T,
+    items: CreateElementOptions<T>[],
+    options: { h: number; gap?: number; x?: number; width?: number; gapAfter?: number },
+  ) {
     const gap = options.gap ?? 10
     const x0 = options.x ?? PAD
     const width = options.width ?? INNER
     const w = (width - gap * (items.length - 1)) / items.length
     const y = this.y
     items.forEach((item, i) => {
-      const el = createElement(type, { ...item, x: x0 + i * (w + gap), y, w, h: options.h, z: this.z++ })
+      const el = createElement(type, {
+        ...item,
+        x: x0 + i * (w + gap),
+        y,
+        w,
+        h: options.h,
+        z: this.z++,
+      })
       this.elements.push(el as AnyElement)
     })
     this.y = y + options.h + (options.gapAfter ?? 0)

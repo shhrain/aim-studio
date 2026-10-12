@@ -12,7 +12,13 @@
  * embed.update(nextTpl)
  */
 import type { TemplateDocument } from '@aim/template-schema'
-import { EMBED_SOURCE, isEmbedMessage, type EmbedRenderOptions, type HostMessage, type ReceiverMessage } from './protocol'
+import {
+  EMBED_SOURCE,
+  isEmbedMessage,
+  type EmbedRenderOptions,
+  type HostMessage,
+  type ReceiverMessage,
+} from './protocol'
 
 export * from './protocol'
 
@@ -34,7 +40,10 @@ export interface CreatePreviewEmbedOptions {
 export interface PreviewEmbed {
   iframe: HTMLIFrameElement
   update: (document: TemplateDocument, options?: EmbedRenderOptions) => void
-  updateLegacy: (legacy: { pages: string | unknown[]; cardId?: string }, options?: EmbedRenderOptions) => void
+  updateLegacy: (
+    legacy: { pages: string | unknown[]; cardId?: string },
+    options?: EmbedRenderOptions,
+  ) => void
   setOptions: (options: EmbedRenderOptions) => void
   destroy: () => void
 }
@@ -49,9 +58,16 @@ export function createPreviewEmbed(config: CreatePreviewEmbedOptions): PreviewEm
   config.container.appendChild(iframe)
 
   let ready = false
-  let pending: HostMessage | null = config.document || config.legacy
-    ? { source: EMBED_SOURCE, type: 'render', document: config.document, legacy: config.legacy, options: config.options }
-    : null
+  let pending: HostMessage | null =
+    config.document || config.legacy
+      ? {
+          source: EMBED_SOURCE,
+          type: 'render',
+          document: config.document,
+          legacy: config.legacy,
+          options: config.options,
+        }
+      : null
 
   const post = (msg: HostMessage) => {
     if (!ready) {
@@ -62,7 +78,12 @@ export function createPreviewEmbed(config: CreatePreviewEmbedOptions): PreviewEm
   }
 
   const onMessage = (e: MessageEvent) => {
-    if (e.origin !== origin || e.source !== iframe.contentWindow || !isEmbedMessage<ReceiverMessage>(e.data)) return
+    if (
+      e.origin !== origin ||
+      e.source !== iframe.contentWindow ||
+      !isEmbedMessage<ReceiverMessage>(e.data)
+    )
+      return
     const msg = e.data
     if (msg.type === 'ready') {
       ready = true
@@ -81,8 +102,15 @@ export function createPreviewEmbed(config: CreatePreviewEmbedOptions): PreviewEm
 
   return {
     iframe,
-    update: (doc, options) => post({ source: EMBED_SOURCE, type: 'render', document: doc, options: options ?? config.options }),
-    updateLegacy: (legacy, options) => post({ source: EMBED_SOURCE, type: 'render', legacy, options: options ?? config.options }),
+    update: (doc, options) =>
+      post({
+        source: EMBED_SOURCE,
+        type: 'render',
+        document: doc,
+        options: options ?? config.options,
+      }),
+    updateLegacy: (legacy, options) =>
+      post({ source: EMBED_SOURCE, type: 'render', legacy, options: options ?? config.options }),
     setOptions: (options) => post({ source: EMBED_SOURCE, type: 'options', options }),
     destroy: () => {
       window.removeEventListener('message', onMessage)

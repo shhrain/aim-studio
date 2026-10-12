@@ -2,13 +2,31 @@
 
 import type { AnyElement, ElementType, TemplateElement } from '@aim/template-schema'
 import type { ComponentType } from 'react'
-import { AudioView, ButtonView, HotZoneView, ImageView, QrCodeView, ShapeView, TextView, VideoView } from './basic'
+import {
+  AudioView,
+  ButtonView,
+  HotZoneView,
+  ImageView,
+  QrCodeView,
+  ShapeView,
+  TextView,
+  VideoView,
+} from './basic'
 import { ChoiceView, FormView, ImgSelectView, InputView, PickerView, TextSelectView } from './form'
-import { CardVoucherView, CardVouchersView, CountdownView, ECommerceView, EcommerceCouponView, MoreGoodsView } from './marketing'
+import {
+  CardVoucherView,
+  CardVouchersView,
+  CountdownView,
+  ECommerceView,
+  EcommerceCouponView,
+  MoreGoodsView,
+} from './marketing'
 import { SideslipView, SwiperView } from './media'
 import { AgreementView, MapView, ServiceNumberView, TelView, TicketView } from './service'
 
-export type ElementRenderer<T extends ElementType = ElementType> = ComponentType<{ el: TemplateElement<T> }>
+export type ElementRenderer<T extends ElementType = ElementType> = ComponentType<{
+  el: TemplateElement<T>
+}>
 
 export interface PreviewElementDefinition<T extends ElementType = ElementType> {
   type: T
@@ -25,7 +43,9 @@ export function definePreviewElement<T extends ElementType>(def: PreviewElementD
   return def
 }
 
-export function getPreviewElement(type: ElementType): PreviewElementDefinition<ElementType> | undefined {
+export function getPreviewElement(
+  type: ElementType,
+): PreviewElementDefinition<ElementType> | undefined {
   return renderers.get(type)
 }
 

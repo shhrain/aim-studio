@@ -1,9 +1,11 @@
 {
   "name": "@aim/template-preview",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "5G 阅信模板预览 SDK：React 渲染器、多厂商手机壳、AIM/RCS/RMS 三协议、移动端自适应、iframe 嵌入与 Web Component",
   "type": "module",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./embed": "./src/embed/host.ts",
@@ -13,14 +15,29 @@
   },
   "publishConfig": {
     "exports": {
-      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-      "./embed": { "types": "./dist/embed/host.d.ts", "import": "./dist/embed/host.js" },
-      "./embed/receiver": { "types": "./dist/embed/receiver.d.ts", "import": "./dist/embed/receiver.js" },
-      "./element": { "types": "./dist/element/index.d.ts", "import": "./dist/element/index.js" },
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./embed": {
+        "types": "./dist/embed/host.d.ts",
+        "import": "./dist/embed/host.js"
+      },
+      "./embed/receiver": {
+        "types": "./dist/embed/receiver.d.ts",
+        "import": "./dist/embed/receiver.js"
+      },
+      "./element": {
+        "types": "./dist/element/index.d.ts",
+        "import": "./dist/element/index.js"
+      },
       "./styles.css": "./dist/styles.css"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsup && node -e \"require('fs').copyFileSync('src/styles.css','dist/styles.css')\"",
     "lint": "eslint src",

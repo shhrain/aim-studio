@@ -49,7 +49,10 @@ describe('template-schema 目录', () => {
   })
 
   it('展开重复槽位', () => {
-    const slots = expandSlots(requireLayout('com.hbm.notification'), { pairCount: 3, buttonCount: 1 })
+    const slots = expandSlots(requireLayout('com.hbm.notification'), {
+      pairCount: 3,
+      buttonCount: 1,
+    })
     expect(slots.filter((s) => s.key.startsWith('kv.')).map((s) => s.key)).toEqual([
       'kv.0.label',
       'kv.0.value',
@@ -83,7 +86,15 @@ describe('元素校验', () => {
       event: createActionEvent('OPEN_URL'),
     })
     expect(ok.success).toBe(true)
-    const bad = templateElementSchema.safeParse({ id: 'e2', type: 'button', x: 0, y: 0, w: 1, h: 1, props: {} })
+    const bad = templateElementSchema.safeParse({
+      id: 'e2',
+      type: 'button',
+      x: 0,
+      y: 0,
+      w: 1,
+      h: 1,
+      props: {},
+    })
     expect(bad.success).toBe(false)
   })
 })

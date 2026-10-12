@@ -39,7 +39,16 @@ export interface TextInputProps {
   id?: string
 }
 
-export function TextInput({ value, onChange, maxLength, multiline, placeholder, params = true, ai, id }: TextInputProps) {
+export function TextInput({
+  value,
+  onChange,
+  maxLength,
+  multiline,
+  placeholder,
+  params = true,
+  ai,
+  id,
+}: TextInputProps) {
   const doc = useEditor((s) => s.doc)
   const ref = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
   const len = doc ? displayLength(value ?? '', doc) : [...(value ?? '')].length
@@ -63,17 +72,27 @@ export function TextInput({ value, onChange, maxLength, multiline, placeholder, 
     value: value ?? '',
     placeholder,
     'aria-invalid': over || undefined,
-    onChange: (e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => onChange(e.target.value),
+    onChange: (e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) =>
+      onChange(e.target.value),
   }
 
   return (
     <div className="space-y-1">
-      {multiline ? <Textarea {...common} rows={3} className="min-h-16 resize-y" /> : <Input {...common} />}
+      {multiline ? (
+        <Textarea {...common} rows={3} className="min-h-16 resize-y" />
+      ) : (
+        <Input {...common} />
+      )}
       <div className="flex items-center gap-1">
         {params && doc && <ParamMenu onInsert={insert} />}
         {ai && <AiPopover field={ai} maxLength={maxLength ?? 30} onApply={onChange} />}
         {maxLength != null && (
-          <span className={cn('ml-auto text-[11px] tabular-nums', over ? 'font-medium text-destructive' : 'text-muted-foreground')}>
+          <span
+            className={cn(
+              'ml-auto text-[11px] tabular-nums',
+              over ? 'text-destructive font-medium' : 'text-muted-foreground',
+            )}
+          >
             {len}/{maxLength}
           </span>
         )}
@@ -94,19 +113,24 @@ function ParamMenu({ onInsert }: { onInsert: (token: string) => void }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-52">
         <DropdownMenuLabel>已定义参数</DropdownMenuLabel>
-        {params.length === 0 && <div className="px-2 pb-1.5 text-xs text-muted-foreground">暂无参数</div>}
+        {params.length === 0 && (
+          <div className="text-muted-foreground px-2 pb-1.5 text-xs">暂无参数</div>
+        )}
         {params.map((p) => (
           <DropdownMenuItem key={p.name} onSelect={() => onInsert(paramToken(p.name))}>
-            <span className="rounded bg-accent px-1 text-xs text-accent-foreground">{p.name}</span>
-            <span className="ml-auto truncate text-xs text-muted-foreground">{p.example}</span>
+            <span className="bg-accent text-accent-foreground rounded px-1 text-xs">{p.name}</span>
+            <span className="text-muted-foreground ml-auto truncate text-xs">{p.example}</span>
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
-            const name = window.prompt('参数名（中英文、数字、下划线）', `param${params.length + 1}`)?.trim()
+            const name = window
+              .prompt('参数名（中英文、数字、下划线）', `param${params.length + 1}`)
+              ?.trim()
             if (!name) return
-            if (!PARAM_NAME_REG.test(name)) return void toast.error('参数名仅支持中英文、数字、下划线')
+            if (!PARAM_NAME_REG.test(name))
+              return void toast.error('参数名仅支持中英文、数字、下划线')
             onInsert(paramToken(name))
           }}
         >
@@ -118,7 +142,15 @@ function ParamMenu({ onInsert }: { onInsert: (token: string) => void }) {
   )
 }
 
-function AiPopover({ field, maxLength, onApply }: { field: 'title' | 'description' | 'button'; maxLength: number; onApply: (v: string) => void }) {
+function AiPopover({
+  field,
+  maxLength,
+  onApply,
+}: {
+  field: 'title' | 'description' | 'button'
+  maxLength: number
+  onApply: (v: string) => void
+}) {
   const doc = useEditor((s) => s.doc)
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
@@ -128,7 +160,14 @@ function AiPopover({ field, maxLength, onApply }: { field: 'title' | 'descriptio
   const run = async () => {
     setLoading(true)
     try {
-      const res = await editorApi.aiCopywriting({ field, maxLength, prompt: prompt || doc?.name || '品牌活动', tone, layoutName: doc?.layoutId ?? '', count: 4 })
+      const res = await editorApi.aiCopywriting({
+        field,
+        maxLength,
+        prompt: prompt || doc?.name || '品牌活动',
+        tone,
+        layoutName: doc?.layoutId ?? '',
+        count: 4,
+      })
       setList(res.candidates)
     } finally {
       setLoading(false)
@@ -152,7 +191,12 @@ function AiPopover({ field, maxLength, onApply }: { field: 'title' | 'descriptio
       </Hint>
       <PopoverContent align="start" className="w-80 space-y-3">
         <div className="text-sm font-medium">AI 文案助手</div>
-        <Input placeholder="描述活动 / 场景，如：国庆出游特惠" value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && void run()} />
+        <Input
+          placeholder="描述活动 / 场景，如：国庆出游特惠"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && void run()}
+        />
         <Segmented
           size="sm"
           block
@@ -175,7 +219,7 @@ function AiPopover({ field, maxLength, onApply }: { field: 'title' | 'descriptio
               <li key={c}>
                 <button
                   type="button"
-                  className="w-full rounded-md border px-2.5 py-2 text-left text-sm transition hover:border-primary/50 hover:bg-accent"
+                  className="hover:border-primary/50 hover:bg-accent w-full rounded-md border px-2.5 py-2 text-left text-sm transition"
                   onClick={() => {
                     onApply(c)
                     setOpen(false)
@@ -187,7 +231,9 @@ function AiPopover({ field, maxLength, onApply }: { field: 'title' | 'descriptio
             ))}
           </ul>
         )}
-        <p className="text-[11px] text-muted-foreground">本地 Mock 生成，可在 api-client 中替换为真实大模型服务。</p>
+        <p className="text-muted-foreground text-[11px]">
+          本地 Mock 生成，可在 api-client 中替换为真实大模型服务。
+        </p>
       </PopoverContent>
     </Popover>
   )

@@ -59,7 +59,7 @@
   },
   "pages": [
     {
-      "id": "page_l66no2az4d",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 337,
@@ -68,7 +68,7 @@
       },
       "elements": [
         {
-          "id": "el_43qtrcqoac",
+          "id": "el_01",
           "type": "image",
           "x": 0,
           "y": 0,
@@ -93,7 +93,7 @@
           "slot": "media"
         },
         {
-          "id": "el_xw9bntmyo6",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 132,
@@ -116,7 +116,7 @@
           "slot": "title"
         },
         {
-          "id": "el_44kzhomc2m",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 163,
@@ -138,7 +138,7 @@
           "slot": "description"
         },
         {
-          "id": "el_i8x16c5sbo",
+          "id": "el_04",
           "type": "text",
           "x": 14,
           "y": 194,
@@ -160,7 +160,7 @@
           "slot": "kv.0.label"
         },
         {
-          "id": "el_k0a459n62f",
+          "id": "el_05",
           "type": "text",
           "x": 106,
           "y": 194,
@@ -182,7 +182,7 @@
           "slot": "kv.0.value"
         },
         {
-          "id": "el_89gyv2xezb",
+          "id": "el_06",
           "type": "text",
           "x": 14,
           "y": 221,
@@ -204,7 +204,7 @@
           "slot": "kv.1.label"
         },
         {
-          "id": "el_7tnml3dobx",
+          "id": "el_07",
           "type": "text",
           "x": 106,
           "y": 221,
@@ -226,7 +226,7 @@
           "slot": "kv.1.value"
         },
         {
-          "id": "el_ayh7jx7bq3",
+          "id": "el_08",
           "type": "text",
           "x": 14,
           "y": 248,
@@ -248,7 +248,7 @@
           "slot": "kv.2.label"
         },
         {
-          "id": "el_4tixiqelc6",
+          "id": "el_09",
           "type": "text",
           "x": 106,
           "y": 248,
@@ -270,7 +270,7 @@
           "slot": "kv.2.value"
         },
         {
-          "id": "el_wsdzodl8i9",
+          "id": "el_10",
           "type": "button",
           "x": 14,
           "y": 283,
@@ -295,7 +295,7 @@
           }
         },
         {
-          "id": "el_cukv3dg41o",
+          "id": "el_11",
           "type": "button",
           "x": 177,
           "y": 283,

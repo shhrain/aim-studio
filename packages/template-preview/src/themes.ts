@@ -32,9 +32,24 @@ export interface VendorTheme {
 const base: VendorTheme = {
   id: 'huawei',
   name: '华为',
-  shell: { frame: '#1B1C1F', camera: 'punch-left', screenBg: '#F1F3F5', headerBg: '#F1F3F5', headerColor: '#1F2329', inputBar: 'pill', statusTime: '09:41' },
+  shell: {
+    frame: '#1B1C1F',
+    camera: 'punch-left',
+    screenBg: '#F1F3F5',
+    headerBg: '#F1F3F5',
+    headerColor: '#1F2329',
+    inputBar: 'pill',
+    statusTime: '09:41',
+  },
   card: { bg: '#FFFFFF', radius: 14 },
-  button: { primaryBg: '#007DFF', primaryColor: '#FFFFFF', secondaryBg: '#F1F3F5', secondaryColor: '#007DFF', radius: 20, weight: 500 },
+  button: {
+    primaryBg: '#007DFF',
+    primaryColor: '#FFFFFF',
+    secondaryBg: '#F1F3F5',
+    secondaryColor: '#007DFF',
+    radius: 20,
+    weight: 500,
+  },
   accent: '#007DFF',
   price: '#E84026',
 }
@@ -42,7 +57,9 @@ const base: VendorTheme = {
 const themes = new Map<string, VendorTheme>()
 
 /** 定义 / 覆盖厂商主题（业务可扩展新厂商或定制皮肤） */
-export function defineVendorTheme(theme: Partial<VendorTheme> & { id: string; name?: string }): VendorTheme {
+export function defineVendorTheme(
+  theme: Partial<VendorTheme> & { id: string; name?: string },
+): VendorTheme {
   const prev = themes.get(theme.id) ?? base
   const merged: VendorTheme = {
     ...prev,
@@ -68,37 +85,79 @@ defineVendorTheme({
 defineVendorTheme({
   id: 'xiaomi',
   name: VENDORS.xiaomi.name,
-  shell: { ...base.shell, frame: '#050505', camera: 'punch-center', screenBg: '#FFFFFF', headerBg: '#FFFFFF', inputBar: 'flat' },
+  shell: {
+    ...base.shell,
+    frame: '#050505',
+    camera: 'punch-center',
+    screenBg: '#FFFFFF',
+    headerBg: '#FFFFFF',
+    inputBar: 'flat',
+  },
   card: { bg: '#F4F5F7', radius: 16 },
-  button: { ...base.button, primaryBg: '#FFFFFF', primaryColor: '#111111', secondaryBg: '#FFFFFF', secondaryColor: '#111111', weight: 600 },
+  button: {
+    ...base.button,
+    primaryBg: '#FFFFFF',
+    primaryColor: '#111111',
+    secondaryBg: '#FFFFFF',
+    secondaryColor: '#111111',
+    weight: 600,
+  },
   accent: '#FF6900',
 })
 defineVendorTheme({
   id: 'vivo',
   name: VENDORS.vivo.name,
   shell: { ...base.shell, camera: 'waterdrop' },
-  button: { ...base.button, primaryBg: 'transparent', primaryColor: '#3B9EFF', secondaryBg: 'transparent', secondaryColor: '#3B9EFF', weight: 500 },
+  button: {
+    ...base.button,
+    primaryBg: 'transparent',
+    primaryColor: '#3B9EFF',
+    secondaryBg: 'transparent',
+    secondaryColor: '#3B9EFF',
+    weight: 500,
+  },
   accent: '#3B9EFF',
 })
 defineVendorTheme({
   id: 'oppo',
   name: VENDORS.oppo.name,
   shell: { ...base.shell, camera: 'punch-left' },
-  button: { ...base.button, primaryBg: '#FFFFFF', primaryColor: '#39BF56', secondaryBg: '#FFFFFF', secondaryColor: '#39BF56', border: '1px solid #E6E8EB' },
+  button: {
+    ...base.button,
+    primaryBg: '#FFFFFF',
+    primaryColor: '#39BF56',
+    secondaryBg: '#FFFFFF',
+    secondaryColor: '#39BF56',
+    border: '1px solid #E6E8EB',
+  },
   accent: '#39BF56',
 })
 defineVendorTheme({
   id: 'samsung',
   name: VENDORS.samsung.name,
   shell: { ...base.shell, camera: 'punch-center', screenBg: '#F6F6F6', headerBg: '#F6F6F6' },
-  button: { ...base.button, primaryBg: 'transparent', primaryColor: '#010101', secondaryBg: 'transparent', secondaryColor: '#010101', weight: 700 },
+  button: {
+    ...base.button,
+    primaryBg: 'transparent',
+    primaryColor: '#010101',
+    secondaryBg: 'transparent',
+    secondaryColor: '#010101',
+    weight: 700,
+  },
   accent: '#1428A0',
 })
 defineVendorTheme({
   id: 'asus',
   name: VENDORS.asus.name,
   shell: { ...base.shell, camera: 'notch' },
-  button: { ...base.button, primaryBg: '#29BC52', primaryColor: '#FFFFFF', secondaryBg: '#E9F8EE', secondaryColor: '#29BC52', radius: 10 },
+  button: {
+    ...base.button,
+    primaryBg: '#29BC52',
+    primaryColor: '#FFFFFF',
+    secondaryBg: '#E9F8EE',
+    secondaryColor: '#29BC52',
+    radius: 10,
+  },
   accent: '#29BC52',
 })
 defineVendorTheme({

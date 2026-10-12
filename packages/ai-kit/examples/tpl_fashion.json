@@ -22,7 +22,7 @@
   },
   "pages": [
     {
-      "id": "page_0iimnvsl2s",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 530,
@@ -31,7 +31,7 @@
       },
       "elements": [
         {
-          "id": "el_yvds7quc3c",
+          "id": "el_01",
           "type": "swiper",
           "x": 0,
           "y": 0,
@@ -79,7 +79,7 @@
           "slot": "media"
         },
         {
-          "id": "el_fp5j8rx6fr",
+          "id": "el_02",
           "type": "text",
           "x": 14,
           "y": 204,
@@ -102,7 +102,7 @@
           "slot": "title"
         },
         {
-          "id": "el_9fo6s7uwjg",
+          "id": "el_03",
           "type": "text",
           "x": 14,
           "y": 235,
@@ -124,7 +124,7 @@
           "slot": "description"
         },
         {
-          "id": "el_q12ghuaqlh",
+          "id": "el_04",
           "type": "button",
           "x": 14,
           "y": 476,

@@ -18,7 +18,7 @@
   "settings": {},
   "pages": [
     {
-      "id": "page_cq0jqayf1r",
+      "id": "page_01",
       "mode": "flow",
       "style": {
         "height": 300,
@@ -27,7 +27,7 @@
       },
       "elements": [
         {
-          "id": "el_h0liunp4cr",
+          "id": "el_01",
           "type": "cardVouchers",
           "x": 0,
           "y": 0,

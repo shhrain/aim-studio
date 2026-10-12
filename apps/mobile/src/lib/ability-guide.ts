@@ -4,7 +4,12 @@ import type { VendorId } from '@aim/template-schema'
 export const ABILITY_GUIDE: Record<VendorId, { system: string; steps: string[]; tip?: string }> = {
   huawei: {
     system: 'HarmonyOS / EMUI 10+',
-    steps: ['打开「信息」App', '点击右上角「⋮」→「设置」', '进入「高级」→ 开启「智能短信」', '返回收件箱，等待新消息即可看到富媒体卡片'],
+    steps: [
+      '打开「信息」App',
+      '点击右上角「⋮」→「设置」',
+      '进入「高级」→ 开启「智能短信」',
+      '返回收件箱，等待新消息即可看到富媒体卡片',
+    ],
     tip: '如仍无法显示，请在「设置 → 应用 → 信息」中清除缓存后重试。',
   },
   honor: {

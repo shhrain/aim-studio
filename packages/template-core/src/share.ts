@@ -16,7 +16,11 @@ export async function createShareUrl(
   baseUrl: string,
   options: { vendor?: VendorId; ttl?: number; now?: number } = {},
 ): Promise<string> {
-  const payload: SharePayload = { doc, vendor: options.vendor, expiresAt: (options.now ?? Date.now()) + (options.ttl ?? SHARE_TTL_MS) }
+  const payload: SharePayload = {
+    doc,
+    vendor: options.vendor,
+    expiresAt: (options.now ?? Date.now()) + (options.ttl ?? SHARE_TTL_MS),
+  }
   return `${baseUrl}#d=${await encodeJson(payload)}`
 }
 
@@ -30,7 +34,12 @@ export async function parseShareHash(hash: string, now = Date.now()): Promise<Sh
   if (!value) return { ok: false, reason: 'missing', message: '链接缺少预览数据' }
   try {
     const payload = await decodeJson<SharePayload>(value)
-    if (payload.expiresAt < now) return { ok: false, reason: 'expired', message: '二维码已过期（30 分钟内有效），请在编辑器重新生成' }
+    if (payload.expiresAt < now)
+      return {
+        ok: false,
+        reason: 'expired',
+        message: '二维码已过期（30 分钟内有效），请在编辑器重新生成',
+      }
     return { ok: true, payload }
   } catch {
     return { ok: false, reason: 'invalid', message: '预览数据已损坏，请重新扫码' }

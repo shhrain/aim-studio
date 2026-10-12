@@ -7,3 +7,13 @@ storybook-static
 coverage
 **/public/mockServiceWorker.js
 packages/template-core/test/reference
+scripts/templates
+**/*-snapshots
+
+# 由 pnpm ai:generate 生成，以生成器输出为准
+AGENTS.md
+packages/ai-kit/PROMPT.md
+packages/ai-kit/examples
+.cursor/rules
+apps/docs/content/docs/spec/*
+!apps/docs/content/docs/spec/document.mdx

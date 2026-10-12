@@ -15,11 +15,15 @@ export function SwiperView({ el }: { el: TemplateElement<'swiper'> }) {
   const [playing, setPlaying] = useState<number | null>(null)
   const startX = useRef<number | null>(null)
   const count = items.length
-  const go = (i: number) => setIndex(el.props.loop ? (i + count) % count : Math.max(0, Math.min(count - 1, i)))
+  const go = (i: number) =>
+    setIndex(el.props.loop ? (i + count) % count : Math.max(0, Math.min(count - 1, i)))
 
   useEffect(() => {
     if (!el.props.autoplay || thumbnail || editor || count < 2 || playing != null) return
-    const t = setInterval(() => setIndex((i) => (i + 1) % count), Math.max(1, el.props.interval) * 1000)
+    const t = setInterval(
+      () => setIndex((i) => (i + 1) % count),
+      Math.max(1, el.props.interval) * 1000,
+    )
     return () => clearInterval(t)
   }, [el.props.autoplay, el.props.interval, thumbnail, editor, count, playing])
 
@@ -42,10 +46,19 @@ export function SwiperView({ el }: { el: TemplateElement<'swiper'> }) {
           <div key={i} className="aim-swiper-slide">
             {video ? (
               playing === i && item.src ? (
-                <video className="aim-video" src={item.src} poster={item.cover} autoPlay controls playsInline />
+                <video
+                  className="aim-video"
+                  src={item.src}
+                  poster={item.cover}
+                  autoPlay
+                  controls
+                  playsInline
+                />
               ) : (
                 <div className="aim-media">
-                  {item.cover && <img className="aim-media-cover" src={item.cover} alt="" draggable={false} />}
+                  {item.cover && (
+                    <img className="aim-media-cover" src={item.cover} alt="" draggable={false} />
+                  )}
                   <span
                     className="aim-play"
                     role="button"
@@ -90,7 +103,15 @@ export function SwiperView({ el }: { el: TemplateElement<'swiper'> }) {
   )
 }
 
-export function ButtonList({ buttons, element, compact }: { buttons: LinkButton[]; element: AnyElement; compact?: boolean }) {
+export function ButtonList({
+  buttons,
+  element,
+  compact,
+}: {
+  buttons: LinkButton[]
+  element: AnyElement
+  compact?: boolean
+}) {
   const r = useResolver()
   const act = useAct()
   if (!buttons.length) return null
@@ -119,7 +140,11 @@ export function SideslipView({ el }: { el: TemplateElement<'sideslip'> }) {
   return (
     <div className="aim-hscroll">
       {el.props.cards.map((card, i) => (
-        <div key={i} className="aim-slide-card" onClick={(e) => act(card.event, { element: el, e })}>
+        <div
+          key={i}
+          className="aim-slide-card"
+          onClick={(e) => act(card.event, { element: el, e })}
+        >
           <img
             className="aim-img"
             src={card.src || undefined}
@@ -134,7 +159,11 @@ export function SideslipView({ el }: { el: TemplateElement<'sideslip'> }) {
               dangerouslySetInnerHTML={{ __html: renderTextHtml(card.title, r) }}
             />
             {el.props.showContent && (
-              <div className="aim-t2 aim-clamp-2" style={{ fontSize: u(12), minHeight: u(36) }} dangerouslySetInnerHTML={{ __html: renderTextHtml(card.content, r) }} />
+              <div
+                className="aim-t2 aim-clamp-2"
+                style={{ fontSize: u(12), minHeight: u(36) }}
+                dangerouslySetInnerHTML={{ __html: renderTextHtml(card.content, r) }}
+              />
             )}
             <div style={{ marginTop: 'auto' }}>
               <ButtonList buttons={card.buttons} element={el} compact />

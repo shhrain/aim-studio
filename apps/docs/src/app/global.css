@@ -3,7 +3,7 @@
 @import 'fumadocs-ui/css/preset.css';
 @import '@aim/template-preview/styles.css';
 
-@source "../";
+@source '../';
 
 :root {
   --color-fd-primary: oklch(0.58 0.2 258);
@@ -23,6 +23,9 @@ body {
 }
 
 .demo-grid {
-  background-image: radial-gradient(color-mix(in oklch, currentColor 10%, transparent) 1px, transparent 1px);
+  background-image: radial-gradient(
+    color-mix(in oklch, currentColor 10%, transparent) 1px,
+    transparent 1px
+  );
   background-size: 16px 16px;
 }

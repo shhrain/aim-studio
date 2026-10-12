@@ -1,11 +1,25 @@
 'use client'
 
 import { convertDocument, fromLegacyPages } from '@aim/template-core'
-import { PROTOCOL_META, VENDORS, getLayout, type Protocol, type TemplateDocument, type VendorId } from '@aim/template-schema'
+import {
+  PROTOCOL_META,
+  VENDORS,
+  getLayout,
+  type Protocol,
+  type TemplateDocument,
+  type VendorId,
+} from '@aim/template-schema'
 import { formatDate } from '@aim/utils'
 import { useMemo, type CSSProperties, type ReactNode } from 'react'
 import { CardCanvas } from './canvas'
-import { PreviewProvider, type EditorBridge, type InteractiveMode, type ParamDisplay, type PreviewActionEvent, type PreviewContextValue } from './context'
+import {
+  PreviewProvider,
+  type EditorBridge,
+  type InteractiveMode,
+  type ParamDisplay,
+  type PreviewActionEvent,
+  type PreviewContextValue,
+} from './context'
 import { Notice, PreviewErrorBoundary, useFeedback } from './feedback'
 import { RcsView, RmsView } from './protocols'
 import { PhoneShell } from './shell'
@@ -62,12 +76,18 @@ export interface TemplatePreviewProps {
   style?: CSSProperties
 }
 
-function useResolvedDocument(document: TemplateDocument | null | undefined, legacy: LegacyTemplateInput | undefined) {
+function useResolvedDocument(
+  document: TemplateDocument | null | undefined,
+  legacy: LegacyTemplateInput | undefined,
+) {
   return useMemo(() => {
     if (document) return document
     if (legacy?.pages) {
       try {
-        return fromLegacyPages(legacy.pages as never, { cardId: legacy.cardId, params: legacy.params })
+        return fromLegacyPages(legacy.pages as never, {
+          cardId: legacy.cardId,
+          params: legacy.params,
+        })
       } catch {
         return null
       }
@@ -107,7 +127,10 @@ export function TemplatePreview(props: TemplatePreviewProps) {
   const doc = useResolvedDocument(props.document, legacy)
   const theme = getVendorTheme(vendor)
   const { api, layer } = useFeedback()
-  const integrated = useMemo(() => (doc && protocol !== 'aim' ? convertDocument(doc) : null), [doc, protocol])
+  const integrated = useMemo(
+    () => (doc && protocol !== 'aim' ? convertDocument(doc) : null),
+    [doc, protocol],
+  )
 
   const ctx: PreviewContextValue = useMemo(
     () => ({
@@ -125,19 +148,36 @@ export function TemplatePreview(props: TemplatePreviewProps) {
   )
 
   const layout = doc ? getLayout(doc.layoutId) : undefined
-  const unsupportedVendor = Boolean(doc && layout && !ignoreVendorSupport && protocol === 'aim' && !layout.vendors.includes(vendor as VendorId))
+  const unsupportedVendor = Boolean(
+    doc &&
+    layout &&
+    !ignoreVendorSupport &&
+    protocol === 'aim' &&
+    !layout.vendors.includes(vendor as VendorId),
+  )
   const timeText = formatDate(time ?? Date.now(), 'YYYY-MM-DD HH:mm')
 
   let content: ReactNode
   if (loading) content = <div className="aim-skeleton" style={{ height: 260 }} />
   else if (!doc) content = <Notice title={emptyText} />
   else if (unsupportedVendor) {
-    content = <Notice icon="⊘" title={`${VENDORS[vendor as VendorId]?.name ?? theme.name}暂不支持此模板`} description={`「${layout?.name}」未在该厂商上架`} />
+    content = (
+      <Notice
+        icon="⊘"
+        title={`${VENDORS[vendor as VendorId]?.name ?? theme.name}暂不支持此模板`}
+        description={`「${layout?.name}」未在该厂商上架`}
+      />
+    )
   } else if (protocol === 'aim') {
     const page = doc.pages[pageIndex] ?? doc.pages[0]!
     content = <CardCanvas page={page} />
   } else if (!integrated) {
-    content = <Notice title={`「${layout?.name ?? '该版式'}」暂不支持${PROTOCOL_META[protocol].name}`} description="仅图文、视频、图片轮播、红包、通知类支持三信融合" />
+    content = (
+      <Notice
+        title={`「${layout?.name ?? '该版式'}」暂不支持${PROTOCOL_META[protocol].name}`}
+        description="仅图文、视频、图片轮播、红包、通知类支持三信融合"
+      />
+    )
   } else if (protocol === 'rcs') {
     content = <RcsView material={integrated.sourceMaterial} />
   } else {
@@ -164,7 +204,7 @@ export function TemplatePreview(props: TemplatePreviewProps) {
 
   return (
     <div
-      className={`aim-root${mode === 'thumbnail' ? ' aim-thumbnail' : ''} ${className ?? ''}`}
+      className={`aim-root${mode === 'thumbnail' ? 'aim-thumbnail' : ''} ${className ?? ''}`}
       data-mode={mode}
       data-vendor={theme.id}
       data-protocol={protocol}
@@ -174,7 +214,12 @@ export function TemplatePreview(props: TemplatePreviewProps) {
       <PreviewProvider value={ctx}>
         <PreviewErrorBoundary>
           {mode === 'phone' ? (
-            <PhoneShell theme={theme} chatbotName={chatbotName} chatbotAvatar={chatbotAvatar} overlay={layer}>
+            <PhoneShell
+              theme={theme}
+              chatbotName={chatbotName}
+              chatbotAvatar={chatbotAvatar}
+              overlay={layer}
+            >
               {withTime}
             </PhoneShell>
           ) : mode === 'fluid' ? (

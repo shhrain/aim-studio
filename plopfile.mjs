@@ -14,33 +14,40 @@ export default function (plop) {
     prompts: [
       { type: 'input', name: 'type', message: '元素类型（小驼峰英文）', validate: isId },
       { type: 'input', name: 'label', message: '中文名称', default: '新元素' },
-      { type: 'list', name: 'group', message: '分组', choices: ['basic', 'media', 'marketing', 'service', 'form'] },
+      {
+        type: 'list',
+        name: 'group',
+        message: '分组',
+        choices: ['basic', 'media', 'marketing', 'service', 'form'],
+      },
     ],
     actions: [
+      // 以下模式兼容 LF / CRLF：$2 为原换行符
       {
         type: 'modify',
         path: 'packages/template-schema/src/elements.ts',
-        pattern: /(  'submitButton',\n\] as const)/,
-        template: "  'submitButton',\n  '{{type}}',\n] as const",
+        pattern: /(  'submitButton',)(\r?\n)(\] as const)/,
+        template: "$1$2  '{{type}}',$2$3",
       },
       {
         type: 'modify',
         path: 'packages/template-schema/src/elements.ts',
-        pattern: /(  submitButton: \{ label: '提交按钮', group: 'form', clickable: true \},\n)/,
-        template: "$1  {{type}}: { label: '{{label}}', group: '{{group}}', clickable: true },\n",
+        pattern:
+          /(  submitButton: \{ label: '提交按钮', group: 'form', clickable: true \},)(\r?\n)/,
+        template: "$1$2  {{type}}: { label: '{{label}}', group: '{{group}}', clickable: true },$2",
       },
       {
         type: 'modify',
         path: 'packages/template-schema/src/elements.ts',
-        pattern: /(  submitButton: z\.object\(\{ text: z\.string\(\) \}\),\n)/,
-        template: "$1  {{type}}: z.object({ text: z.string() }),\n",
+        pattern: /(  submitButton: z\.object\(\{ text: z\.string\(\) \}\),)(\r?\n)/,
+        template: '$1$2  {{type}}: z.object({ text: z.string() }),$2',
       },
       {
         type: 'modify',
         path: 'packages/template-core/src/elements/builtin.ts',
-        pattern: /(\n\]\n\n\/\/ eslint-disable-next-line)/,
+        pattern: /(\r?\n)(\]\r?\n\r?\n\/\/ eslint-disable-next-line)/,
         template:
-          "\n  defineElement({ type: '{{type}}', label: '{{label}}', size: { w: W - 28, h: 48 }, defaults: () => ({ text: '{{label}}' }), texts: (el) => [el.props.text] }),$1",
+          "$1  defineElement({ type: '{{type}}', label: '{{label}}', size: { w: W - 28, h: 48 }, defaults: () => ({ text: '{{label}}' }), texts: (el) => [el.props.text] }),$1$2",
       },
       {
         type: 'add',
@@ -51,7 +58,8 @@ export default function (plop) {
         type: 'modify',
         path: 'packages/template-preview/src/elements/registry.tsx',
         pattern: /(\/\*\* 渲染单个元素内容)/,
-        template: "definePreviewElement({ type: '{{type}}', Render: {{pascalCase type}}View })\n\n$1",
+        template:
+          "definePreviewElement({ type: '{{type}}', Render: {{pascalCase type}}View })\n\n$1",
       },
       {
         type: 'modify',
@@ -68,7 +76,12 @@ export default function (plop) {
     prompts: [
       { type: 'input', name: 'id', message: 'cardId', validate: isCardId },
       { type: 'input', name: 'name', message: '版式名称', default: '新版式' },
-      { type: 'list', name: 'group', message: '分组', choices: ['imageText', 'video', 'ecommerce', 'survey', 'select', 'notice', 'trip'] },
+      {
+        type: 'list',
+        name: 'group',
+        message: '分组',
+        choices: ['imageText', 'video', 'ecommerce', 'survey', 'select', 'notice', 'trip'],
+      },
       { type: 'list', name: 'category', message: '分类', choices: ['service', 'notify'] },
     ],
     actions: [
@@ -91,15 +104,36 @@ export default function (plop) {
   plop.setGenerator('package', {
     description: '新增工作区包',
     prompts: [
-      { type: 'input', name: 'name', message: '包名（不含 @aim/）', validate: (v) => (/^[a-z][a-z0-9-]*$/.test(v) ? true : '小写字母、数字、短横线') },
+      {
+        type: 'input',
+        name: 'name',
+        message: '包名（不含 @aim/）',
+        validate: (v) => (/^[a-z][a-z0-9-]*$/.test(v) ? true : '小写字母、数字、短横线'),
+      },
       { type: 'input', name: 'description', message: '描述' },
       { type: 'confirm', name: 'react', message: '是否包含 React 组件？', default: false },
     ],
     actions: [
-      { type: 'add', path: 'packages/{{name}}/package.json', templateFile: 'scripts/templates/package.json.hbs' },
-      { type: 'add', path: 'packages/{{name}}/tsconfig.json', templateFile: 'scripts/templates/tsconfig.json.hbs' },
-      { type: 'add', path: 'packages/{{name}}/eslint.config.js', templateFile: 'scripts/templates/eslint.config.js.hbs' },
-      { type: 'add', path: 'packages/{{name}}/src/index.ts', template: "export const name = '@aim/{{name}}'\n" },
+      {
+        type: 'add',
+        path: 'packages/{{name}}/package.json',
+        templateFile: 'scripts/templates/package.json.hbs',
+      },
+      {
+        type: 'add',
+        path: 'packages/{{name}}/tsconfig.json',
+        templateFile: 'scripts/templates/tsconfig.json.hbs',
+      },
+      {
+        type: 'add',
+        path: 'packages/{{name}}/eslint.config.js',
+        templateFile: 'scripts/templates/eslint.config.js.hbs',
+      },
+      {
+        type: 'add',
+        path: 'packages/{{name}}/src/index.ts',
+        template: "export const name = '@aim/{{name}}'\n",
+      },
       () => '完成。运行 pnpm install 链接工作区依赖。',
     ],
   })

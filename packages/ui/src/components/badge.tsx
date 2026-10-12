@@ -7,21 +7,22 @@ export const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground',
+        default: 'bg-primary text-primary-foreground border-transparent',
+        secondary: 'bg-secondary text-secondary-foreground border-transparent',
         outline: 'text-foreground',
-        soft: 'border-transparent bg-accent text-accent-foreground',
-        success: 'border-transparent bg-success/12 text-success',
-        warning: 'border-transparent bg-warning/18 text-warning-foreground',
-        destructive: 'border-transparent bg-destructive/12 text-destructive',
-        info: 'border-transparent bg-info/12 text-info',
+        soft: 'bg-accent text-accent-foreground border-transparent',
+        success: 'bg-success/12 text-success border-transparent',
+        warning: 'bg-warning/18 text-warning-foreground border-transparent',
+        destructive: 'bg-destructive/12 text-destructive border-transparent',
+        info: 'bg-info/12 text-info border-transparent',
       },
     },
     defaultVariants: { variant: 'secondary' },
   },
 )
 
-export interface BadgeProps extends React.ComponentProps<'span'>, VariantProps<typeof badgeVariants> {
+export interface BadgeProps
+  extends React.ComponentProps<'span'>, VariantProps<typeof badgeVariants> {
   /** 左侧状态圆点 */
   dot?: boolean
 }

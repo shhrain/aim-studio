@@ -40,14 +40,21 @@ export function DetailView() {
         )
       }
     >
-      <NavBar title={data?.tplName ?? '模板详情'} tone="primary" onBack={() => (history.length > 1 ? router.back() : router.push('/template-list'))} />
+      <NavBar
+        title={data?.tplName ?? '模板详情'}
+        tone="primary"
+        onBack={() => (history.length > 1 ? router.back() : router.push('/template-list'))}
+      />
       {isLoading ? (
         <div className="space-y-3 p-4">
           <Skeleton className="h-9 w-full" />
           <Skeleton className="h-96 w-full rounded-xl" />
         </div>
       ) : isError || !data ? (
-        <Empty title="模板不存在或已下线" action={<Button onClick={() => router.push('/template-list')}>返回模板列表</Button>} />
+        <Empty
+          title="模板不存在或已下线"
+          action={<Button onClick={() => router.push('/template-list')}>返回模板列表</Button>}
+        />
       ) : (
         <div className="space-y-3 pb-4">
           <div className="bg-primary px-4 pt-1 pb-4">
@@ -55,7 +62,7 @@ export function DetailView() {
               block
               value={protocol}
               onValueChange={setProtocol}
-              className="bg-white/15 text-white/80 [&_[aria-checked=true]]:text-foreground"
+              className="[&_[aria-checked=true]]:text-foreground bg-white/15 text-white/80"
               options={(['aim', 'rcs', 'rms'] as const).map((p) => ({
                 value: p,
                 label: `${PROTOCOL_META[p].terminal}`,
@@ -64,27 +71,44 @@ export function DetailView() {
             />
           </div>
           {protocol === 'aim' && (
-            <div className="scrollbar-none flex gap-2 overflow-x-auto px-4">
+            <div className="flex scrollbar-none gap-2 overflow-x-auto px-4">
               {data.factories.map((v) => (
-                <button key={v} type="button" onClick={() => setVendor(v)} className={cn('h-7 shrink-0 rounded-full px-3 text-xs', vendor === v ? 'bg-foreground text-background' : 'bg-card')}>
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setVendor(v)}
+                  className={cn(
+                    'h-7 shrink-0 rounded-full px-3 text-xs',
+                    vendor === v ? 'bg-foreground text-background' : 'bg-card',
+                  )}
+                >
                   {VENDORS[v].name}
                 </button>
               ))}
             </div>
           )}
           <div className="px-4">
-            <div className="overflow-hidden rounded-2xl shadow-panel">
-              <TemplatePreview document={data.document} protocol={protocol} vendor={vendor} mode="fluid" paramDisplay="example" interactive="native" chatbotName="梦网5G阅信" />
+            <div className="shadow-panel overflow-hidden rounded-2xl">
+              <TemplatePreview
+                document={data.document}
+                protocol={protocol}
+                vendor={vendor}
+                mode="fluid"
+                paramDisplay="example"
+                interactive="native"
+                chatbotName="梦网5G阅信"
+              />
             </div>
           </div>
           {data.paramcnt > 0 && (
             <div className="px-4">
               <Alert variant="warning" title="动态参数模板">
-                该模板包含 {data.paramcnt} 个动态参数，预览中显示示例值；正式下发时由业务系统传入真实参数。
+                该模板包含 {data.paramcnt}{' '}
+                个动态参数，预览中显示示例值；正式下发时由业务系统传入真实参数。
               </Alert>
             </div>
           )}
-          <dl className="mx-4 grid grid-cols-[80px_1fr] gap-y-2.5 rounded-xl bg-card p-4 text-sm">
+          <dl className="bg-card mx-4 grid grid-cols-[80px_1fr] gap-y-2.5 rounded-xl p-4 text-sm">
             <dt className="text-muted-foreground">版式</dt>
             <dd className="flex items-center gap-1.5">
               {data.styleName}

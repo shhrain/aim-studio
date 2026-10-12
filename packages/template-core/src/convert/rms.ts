@@ -4,7 +4,13 @@
  * 与 5G 阅信体验平台 integrated-preview/convert/rms.js 行为一致（见 test/parity.test.ts）。
  */
 import type { RcsSourceMaterial, RmsFrame, RmsParam, RmsTplFrame } from '@aim/template-schema'
-import { CARD_IDS, CAROUSEL_IDS, REDPACKET_IDS, RMS_CANVAS_WIDTH, SINGLE_MEDIA_IDS } from './constants'
+import {
+  CARD_IDS,
+  CAROUSEL_IDS,
+  REDPACKET_IDS,
+  RMS_CANVAS_WIDTH,
+  SINGLE_MEDIA_IDS,
+} from './constants'
 import { isValidHttpsUrl, replaceSymbol, stripDynamicParams, stripReject } from './params'
 import type { LegacyElement, LegacyParam } from './rcs'
 
@@ -14,7 +20,11 @@ function replaceRmsSymbol(value: string | undefined | null): string {
   return replaceSymbol(withBreaks).replace(/<br\s*\/?>/gi, '\n')
 }
 
-export function resetBaseContent(type: string, count: number | string, payload: any): RmsFrame | null {
+export function resetBaseContent(
+  type: string,
+  count: number | string,
+  payload: any,
+): RmsFrame | null {
   switch (type) {
     case 'text':
       return {
@@ -22,8 +32,26 @@ export function resetBaseContent(type: string, count: number | string, payload: 
         type: 'text',
         text: stripReject(payload || '请输入文本'),
         tag: 'text_' + count,
-        image: { src: '', width: '', height: '', ratio: '', w: 260, h: 0, size: 0, compoundSize: 0, textEditable: [] },
-        audio: { src: '', duration: 0, title: '', size: 0, w: 240, h: 70, style: { color: '#333', backgroundColor: '#fff', transparency: 0 } },
+        image: {
+          src: '',
+          width: '',
+          height: '',
+          ratio: '',
+          w: 260,
+          h: 0,
+          size: 0,
+          compoundSize: 0,
+          textEditable: [],
+        },
+        audio: {
+          src: '',
+          duration: 0,
+          title: '',
+          size: 0,
+          w: 240,
+          h: 70,
+          style: { color: '#333', backgroundColor: '#fff', transparency: 0 },
+        },
         video: { w: 260, h: 142, src: '', width: 0, height: 0, duration: 0, size: 0 },
         imgParam: { src: '', figure: '' },
         textPosition: 'top',
@@ -64,7 +92,9 @@ export function resetBaseContent(type: string, count: number | string, payload: 
     case 'swiper': {
       const showW = payload.mtalWidth >= RMS_CANVAS_WIDTH ? RMS_CANVAS_WIDTH : payload.mtalWidth
       const showH =
-        payload.mtalWidth >= RMS_CANVAS_WIDTH ? Math.floor((RMS_CANVAS_WIDTH / payload.mtalWidth) * payload.mtalHeight) : payload.mtalHeight
+        payload.mtalWidth >= RMS_CANVAS_WIDTH
+          ? Math.floor((RMS_CANVAS_WIDTH / payload.mtalWidth) * payload.mtalHeight)
+          : payload.mtalHeight
       return {
         active: false,
         type: 'image',
@@ -126,16 +156,21 @@ export function getMediaContent({
 }) {
   const date = +new Date()
   const mediaContent: (RmsFrame | null)[] = []
-  const sourceMaterialDB = JSON.parse(stripReject(JSON.stringify(sourceMaterial || { content: [] })))
+  const sourceMaterialDB = JSON.parse(
+    stripReject(JSON.stringify(sourceMaterial || { content: [] })),
+  )
   const first = (sourceMaterialDB.content && sourceMaterialDB.content[0]) || {}
   const rmsTitle = `${stripDynamicParams(first.title || '')}`
 
   ;(sourceMaterialDB.content || []).forEach(({ descriptionRms, ...t }: any, i: number) => {
-    if (sourceMaterial.content && sourceMaterial.content[i]) delete (sourceMaterial.content[i] as any).descriptionRms
+    if (sourceMaterial.content && sourceMaterial.content[i])
+      delete (sourceMaterial.content[i] as any).descriptionRms
     if (t.type === 'location') {
       if (t.text && typeof JSON.parse(t.text) === 'object') {
         const loc = JSON.parse(replaceSymbol(t.text))
-        mediaContent.push(resetBaseContent('text', date + i, `地址：${loc.title}\n经纬度：${loc.lng},${loc.lat}`))
+        mediaContent.push(
+          resetBaseContent('text', date + i, `地址：${loc.title}\n经纬度：${loc.lng},${loc.lat}`),
+        )
       }
       return
     }
@@ -144,14 +179,21 @@ export function getMediaContent({
       if (t.media.mtalType === 'file') return
       mediaContent.push(resetBaseContent(`${t.media.mtalType}`, date + i, t.media))
     }
-    if ((t.title || t.description || t.type === 'text') && sourceMaterialDB.content.length - 1 === i) {
+    if (
+      (t.title || t.description || t.type === 'text') &&
+      sourceMaterialDB.content.length - 1 === i
+    ) {
       if (cardId === CARD_IDS.NOTIFICATION) t.description = descriptionRms || t.description
       if (REDPACKET_IDS.includes(cardId) && redpacketType === 1) return
       let textPayload: string
       if (t.type === 'text') {
         textPayload = stripDynamicParams(replaceRmsSymbol(t.text))
       } else if (REDPACKET_IDS.includes(cardId)) {
-        textPayload = stripDynamicParams((redpacketType === 3 ? '【' + t.avatartitle + '】' : '') + replaceRmsSymbol(t.description) + '\n\n')
+        textPayload = stripDynamicParams(
+          (redpacketType === 3 ? '【' + t.avatartitle + '】' : '') +
+            replaceRmsSymbol(t.description) +
+            '\n\n',
+        )
       } else {
         textPayload = stripDynamicParams(replaceRmsSymbol(t.description) + '\n\n')
       }
@@ -167,9 +209,17 @@ export function getMediaContent({
         // 旧实现在媒体缺少 event 时会抛错；此处跳过无跳转的媒体（fixed 模式下空链接也跳过）
         if (!tj.event || (mode === 'fixed' && !tj.event.target)) return
         const flag =
-          cardId === CARD_IDS.VIDEO ? false : buttons.every((tk) => (tk.event && tk.event.target) !== (tj.event && tj.event.target))
+          cardId === CARD_IDS.VIDEO
+            ? false
+            : buttons.every((tk) => (tk.event && tk.event.target) !== (tj.event && tj.event.target))
         if (flag) {
-          mediaContent.push(resetBaseContent('text', date + i + `${ii}`, `点击查看: \n${stripDynamicParams(replaceRmsSymbol(tj.event.target))}`))
+          mediaContent.push(
+            resetBaseContent(
+              'text',
+              date + i + `${ii}`,
+              `点击查看: \n${stripDynamicParams(replaceRmsSymbol(tj.event.target))}`,
+            ),
+          )
         }
       })
     }
@@ -177,8 +227,10 @@ export function getMediaContent({
 
   if (buttons.length) {
     buttons.forEach((t, i) => {
-      if (t.event && t.event.action === 'OPEN_QUICK') t.event.target = (t.event.target || '').replace(/^hap:\/\//, 'https://hapjs.org/')
-      if (t.event && t.event.action === 'OPEN_APP') t.event.target = `https://twise.cn/toApp.html?toApp=${t.event.target}`
+      if (t.event && t.event.action === 'OPEN_QUICK')
+        t.event.target = (t.event.target || '').replace(/^hap:\/\//, 'https://hapjs.org/')
+      if (t.event && t.event.action === 'OPEN_APP')
+        t.event.target = `https://twise.cn/toApp.html?toApp=${t.event.target}`
       const target = replaceRmsSymbol(t.event && t.event.target)
       mediaContent.push(
         resetBaseContent(
@@ -189,7 +241,8 @@ export function getMediaContent({
       )
     })
   }
-  if (cardId === CARD_IDS.NOTIFICATION && mediaContent.length) mediaContent.push(mediaContent.shift()!)
+  if (cardId === CARD_IDS.NOTIFICATION && mediaContent.length)
+    mediaContent.push(mediaContent.shift()!)
   return { mediaContent: mergeAdjacentTextFrames(mediaContent), rmsTitle }
 }
 
@@ -234,14 +287,23 @@ export function selectParam(type: string, payload: any): RmsTplFrame | null {
   }
 }
 
-export function buildRmsTplContent(mediaContent: RmsFrame[], params: LegacyParam[]): { content: RmsTplFrame[]; params?: RmsParam[] } {
+export function buildRmsTplContent(
+  mediaContent: RmsFrame[],
+  params: LegacyParam[],
+): { content: RmsTplFrame[]; params?: RmsParam[] } {
   const content = (JSON.parse(stripReject(JSON.stringify(mediaContent || []))) as RmsFrame[])
     .map((t) => selectParam(t.type, t))
     .filter((x): x is RmsTplFrame => Boolean(x))
   return {
     content,
     params: params.length
-      ? params.map((t) => ({ paramName: `${t.name}`, paramType: 'TEXT' as const, paramLen: 100, paramDesc: `${t.example}`, paramRule: '' }))
+      ? params.map((t) => ({
+          paramName: `${t.name}`,
+          paramType: 'TEXT' as const,
+          paramLen: 100,
+          paramDesc: `${t.example}`,
+          paramRule: '',
+        }))
       : undefined,
   }
 }

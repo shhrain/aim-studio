@@ -14,7 +14,8 @@ const voucher = (i = 0): Voucher => ({
   dateRange: ['2026-01-01', '2026-12-31'],
   button: btn('去使用'),
 })
-const linesOf = (list: { label: string; value: string }[]) => list.flatMap((i) => [i.label, i.value])
+const linesOf = (list: { label: string; value: string }[]) =>
+  list.flatMap((i) => [i.label, i.value])
 
 /** 32 种内置元素 */
 const list = [
@@ -30,7 +31,12 @@ const list = [
     type: 'image',
     label: '图片',
     size: { w: W, h: 192 },
-    defaults: () => ({ src: placeholderImage(W, 192), ratio: [16, 9], fit: 'cover', role: 'content' }),
+    defaults: () => ({
+      src: placeholderImage(W, 192),
+      ratio: [16, 9],
+      fit: 'cover',
+      role: 'content',
+    }),
   }),
   defineElement({
     type: 'video',
@@ -54,7 +60,12 @@ const list = [
     style: () => ({ borderRadius: 20, fontSize: 15 }),
     texts: (el) => [el.props.text],
   }),
-  defineElement({ type: 'hotZone', label: '热区', size: { w: 120, h: 60 }, defaults: () => ({ label: '热区' }) }),
+  defineElement({
+    type: 'hotZone',
+    label: '热区',
+    size: { w: 120, h: 60 },
+    defaults: () => ({ label: '热区' }),
+  }),
   defineElement({
     type: 'shape',
     label: '形状',
@@ -73,7 +84,10 @@ const list = [
     label: '轮播',
     size: { w: W, h: 192 },
     defaults: () => ({
-      items: [0, 1, 2].map((i) => ({ src: sampleImage(i, W, 192, `轮播图 ${i + 1}`), event: { action: 'OPEN_URL' as const, target: '' } })),
+      items: [0, 1, 2].map((i) => ({
+        src: sampleImage(i, W, 192, `轮播图 ${i + 1}`),
+        event: { action: 'OPEN_URL' as const, target: '' },
+      })),
       resourceType: 'image',
       ratio: [16, 9],
       loop: true,
@@ -96,7 +110,8 @@ const list = [
         buttons: [btn('编辑按钮')],
       })),
     }),
-    texts: (el) => el.props.cards.flatMap((c) => [c.title, c.content, ...c.buttons.map((b) => b.text)]),
+    texts: (el) =>
+      el.props.cards.flatMap((c) => [c.title, c.content, ...c.buttons.map((b) => b.text)]),
   }),
   defineElement({
     type: 'eCommerce',
@@ -114,7 +129,12 @@ const list = [
       buttons: [btn('加入购物车'), btn('立即购买')],
       themeColor: 1,
     }),
-    texts: (el) => [el.props.title, el.props.description, el.props.tag ?? '', ...el.props.buttons.map((b) => b.text)],
+    texts: (el) => [
+      el.props.title,
+      el.props.description,
+      el.props.tag ?? '',
+      ...el.props.buttons.map((b) => b.text),
+    ],
   }),
   defineElement({
     type: 'moreGoods',
@@ -134,7 +154,11 @@ const list = [
         button: btn('立即购买'),
       })),
     }),
-    texts: (el) => [el.props.title, el.props.subtitle, ...el.props.items.flatMap((i) => [i.name, i.description ?? '', i.button.text])],
+    texts: (el) => [
+      el.props.title,
+      el.props.subtitle,
+      ...el.props.items.flatMap((i) => [i.name, i.description ?? '', i.button.text]),
+    ],
   }),
   defineElement({
     type: 'ecommerceCoupon',
@@ -145,7 +169,13 @@ const list = [
       logo: sampleAvatar(3, '店'),
       title: '编辑店铺名称',
       subtitle: '编辑副标题，最多17个中文字',
-      coupon: { amount: '99', name: '编辑券名称', description: '编辑券说明，最多32个中文字', pickStyle: 'pick', event: { action: 'OPEN_URL', target: '' } },
+      coupon: {
+        amount: '99',
+        name: '编辑券名称',
+        description: '编辑券说明，最多32个中文字',
+        pickStyle: 'pick',
+        event: { action: 'OPEN_URL', target: '' },
+      },
       items: [0, 1, 2].map((i) => ({
         image: sampleImage(i + 5, 106, 106),
         name: '编辑商品名称，最多28个中文字',
@@ -154,14 +184,30 @@ const list = [
         button: btn('立即购买'),
       })),
     }),
-    texts: (el) => [el.props.title, el.props.subtitle, el.props.coupon.name, el.props.coupon.description, ...el.props.items.map((i) => i.name)],
+    texts: (el) => [
+      el.props.title,
+      el.props.subtitle,
+      el.props.coupon.name,
+      el.props.coupon.description,
+      ...el.props.items.map((i) => i.name),
+    ],
   }),
   defineElement({
     type: 'cardVoucher',
     label: '单卡券',
     size: { w: W, h: 210 },
-    defaults: () => ({ ...voucher(0), name: '编辑券名称，最多40个中文字', button: btn('立即领取'), dynamicButton: false }),
-    texts: (el) => [el.props.name, el.props.tagName, el.props.threshold, el.props.button?.text ?? ''],
+    defaults: () => ({
+      ...voucher(0),
+      name: '编辑券名称，最多40个中文字',
+      button: btn('立即领取'),
+      dynamicButton: false,
+    }),
+    texts: (el) => [
+      el.props.name,
+      el.props.tagName,
+      el.props.threshold,
+      el.props.button?.text ?? '',
+    ],
   }),
   defineElement({
     type: 'cardVouchers',
@@ -200,7 +246,14 @@ const list = [
       extra: [{ label: '订单号', value: '{#订单号#}' }],
       tip: '请携带有效身份证件，提前30分钟到达车站检票。',
     }),
-    texts: (el) => [el.props.number, el.props.from.name, el.props.to.name, el.props.tip ?? '', ...linesOf(el.props.grid), ...linesOf(el.props.extra ?? [])],
+    texts: (el) => [
+      el.props.number,
+      el.props.from.name,
+      el.props.to.name,
+      el.props.tip ?? '',
+      ...linesOf(el.props.grid),
+      ...linesOf(el.props.extra ?? []),
+    ],
   }),
   defineElement({
     type: 'tel',
@@ -213,21 +266,38 @@ const list = [
     type: 'map',
     label: '地图',
     size: { w: W - 28, h: 150 },
-    defaults: () => ({ mode: 'card', title: '编辑门店名称', address: '北京市朝阳区建国路 88 号', longitude: 116.46, latitude: 39.91 }),
+    defaults: () => ({
+      mode: 'card',
+      title: '编辑门店名称',
+      address: '北京市朝阳区建国路 88 号',
+      longitude: 116.46,
+      latitude: 39.91,
+    }),
     texts: (el) => [el.props.title, el.props.address],
   }),
   defineElement({
     type: 'serviceNumber',
     label: '服务号',
     size: { w: W - 28, h: 56 },
-    defaults: () => ({ mode: 'profile', avatar: sampleAvatar(0, '阅'), name: '编辑服务号名称', description: '官方服务号' }),
+    defaults: () => ({
+      mode: 'profile',
+      avatar: sampleAvatar(0, '阅'),
+      name: '编辑服务号名称',
+      description: '官方服务号',
+    }),
     texts: (el) => [el.props.name, el.props.description ?? ''],
   }),
   defineElement({
     type: 'agreement',
     label: '协议',
     size: { w: W - 28, h: 36 },
-    defaults: () => ({ text: '我已阅读并同意', links: [{ text: '《用户服务协议》', url: '' }, { text: '《隐私政策》', url: '' }] }),
+    defaults: () => ({
+      text: '我已阅读并同意',
+      links: [
+        { text: '《用户服务协议》', url: '' },
+        { text: '《隐私政策》', url: '' },
+      ],
+    }),
     texts: (el) => [el.props.text, ...el.props.links.map((l) => l.text)],
   }),
   defineElement({
@@ -238,26 +308,75 @@ const list = [
       fields: [
         { label: '姓名', placeholder: '请输入姓名', type: 'input', required: true },
         { label: '手机号', placeholder: '请输入手机号', type: 'phone', required: true },
-        { label: '城市', placeholder: '请选择城市', type: 'select', options: ['北京', '上海', '广州', '深圳'] },
+        {
+          label: '城市',
+          placeholder: '请选择城市',
+          type: 'select',
+          options: ['北京', '上海', '广州', '深圳'],
+        },
         { label: '预约日期', placeholder: '请选择日期', type: 'date' },
       ],
       privacyText: '同意用户隐私协议',
       submitText: '立即提交',
     }),
-    texts: (el) => [el.props.submitText, ...el.props.fields.flatMap((f) => [f.label, f.placeholder])],
+    texts: (el) => [
+      el.props.submitText,
+      ...el.props.fields.flatMap((f) => [f.label, f.placeholder]),
+    ],
   }),
-  defineElement({ type: 'input', label: '输入框', size: { w: W - 28, h: 64 }, defaults: () => ({ label: '姓名', placeholder: '请输入', inputStyle: 'box' }) }),
-  defineElement({ type: 'textarea', label: '多行输入', size: { w: W - 28, h: 110 }, defaults: () => ({ label: '留言', placeholder: '请输入内容', inputStyle: 'box' }) }),
-  defineElement({ type: 'radioGroup', label: '单选', size: { w: W - 28, h: 72 }, defaults: () => ({ label: '性别', options: ['男', '女'] }) }),
-  defineElement({ type: 'checkboxGroup', label: '多选', size: { w: W - 28, h: 72 }, defaults: () => ({ label: '感兴趣的内容', options: ['新品', '优惠', '活动'] }) }),
-  defineElement({ type: 'picker', label: '下拉选择', size: { w: W - 28, h: 64 }, defaults: () => ({ label: '城市', placeholder: '请选择', options: ['北京', '上海', '广州'] }) }),
-  defineElement({ type: 'datePicker', label: '日期选择', size: { w: W - 28, h: 64 }, defaults: () => ({ label: '日期', placeholder: '请选择日期' }) }),
-  defineElement({ type: 'timePicker', label: '时间选择', size: { w: W - 28, h: 64 }, defaults: () => ({ label: '时间', placeholder: '请选择时间' }) }),
+  defineElement({
+    type: 'input',
+    label: '输入框',
+    size: { w: W - 28, h: 64 },
+    defaults: () => ({ label: '姓名', placeholder: '请输入', inputStyle: 'box' }),
+  }),
+  defineElement({
+    type: 'textarea',
+    label: '多行输入',
+    size: { w: W - 28, h: 110 },
+    defaults: () => ({ label: '留言', placeholder: '请输入内容', inputStyle: 'box' }),
+  }),
+  defineElement({
+    type: 'radioGroup',
+    label: '单选',
+    size: { w: W - 28, h: 72 },
+    defaults: () => ({ label: '性别', options: ['男', '女'] }),
+  }),
+  defineElement({
+    type: 'checkboxGroup',
+    label: '多选',
+    size: { w: W - 28, h: 72 },
+    defaults: () => ({ label: '感兴趣的内容', options: ['新品', '优惠', '活动'] }),
+  }),
+  defineElement({
+    type: 'picker',
+    label: '下拉选择',
+    size: { w: W - 28, h: 64 },
+    defaults: () => ({ label: '城市', placeholder: '请选择', options: ['北京', '上海', '广州'] }),
+  }),
+  defineElement({
+    type: 'datePicker',
+    label: '日期选择',
+    size: { w: W - 28, h: 64 },
+    defaults: () => ({ label: '日期', placeholder: '请选择日期' }),
+  }),
+  defineElement({
+    type: 'timePicker',
+    label: '时间选择',
+    size: { w: W - 28, h: 64 },
+    defaults: () => ({ label: '时间', placeholder: '请选择时间' }),
+  }),
   defineElement({
     type: 'textSelect',
     label: '文本单选',
     size: { w: W - 28, h: 150 },
-    defaults: () => ({ options: ['选项1', '选项2', '选项3'].map((title) => ({ title, event: { action: 'OPEN_URL' as const, target: '' } })), activeIndex: 0 }),
+    defaults: () => ({
+      options: ['选项1', '选项2', '选项3'].map((title) => ({
+        title,
+        event: { action: 'OPEN_URL' as const, target: '' },
+      })),
+      activeIndex: 0,
+    }),
     texts: (el) => el.props.options.map((o) => o.title),
   }),
   defineElement({
@@ -265,13 +384,23 @@ const list = [
     label: '图片单选',
     size: { w: W, h: 170 },
     defaults: () => ({
-      options: [0, 1, 2].map((i) => ({ title: `选项${i + 1}`, src: sampleImage(i + 2, 123, 123), event: { action: 'OPEN_URL' as const, target: '' } })),
+      options: [0, 1, 2].map((i) => ({
+        title: `选项${i + 1}`,
+        src: sampleImage(i + 2, 123, 123),
+        event: { action: 'OPEN_URL' as const, target: '' },
+      })),
       showTitle: true,
       activeIndex: 0,
     }),
     texts: (el) => el.props.options.map((o) => o.title),
   }),
-  defineElement({ type: 'submitButton', label: '提交按钮', size: { w: W - 28, h: 40 }, defaults: () => ({ text: '提交' }), texts: (el) => [el.props.text] }),
+  defineElement({
+    type: 'submitButton',
+    label: '提交按钮',
+    size: { w: W - 28, h: 40 },
+    defaults: () => ({ text: '提交' }),
+    texts: (el) => [el.props.text],
+  }),
 ]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

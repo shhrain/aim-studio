@@ -1,4 +1,13 @@
 {
   "title": "预览 SDK",
-  "pages": ["index", "react", "nextjs", "mobile", "embed", "web-component", "theming", "editor-bridge"]
+  "pages": [
+    "index",
+    "react",
+    "nextjs",
+    "mobile",
+    "embed",
+    "web-component",
+    "theming",
+    "editor-bridge"
+  ]
 }

@@ -31,7 +31,7 @@ const embed = createPreviewEmbed({
   onAction: ({ event }) => console.log(event),
 })
 
-embed.update(nextTpl)              // 更新模板
+embed.update(nextTpl) // 更新模板
 embed.setOptions({ vendor: 'vivo' }) // 切换厂商
 embed.updateLegacy({ pages, cardId })
 embed.destroy()

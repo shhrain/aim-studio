@@ -89,13 +89,15 @@ export type HttpClient = ReturnType<typeof createHttpClient>
 
 /** 创建请求客户端：处理鉴权头、超时、subCode 判定与统一错误 */
 export function createHttpClient(options: HttpClientOptions = {}) {
-  const doFetch = options.fetch ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args))
+  const doFetch =
+    options.fetch ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args))
   const timeout = options.timeout ?? 20_000
 
   function buildUrl(path: string, query?: RequestOptions['query']) {
     const base = options.baseUrl ?? ''
     const qs = new URLSearchParams()
-    for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined && v !== null && v !== '') qs.set(k, String(v))
+    for (const [k, v] of Object.entries(query ?? {}))
+      if (v !== undefined && v !== null && v !== '') qs.set(k, String(v))
     const s = qs.toString()
     return `${base}${path}${s ? `?${s}` : ''}`
   }
@@ -118,21 +120,37 @@ export function createHttpClient(options: HttpClientOptions = {}) {
       })
     } catch (err) {
       const aborted = (err as Error).name === 'AbortError'
-      throw fail(new ApiError(SUB_CODE.SYSTEM, aborted ? '请求超时，请检查网络后重试' : '网络异常，请检查网络后重试', path, 0), opts)
+      throw fail(
+        new ApiError(
+          SUB_CODE.SYSTEM,
+          aborted ? '请求超时，请检查网络后重试' : '网络异常，请检查网络后重试',
+          path,
+          0,
+        ),
+        opts,
+      )
     } finally {
       clearTimeout(timer)
     }
     if (opts.responseType === 'blob') {
-      if (!res.ok) throw fail(new ApiError(SUB_CODE.SYSTEM, `请求失败（${res.status}）`, path, res.status), opts)
+      if (!res.ok)
+        throw fail(
+          new ApiError(SUB_CODE.SYSTEM, `请求失败（${res.status}）`, path, res.status),
+          opts,
+        )
       return (await res.blob()) as T
     }
     let json: ApiResponse<T>
     try {
       json = (await res.json()) as ApiResponse<T>
     } catch {
-      throw fail(new ApiError(SUB_CODE.SYSTEM, `服务响应异常（${res.status}）`, path, res.status), opts)
+      throw fail(
+        new ApiError(SUB_CODE.SYSTEM, `服务响应异常（${res.status}）`, path, res.status),
+        opts,
+      )
     }
-    if (json.subCode !== SUB_CODE.OK) throw fail(new ApiError(json.subCode, json.message, path, res.status), opts)
+    if (json.subCode !== SUB_CODE.OK)
+      throw fail(new ApiError(json.subCode, json.message, path, res.status), opts)
     return (opts.raw ? json : json.data) as T
   }
 
@@ -145,8 +163,10 @@ export function createHttpClient(options: HttpClientOptions = {}) {
   return {
     request,
     get: <T>(path: string, opts?: RequestOptions) => request<T>('GET', path, opts),
-    post: <T>(path: string, body?: unknown, opts?: RequestOptions) => request<T>('POST', path, { ...opts, body }),
-    put: <T>(path: string, body?: unknown, opts?: RequestOptions) => request<T>('PUT', path, { ...opts, body }),
+    post: <T>(path: string, body?: unknown, opts?: RequestOptions) =>
+      request<T>('POST', path, { ...opts, body }),
+    put: <T>(path: string, body?: unknown, opts?: RequestOptions) =>
+      request<T>('PUT', path, { ...opts, body }),
     del: <T>(path: string, opts?: RequestOptions) => request<T>('DELETE', path, opts),
     url: buildUrl,
   }

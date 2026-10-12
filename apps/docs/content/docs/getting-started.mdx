@@ -16,18 +16,19 @@ pnpm install
 pnpm dev            # 同时启动三个应用
 ```
 
-| 应用 | 地址 | 说明 |
-| --- | --- | --- |
-| `apps/editor` | http://localhost:3000 | 模板编辑器（PC） |
-| `apps/mobile` | http://localhost:3001 | 5G 阅信体验 H5 |
-| `apps/docs` | http://localhost:3002 | 本文档站 |
+| 应用             | 地址                  | 说明                               |
+| ---------------- | --------------------- | ---------------------------------- |
+| `apps/editor`    | http://localhost:3000 | 模板编辑器（PC）                   |
+| `apps/mobile`    | http://localhost:3001 | 5G 阅信体验 H5                     |
+| `apps/docs`      | http://localhost:3002 | 本文档站                           |
 | `apps/storybook` | http://localhost:6006 | 组件与预览矩阵（`pnpm storybook`） |
 
 默认启用本地 Mock：编辑器的模板、素材，移动端的模板列表、发送、通讯录等数据都保存在浏览器 IndexedDB 中。
 
 <Callout title="移动端登录">
   移动端与原体验系统一致，通过 URL 携带 `token` 与 `phone` 进入，例如
-  `http://localhost:3001/?token=demo&phone=13800138000`。Mock 环境下也可以在「请先登录」页直接体验登录。
+  `http://localhost:3001/?token=demo&phone=13800138000`。Mock
+  环境下也可以在「请先登录」页直接体验登录。
 </Callout>
 
 ## 手机扫码预览
@@ -56,7 +57,7 @@ pnpm changeset      # 记录可发布包的变更
 浏览器控制台提供调试入口：
 
 ```js
-__aimMock.set({ latency: 1500 })              // 模拟慢网络
-__aimMock.failNext('/send/experience', 1003)  // 下一次发送返回“操作过于频繁”
-__aimMock.reset()                             // 重置为种子数据
+__aimMock.set({ latency: 1500 }) // 模拟慢网络
+__aimMock.failNext('/send/experience', 1003) // 下一次发送返回“操作过于频繁”
+__aimMock.reset() // 重置为种子数据
 ```

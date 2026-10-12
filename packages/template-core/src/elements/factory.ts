@@ -1,4 +1,10 @@
-import type { ActionEvent, ElementPropsMap, ElementStyle, ElementType, TemplateElement } from '@aim/template-schema'
+import type {
+  ActionEvent,
+  ElementPropsMap,
+  ElementStyle,
+  ElementType,
+  TemplateElement,
+} from '@aim/template-schema'
 import { uid } from '@aim/utils'
 import { registry } from '../registry'
 
@@ -17,7 +23,10 @@ export interface CreateElementOptions<T extends ElementType> {
 }
 
 /** 按注册的元素插件创建元素（合并默认 props / style / 尺寸） */
-export function createElement<T extends ElementType>(type: T, options: CreateElementOptions<T> = {}): TemplateElement<T> {
+export function createElement<T extends ElementType>(
+  type: T,
+  options: CreateElementOptions<T> = {},
+): TemplateElement<T> {
   const plugin = registry.element(type)
   const el: TemplateElement<T> = {
     id: options.id ?? uid('el'),

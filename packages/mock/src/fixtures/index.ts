@@ -24,11 +24,28 @@ export const CARRIERS = [
 ]
 
 export function filterOptions(): FilterOptions {
-  const styles = [...new Map(LAYOUTS.filter((l) => !l.free).map((l) => [l.id, { id: l.id, name: l.name }])).values()]
+  const styles = [
+    ...new Map(
+      LAYOUTS.filter((l) => !l.free).map((l) => [l.id, { id: l.id, name: l.name }]),
+    ).values(),
+  ]
   return {
     industries: INDUSTRIES,
     styles,
-    labels: ['节日营销', '限时特惠', '新品发布', '红包', '通知', '卡券', '会员关怀', '出行', '电商', '问卷', '验证码', '大促'].map((n) => ({ id: n, name: n })),
+    labels: [
+      '节日营销',
+      '限时特惠',
+      '新品发布',
+      '红包',
+      '通知',
+      '卡券',
+      '会员关怀',
+      '出行',
+      '电商',
+      '问卷',
+      '验证码',
+      '大促',
+    ].map((n) => ({ id: n, name: n })),
     carriers: CARRIERS,
     factories: VENDOR_LIST.map((v) => ({ id: v.id, name: v.name })),
   }
@@ -36,7 +53,18 @@ export function filterOptions(): FilterOptions {
 
 /** 素材库种子 */
 export function seedMaterials(now = Date.now()): Material[] {
-  const titles = ['品牌主视觉', '新品首发', '会员日', '秋季上新', '限时折扣', '节日海报', '店铺横幅', '活动 Banner', '产品特写', '生活方式']
+  const titles = [
+    '品牌主视觉',
+    '新品首发',
+    '会员日',
+    '秋季上新',
+    '限时折扣',
+    '节日海报',
+    '店铺横幅',
+    '活动 Banner',
+    '产品特写',
+    '生活方式',
+  ]
   const images: Material[] = titles.map((name, i) => ({
     id: `mat_img_${i}`,
     type: 'image',

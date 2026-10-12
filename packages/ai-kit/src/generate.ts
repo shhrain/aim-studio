@@ -21,9 +21,24 @@ function write(file: string, content: string) {
   console.log(`  ✓ ${file.replace(root, '').replace(/\\/g, '/')}`)
 }
 
-/** 示例中的 data URI 图片替换为短链接，保持提示词精简 */
+/**
+ * 示例中的 data URI 图片替换为短链接，保持提示词精简；
+ * 随机生成的页面 / 元素 ID 按出现顺序重编号，保证多次生成结果一致。
+ */
 function compact(value: unknown): unknown {
-  return JSON.parse(JSON.stringify(value), (_k, v) => (typeof v === 'string' && v.startsWith('data:image') ? 'https://cdn.example.com/sample.png' : v))
+  const ids = new Map<string, string>()
+  const counters: Record<string, number> = {}
+  return JSON.parse(JSON.stringify(value), (_k, v) => {
+    if (typeof v !== 'string') return v
+    if (v.startsWith('data:image')) return 'https://cdn.example.com/sample.png'
+    const m = /^(page|el)_[a-z0-9]{10}$/.exec(v)
+    if (!m) return v
+    if (!ids.has(v)) {
+      const n = (counters[m[1]!] = (counters[m[1]!] ?? 0) + 1)
+      ids.set(v, `${m[1]}_${String(n).padStart(2, '0')}`)
+    }
+    return ids.get(v)
+  })
 }
 
 const samples = buildSampleTemplates(Date.UTC(2026, 9, 12))
@@ -33,13 +48,24 @@ const exampleJson = JSON.stringify(compact(imageText), null, 2)
 console.log('生成 AI 知识包…')
 write(join(pkg, 'PROMPT.md'), buildPrompt(exampleJson))
 
-for (const s of samples) write(join(pkg, 'examples', `${s.document.id}.json`), `${JSON.stringify(compact(s.document), null, 2)}\n`)
+for (const s of samples)
+  write(
+    join(pkg, 'examples', `${s.document.id}.json`),
+    `${JSON.stringify(compact(s.document), null, 2)}\n`,
+  )
 
-for (const [name, content] of Object.entries(buildCursorRules())) write(join(root, '.cursor', 'rules', name), content)
+for (const [name, content] of Object.entries(buildCursorRules()))
+  write(join(root, '.cursor', 'rules', name), content)
 
 const agentsFile = join(root, 'AGENTS.md')
 const agents = readFileSync(agentsFile, 'utf8')
-write(agentsFile, agents.replace(/<!-- ai-kit:generated:start -->[\s\S]*<!-- ai-kit:generated:end -->/, buildAgentsSection()))
+write(
+  agentsFile,
+  agents.replace(
+    /<!-- ai-kit:generated:start -->[\s\S]*<!-- ai-kit:generated:end -->/,
+    buildAgentsSection(),
+  ),
+)
 
 const specDir = join(root, 'apps', 'docs', 'content', 'docs', 'spec')
 for (const [name, content] of Object.entries(buildSpecDocs())) write(join(specDir, name), content)

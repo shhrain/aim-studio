@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_survey",
+  "name": "满意度调查",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.textSelect",
+  "cardId": "com.hbm.textSelect",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_3aqbaha84q",
+      "mode": "flow",
+      "style": {
+        "height": 313,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_9a9cfwfs5v",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "您对本次服务满意吗？"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_lqa50twjvt",
+          "type": "text",
+          "x": 14,
+          "y": 45,
+          "w": 314,
+          "h": 42,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 2
+          },
+          "props": {
+            "text": "选择后即可提交，感谢您的反馈"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_b3d1vh1zho",
+          "type": "textSelect",
+          "x": 14,
+          "y": 97,
+          "w": 314,
+          "h": 150,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "options": [
+              {
+                "title": "非常满意",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/survey/0"
+                }
+              },
+              {
+                "title": "比较满意",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/survey/1"
+                }
+              },
+              {
+                "title": "有待改进",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/survey/2"
+                }
+              }
+            ],
+            "activeIndex": 0
+          },
+          "slot": "options"
+        },
+        {
+          "id": "el_v2g8wbb6pg",
+          "type": "button",
+          "x": 14,
+          "y": 259,
+          "w": 314,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "提交",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/survey/submit"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1790916480000,
+    "updatedAt": 1790916480000
+  }
+}

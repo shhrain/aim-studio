@@ -1,0 +1,53 @@
+---
+title: 预览 SDK 概览
+description: "@aim/template-preview：在任何项目、任何终端渲染阅信模板。"
+icon: Eye
+---
+
+`@aim/template-preview` 是平台的公共预览能力，编辑器画布、移动端详情、模板列表缩略图、扫码预览、iframe 嵌入使用的都是它。
+
+<PreviewPlayground />
+
+## 能力清单
+
+| 能力 | 说明 |
+| --- | --- |
+| 32 种元素 / 34 个版式 | 文本、图片、视频、音频、轮播、横滑、电商、卡券、票据、表单…… |
+| 8 套厂商皮肤 | 华为、荣耀、小米、vivo、OPPO、三星、华硕、酷派；按钮、卡片、手机壳随厂商变化 |
+| 3 种协议 | `aim` 安卓阅信、`rcs` 苹果 5G 消息、`rms` 其他终端视频短信（自动调用转换器） |
+| 4 种模式 | `phone` 手机壳、`bare` 仅卡片、`fluid` 移动端全宽、`thumbnail` 缩略图 |
+| 参数显示 | `value` 传入值优先 / `example` 示例值 / `token` 高亮参数名 |
+| 交互 | `intercept` 只回调 / `native` 真实执行（跳转、拨号、复制、弹窗、看大图）/ `none` |
+| 旧数据 | `legacy` 直接传入旧编辑器 `pages` 字符串 |
+| 安全 | 富文本经确定性白名单净化，SSR 与浏览器输出一致 |
+| 多入口 | React 组件、`/embed` iframe、`/element` Web Component、`/styles.css` |
+
+## 安装
+
+```bash
+pnpm add @aim/template-preview @aim/template-core @aim/template-schema
+```
+
+```tsx
+import '@aim/template-preview/styles.css'
+import { TemplatePreview } from '@aim/template-preview'
+
+export function Demo({ doc }) {
+  return <TemplatePreview document={doc} vendor="huawei" mode="phone" />
+}
+```
+
+## 自适应原理
+
+预览不使用 `transform: scale`。卡片容器声明 `container-type: inline-size`，并通过 `@property` 注册
+
+```css
+--u: calc(100cqw / 342); /* 342 为画布基准宽 */
+```
+
+所有尺寸写成 `calc(var(--u) * N)`。因此同一份模板放进 240px 的缩略图、300px 的手机壳或 430px 的手机全屏，都会按宽度等比缩放：文字清晰、高度自然、点击区域准确。
+
+## 两种排版模式
+
+- **flow**（结构化版式）：元素按 `y` 排序纵向排布，同一行的元素并排，水平重叠的元素作为叠加层；文本高度随内容自适应，最接近厂商真机效果；
+- **absolute**（自由版式 / 旧数据导入）：元素按 `x / y / w / h` 精确定位。

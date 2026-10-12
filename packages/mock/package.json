@@ -1,0 +1,35 @@
+{
+  "name": "@aim/mock",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AIM 全量接口 Mock：MSW handlers + 示例模板 fixtures，浏览器 / Node / Storybook / E2E 复用，IndexedDB 持久化",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./browser": "./src/browser.ts",
+    "./node": "./src/node.ts",
+    "./fixtures": "./src/fixtures/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf .turbo"
+  },
+  "dependencies": {
+    "@aim/api-client": "workspace:*",
+    "@aim/template-core": "workspace:*",
+    "@aim/template-schema": "workspace:*",
+    "@aim/utils": "workspace:*",
+    "idb-keyval": "catalog:",
+    "msw": "catalog:"
+  },
+  "devDependencies": {
+    "@aim/eslint-config": "workspace:*",
+    "@aim/tsconfig": "workspace:*",
+    "@aim/vitest-config": "workspace:*",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

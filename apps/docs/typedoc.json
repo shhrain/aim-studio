@@ -1,0 +1,19 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "AIM Studio API",
+  "entryPoints": [
+    "../../packages/template-schema/src/index.ts",
+    "../../packages/template-core/src/index.ts",
+    "../../packages/template-preview/src/index.ts",
+    "../../packages/api-client/src/index.ts",
+    "../../packages/utils/src/index.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "tsconfig": "./typedoc.tsconfig.json",
+  "out": "public/typedoc",
+  "excludePrivate": true,
+  "excludeExternals": true,
+  "skipErrorChecking": true,
+  "readme": "none",
+  "lang": "zh"
+}

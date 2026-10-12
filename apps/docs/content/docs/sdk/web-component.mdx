@@ -1,0 +1,38 @@
+---
+title: Web Component
+description: "<aim-preview> 自定义元素，任意框架直接使用。"
+---
+
+```ts
+import { defineAimPreviewElement } from '@aim/template-preview/element'
+import '@aim/template-preview/styles.css'
+
+defineAimPreviewElement() // 注册 <aim-preview>
+```
+
+```html
+<aim-preview vendor="vivo" mode="phone" width="300" src="/api/templates/123.json"></aim-preview>
+
+<script>
+  const el = document.querySelector('aim-preview')
+  el.document = tpl                    // 或通过 src 属性加载 JSON
+  el.params = { 姓名: '张三' }
+  el.addEventListener('aim-action', (e) => console.log(e.detail.event))
+</script>
+```
+
+## 属性
+
+| 属性 | 说明 |
+| --- | --- |
+| `vendor` / `mode` / `protocol` / `width` | 同 React 组件 |
+| `param-display` / `interactive` / `theme` / `chatbot-name` | 同 React 组件，`interactive` 默认 `native` |
+| `src` | 模板 JSON 地址 |
+| `stylesheet` | 提供后启用 Shadow DOM 样式隔离，并加载该样式文件 |
+
+## 事件
+
+| 事件 | detail |
+| --- | --- |
+| `aim-action` | `{ event, element, label }` |
+| `aim-error` | 加载 `src` 失败的错误 |

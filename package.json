@@ -1,0 +1,47 @@
+{
+  "name": "aim-studio",
+  "private": true,
+  "description": "AIM Studio — 5G 阅信模板平台 Monorepo（模板编辑器 / 移动端体验 / 模板预览 SDK / 文档）",
+  "packageManager": "pnpm@9.15.7",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:editor": "turbo run dev --filter=@aim/editor...",
+    "dev:mobile": "turbo run dev --filter=@aim/mobile...",
+    "dev:docs": "turbo run dev --filter=@aim/docs",
+    "storybook": "turbo run storybook --filter=@aim/storybook",
+    "build": "turbo run build",
+    "build:packages": "turbo run build --filter=./packages/*",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "pnpm --filter @aim/e2e test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "ai:generate": "pnpm --filter @aim/ai-kit generate",
+    "gen:element": "plop element",
+    "gen:layout": "plop layout",
+    "gen:package": "plop package",
+    "check:deps": "tsx scripts/check-deps.ts",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=./packages/* && changeset publish",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@types/node": "catalog:",
+    "lefthook": "catalog:",
+    "plop": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
+    "rimraf": "^6.0.1",
+    "tsx": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:"
+  }
+}

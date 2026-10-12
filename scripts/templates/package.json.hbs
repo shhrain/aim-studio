@@ -1,0 +1,25 @@
+{
+  "name": "@aim/{{name}}",
+  "version": "0.1.0",
+  "description": "{{description}}",
+  "type": "module",
+  "sideEffects": false,
+  "exports": { ".": "./src/index.ts" },
+  "publishConfig": {
+    "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --sourcemap --clean",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist .turbo"
+  },
+  "devDependencies": {
+    "@aim/eslint-config": "workspace:*",
+    "@aim/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:"
+  }
+}

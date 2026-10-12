@@ -1,0 +1,49 @@
+{
+  "name": "@aim/api-client",
+  "version": "0.1.0",
+  "description": "AIM 接口契约与类型化请求层：统一 { subCode, message, data } 响应、鉴权、错误码，含 TanStack Query hooks",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./react": "./src/react/index.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+      "./react": { "types": "./dist/react/index.d.ts", "import": "./dist/react/index.js" }
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsup src/index.ts src/react/index.ts --format esm --dts --sourcemap --clean --external react",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "@aim/template-core": "workspace:*",
+    "@aim/template-schema": "workspace:*"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": { "optional": true },
+    "react": { "optional": true }
+  },
+  "devDependencies": {
+    "@aim/eslint-config": "workspace:*",
+    "@aim/tsconfig": "workspace:*",
+    "@aim/vitest-config": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "react": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

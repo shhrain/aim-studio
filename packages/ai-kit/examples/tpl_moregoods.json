@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_moregoods",
+  "name": "店铺上新",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.moreGoods",
+  "cardId": "com.hbm.moreGoods",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_20swg59r6k",
+      "mode": "flow",
+      "style": {
+        "height": 440,
+        "backgroundColor": "#F5F6F8",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_l84z5o6rd3",
+          "type": "moreGoods",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 440,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "title": "梦网优选旗舰店",
+            "subtitle": "本周新品 满 199 减 30",
+            "showIcon": true,
+            "items": [
+              {
+                "image": "https://cdn.example.com/sample.png",
+                "name": "有机燕麦片 1kg 早餐即食",
+                "description": "新品尝鲜价",
+                "price": "19.90",
+                "originalPrice": "29.90",
+                "tag": "新品",
+                "button": {
+                  "text": "购买",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/shop/0"
+                  }
+                }
+              },
+              {
+                "image": "https://cdn.example.com/sample.png",
+                "name": "冷压橄榄油 750ml 特级初榨",
+                "description": "新品尝鲜价",
+                "price": "89.00",
+                "originalPrice": "128.00",
+                "tag": "新品",
+                "button": {
+                  "text": "购买",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/shop/1"
+                  }
+                }
+              },
+              {
+                "image": "https://cdn.example.com/sample.png",
+                "name": "坚果礼盒 每日坚果 30 包",
+                "description": "新品尝鲜价",
+                "price": "69.00",
+                "originalPrice": "99.00",
+                "tag": "新品",
+                "button": {
+                  "text": "购买",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/shop/2"
+                  }
+                }
+              }
+            ]
+          },
+          "slot": "goods"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791279360000,
+    "updatedAt": 1791279360000
+  }
+}

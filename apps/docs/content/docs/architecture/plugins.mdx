@@ -1,0 +1,51 @@
+---
+title: 插件机制
+description: 通过 define* / registerPlugin 扩展元素、版式、转换器与预检规则。
+icon: Puzzle
+---
+
+`@aim/template-core` 的所有内置能力都以插件形式注册（`builtinPlugin`），业务方可新增或覆盖：
+
+```ts
+import { definePlugin, defineElement, defineBlueprint, defineConverter, defineRule, registerPlugin, FlowBuilder } from '@aim/template-core'
+
+registerPlugin(
+  definePlugin({
+    name: 'my-company',
+    // 1. 覆盖元素默认值
+    elements: [defineElement({ type: 'button', label: '按钮', size: { w: 314, h: 44 }, defaults: () => ({ text: '立即查看', variant: 'primary' }) })],
+    // 2. 为新版式提供蓝图（版式目录本身在 template-schema 中定义）
+    blueprints: {
+      'com.my.banner': defineBlueprint(() => {
+        const b = new FlowBuilder()
+        b.add('image', { slot: 'media', x: 0, w: 342, h: 120 })
+        return { mode: 'flow', style: { height: b.height }, elements: b.elements }
+      }),
+    },
+    // 3. 新增转换器
+    converters: [defineConverter({ from: 'aim', to: 'markdown', convert: (doc) => `# ${doc.name}` })],
+    // 4. 新增 / 替换预检规则（同 code 覆盖）
+    rules: [defineRule({ code: 'brand', description: '品牌词', run: (doc) => (doc.name.includes('梦网') ? [] : [{ code: 'brand.name', level: 'warning', message: '建议在模板名称中包含品牌名' }]) })],
+  }),
+)
+
+registry.converter('aim', 'markdown').convert(doc)
+```
+
+## 扩展点一览
+
+| 扩展点 | 注册方式 | 作用 |
+| --- | --- | --- |
+| 元素数据 | `defineElement` | 默认尺寸、props、样式、文本收集、校验 |
+| 元素渲染 | `definePreviewElement`（preview） | React 渲染组件 |
+| 版式蓝图 | `defineBlueprint` | 根据版式设置生成页面 |
+| 转换器 | `defineConverter` | `from → to` 任意协议 |
+| 预检规则 | `defineRule` | 返回 `PrecheckIssue[]` |
+| 厂商皮肤 | `defineVendorTheme`（preview） | 手机壳、按钮、卡片样式 |
+
+## 脚手架
+
+```bash
+pnpm gen:element   # 生成元素：schema props + core 默认值 + preview 渲染 + story
+pnpm gen:layout    # 生成版式：目录项 + 蓝图 + 测试
+```

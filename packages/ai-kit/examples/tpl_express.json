@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_express",
+  "name": "物流发货通知",
+  "usage": "commercial",
+  "category": "notify",
+  "layoutId": "com.hbm.notification",
+  "cardId": "com.hbm.notification",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [
+    {
+      "name": "param2",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "param3",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  ],
+  "settings": {
+    "pairCount": 2,
+    "buttonCount": 2
+  },
+  "pages": [
+    {
+      "id": "page_7563fc9oed",
+      "mode": "flow",
+      "style": {
+        "height": 310,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_zzgxdw1hdq",
+          "type": "image",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 120,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 0
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              342,
+              120
+            ],
+            "fit": "cover",
+            "role": "content"
+          },
+          "slot": "media"
+        },
+        {
+          "id": "el_ndy0jfhjnj",
+          "type": "text",
+          "x": 14,
+          "y": 132,
+          "w": 314,
+          "h": 25,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "您的订单已发货"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_pwdlc9oxkt",
+          "type": "text",
+          "x": 14,
+          "y": 163,
+          "w": 314,
+          "h": 21,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "预计 2 天内送达"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_8pho8e29sq",
+          "type": "text",
+          "x": 14,
+          "y": 194,
+          "w": 84,
+          "h": 21,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "快递公司"
+          },
+          "slot": "kv.0.label"
+        },
+        {
+          "id": "el_gvh12yuxtu",
+          "type": "text",
+          "x": 106,
+          "y": 194,
+          "w": 222,
+          "h": 21,
+          "z": 4,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "顺丰速运"
+          },
+          "slot": "kv.0.value"
+        },
+        {
+          "id": "el_an0dfux4e1",
+          "type": "text",
+          "x": 14,
+          "y": 221,
+          "w": 84,
+          "h": 21,
+          "z": 5,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "运单号"
+          },
+          "slot": "kv.1.label"
+        },
+        {
+          "id": "el_m8oceukql3",
+          "type": "text",
+          "x": 106,
+          "y": 221,
+          "w": 222,
+          "h": 21,
+          "z": 6,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "SF1234567890"
+          },
+          "slot": "kv.1.value"
+        },
+        {
+          "id": "el_w8iqn4b0wp",
+          "type": "button",
+          "x": 14,
+          "y": 256,
+          "w": 151,
+          "h": 40,
+          "z": 7,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "联系客服",
+            "variant": "secondary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "DIAL_PHONE",
+            "target": "95338"
+          }
+        },
+        {
+          "id": "el_bxbq4vckpd",
+          "type": "button",
+          "x": 177,
+          "y": 256,
+          "w": 151,
+          "h": 40,
+          "z": 8,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "查看物流",
+            "variant": "primary"
+          },
+          "slot": "button.1",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/express"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791460800000,
+    "updatedAt": 1791460800000
+  }
+}

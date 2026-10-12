@@ -1,0 +1,50 @@
+---
+title: 主题与扩展
+description: 自定义厂商皮肤、元素渲染器与暗色模式。
+---
+
+## 厂商皮肤
+
+```ts
+import { defineVendorTheme } from '@aim/template-preview'
+
+// 覆盖内置皮肤
+defineVendorTheme({ id: 'xiaomi', button: { primaryBg: '#FF6900', primaryColor: '#fff' } })
+
+// 新增厂商
+defineVendorTheme({
+  id: 'meizu',
+  name: '魅族',
+  shell: { camera: 'punch-center' },
+  button: { primaryBg: '#008CFF', radius: 8 },
+  accent: '#008CFF',
+})
+```
+
+皮肤会转换为 CSS 变量（`--aim-btn-bg`、`--aim-card-radius` 等），宿主也可直接覆盖：
+
+```css
+.my-preview .aim-root {
+  --aim-param-bg: #fff3e0;
+  --aim-param-color: #e65100;
+}
+```
+
+## 自定义元素渲染
+
+```tsx
+import { definePreviewElement, u, useAct } from '@aim/template-preview'
+
+definePreviewElement({
+  type: 'countdown',
+  Render: ({ el }) => <div style={{ fontSize: u(20) }}>{/* 自定义倒计时 */}</div>,
+})
+```
+
+元素数据、默认值与校验在 `@aim/template-core` 中通过 `defineElement` / `registerPlugin` 注册，预览渲染与之一一对应。
+
+## 暗色模式
+
+```tsx
+<TemplatePreview document={doc} theme="dark" />
+```

@@ -1,0 +1,62 @@
+---
+title: 快速开始
+description: 安装依赖、启动应用、了解常用命令。
+icon: Rocket
+---
+
+## 环境要求
+
+- Node.js ≥ 20.9（推荐 24，见 `.nvmrc`）
+- pnpm ≥ 9.15
+
+## 安装与启动
+
+```bash
+pnpm install
+pnpm dev            # 同时启动三个应用
+```
+
+| 应用 | 地址 | 说明 |
+| --- | --- | --- |
+| `apps/editor` | http://localhost:3000 | 模板编辑器（PC） |
+| `apps/mobile` | http://localhost:3001 | 5G 阅信体验 H5 |
+| `apps/docs` | http://localhost:3002 | 本文档站 |
+| `apps/storybook` | http://localhost:6006 | 组件与预览矩阵（`pnpm storybook`） |
+
+默认启用本地 Mock：编辑器的模板、素材，移动端的模板列表、发送、通讯录等数据都保存在浏览器 IndexedDB 中。
+
+<Callout title="移动端登录">
+  移动端与原体验系统一致，通过 URL 携带 `token` 与 `phone` 进入，例如
+  `http://localhost:3001/?token=demo&phone=13800138000`。Mock 环境下也可以在「请先登录」页直接体验登录。
+</Callout>
+
+## 手机扫码预览
+
+编辑器「预览」中的二维码指向移动端的 `/preview/:id`。手机与电脑处于同一局域网时：
+
+1. 将 `apps/editor/.env` 中 `NEXT_PUBLIC_MOBILE_URL` 改为电脑局域网地址，如 `http://192.168.1.10:3001`；
+2. 重启编辑器，在预览弹窗中扫码即可在真机查看（30 分钟内有效）。
+
+## 常用命令
+
+```bash
+pnpm build          # 全量构建（Turborepo 缓存）
+pnpm lint           # ESLint
+pnpm typecheck      # 类型检查
+pnpm test           # 单元测试（Vitest）
+pnpm test:e2e       # 端到端 + 视觉回归（Playwright）
+pnpm ai:generate    # 从 schema 重新生成提示词、规则与规范文档
+pnpm gen:element    # 脚手架：新增元素类型
+pnpm gen:layout     # 脚手架：新增版式
+pnpm changeset      # 记录可发布包的变更
+```
+
+## Mock 调试
+
+浏览器控制台提供调试入口：
+
+```js
+__aimMock.set({ latency: 1500 })              // 模拟慢网络
+__aimMock.failNext('/send/experience', 1003)  // 下一次发送返回“操作过于频繁”
+__aimMock.reset()                             // 重置为种子数据
+```

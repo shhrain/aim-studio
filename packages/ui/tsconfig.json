@@ -1,0 +1,4 @@
+{
+  "extends": "@aim/tsconfig/react-library.json",
+  "include": ["src", "*.config.ts"]
+}

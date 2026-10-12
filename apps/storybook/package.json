@@ -1,0 +1,41 @@
+{
+  "name": "@aim/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "组件工作台：UI 组件 + 模板预览矩阵",
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build": "storybook build -o storybook-static --quiet",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf storybook-static .turbo"
+  },
+  "dependencies": {
+    "@aim/api-client": "workspace:*",
+    "@aim/mock": "workspace:*",
+    "@aim/template-core": "workspace:*",
+    "@aim/template-preview": "workspace:*",
+    "@aim/template-schema": "workspace:*",
+    "@aim/ui": "workspace:*",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@aim/tsconfig": "workspace:*",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "msw": "catalog:",
+    "msw-storybook-addon": "catalog:",
+    "storybook": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "msw": {
+    "workerDirectory": ["public"]
+  }
+}

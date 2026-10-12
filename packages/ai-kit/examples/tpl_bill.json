@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_bill",
+  "name": "账单提醒",
+  "usage": "commercial",
+  "category": "notify",
+  "layoutId": "com.hbm.notification",
+  "cardId": "com.hbm.notification",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [
+    {
+      "name": "param2",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "param3",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "金额",
+      "type": "text",
+      "example": "3,280.00",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "到期日",
+      "type": "text",
+      "example": "2026-11-05",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "最低还款",
+      "type": "text",
+      "example": "328.00",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  ],
+  "settings": {
+    "pairCount": 3,
+    "buttonCount": 2
+  },
+  "pages": [
+    {
+      "id": "page_l66no2az4d",
+      "mode": "flow",
+      "style": {
+        "height": 337,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_43qtrcqoac",
+          "type": "image",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 120,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 0
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              342,
+              120
+            ],
+            "fit": "cover",
+            "role": "content"
+          },
+          "slot": "media"
+        },
+        {
+          "id": "el_xw9bntmyo6",
+          "type": "text",
+          "x": 14,
+          "y": 132,
+          "w": 314,
+          "h": 25,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "您的 10 月账单已出"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_44kzhomc2m",
+          "type": "text",
+          "x": 14,
+          "y": 163,
+          "w": 314,
+          "h": 21,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "请于到期日前完成还款"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_i8x16c5sbo",
+          "type": "text",
+          "x": 14,
+          "y": 194,
+          "w": 84,
+          "h": 21,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "账单金额"
+          },
+          "slot": "kv.0.label"
+        },
+        {
+          "id": "el_k0a459n62f",
+          "type": "text",
+          "x": 106,
+          "y": 194,
+          "w": 222,
+          "h": 21,
+          "z": 4,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#金额#} 元"
+          },
+          "slot": "kv.0.value"
+        },
+        {
+          "id": "el_89gyv2xezb",
+          "type": "text",
+          "x": 14,
+          "y": 221,
+          "w": 84,
+          "h": 21,
+          "z": 5,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "到期日"
+          },
+          "slot": "kv.1.label"
+        },
+        {
+          "id": "el_7tnml3dobx",
+          "type": "text",
+          "x": 106,
+          "y": 221,
+          "w": 222,
+          "h": 21,
+          "z": 6,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#到期日#}"
+          },
+          "slot": "kv.1.value"
+        },
+        {
+          "id": "el_ayh7jx7bq3",
+          "type": "text",
+          "x": 14,
+          "y": 248,
+          "w": 84,
+          "h": 21,
+          "z": 7,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "最低还款"
+          },
+          "slot": "kv.2.label"
+        },
+        {
+          "id": "el_4tixiqelc6",
+          "type": "text",
+          "x": 106,
+          "y": 248,
+          "w": 222,
+          "h": 21,
+          "z": 8,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#最低还款#} 元"
+          },
+          "slot": "kv.2.value"
+        },
+        {
+          "id": "el_wsdzodl8i9",
+          "type": "button",
+          "x": 14,
+          "y": 283,
+          "w": 151,
+          "h": 40,
+          "z": 9,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "账单明细",
+            "variant": "secondary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/bill/detail"
+          }
+        },
+        {
+          "id": "el_cukv3dg41o",
+          "type": "button",
+          "x": 177,
+          "y": 283,
+          "w": 151,
+          "h": 40,
+          "z": 10,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "立即还款",
+            "variant": "primary"
+          },
+          "slot": "button.1",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/bill/pay"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791521280000,
+    "updatedAt": 1791521280000
+  }
+}

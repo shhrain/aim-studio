@@ -1,0 +1,14 @@
+---
+description: AIM Studio 项目约定（全局）
+alwaysApply: true
+---
+
+# AIM Studio 项目约定
+
+- 业务：5G 阅信（AIM）模板平台。完整知识见 `packages/ai-kit/PROMPT.md`，回答使用简体中文。
+- 依赖方向：template-schema ← template-core ← template-preview ← apps；api-client ← mock / apps；ui ← apps。
+- 修改模板文档只用 `@aim/template-core` 的函数；接口只用 `@aim/api-client`；UI 只用 `@aim/ui`。
+- 版式 33 种、元素 32 种、事件 15 种、厂商 8 个，以 `@aim/template-schema` 为准，不得编造 ID。
+- 参数语法 `{#参数名#}`，协议导出为 `${参数名}`。
+- 依赖版本写在 `pnpm-workspace.yaml` 的 catalog，包内用 `catalog:`，内部包用 `workspace:*`。
+- 改完运行：`pnpm typecheck && pnpm lint && pnpm test`；修改 schema 后 `pnpm ai:generate`；修改可发布包后 `pnpm changeset`。

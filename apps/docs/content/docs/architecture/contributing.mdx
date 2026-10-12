@@ -1,0 +1,36 @@
+---
+title: 贡献指南
+description: 新增版式、元素与修改协议的标准流程。
+icon: GitPullRequest
+---
+
+## 新增版式
+
+1. 在 `packages/template-schema/src/layouts.ts` 的 `LAYOUTS` 中添加版式定义（ID、分组、槽位与字数、设置项、厂商、协议）；
+2. 在 `packages/template-core/src/layouts/blueprints.ts` 添加蓝图；
+3. 运行测试：`pnpm --filter @aim/template-core test`（自动校验所有版式可创建、必填槽位齐全）；
+4. 在编辑器「版式画廊」与 Storybook 中目测；
+5. `pnpm ai:generate` 更新规范文档与 AI 提示词；
+6. `pnpm changeset`。
+
+或使用脚手架：`pnpm gen:layout`。
+
+## 新增元素
+
+1. `template-schema/src/elements.ts`：`ELEMENT_TYPES`、`ELEMENT_META`、`elementPropsSchemas`；
+2. `template-core/src/elements/builtin.ts`：默认尺寸与 props；
+3. `template-preview/src/elements/*`：渲染组件并 `definePreviewElement`；
+4. 若需参与三信融合，在 `convert/legacy.ts` 补充映射。
+
+或使用脚手架：`pnpm gen:element`。
+
+## 修改转换协议
+
+转换器有对照测试（`packages/template-core/test/parity.test.ts`），修改前请先确认原实现行为；如需改变行为，仅在 `mode: 'fixed'` 分支中调整，保持 `legacy` 模式与原实现一致。
+
+## 检查清单
+
+- [ ] `pnpm typecheck && pnpm lint && pnpm test` 通过
+- [ ] 用户可见文案为简体中文，错误提示包含下一步操作
+- [ ] 公共 API 有类型与 JSDoc
+- [ ] 已添加 changeset（修改了可发布包时）

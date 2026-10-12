@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_launch",
+  "name": "新品发布会直播",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.video",
+  "cardId": "com.hbm.video",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_1fsuzfgr33",
+      "mode": "flow",
+      "style": {
+        "height": 364,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_7zd3z9nwhy",
+          "type": "video",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 192,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "src": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+            "cover": "https://cdn.example.com/sample.png",
+            "ratio": [
+              16,
+              9
+            ],
+            "duration": 5
+          },
+          "slot": "media"
+        },
+        {
+          "id": "el_646rin4qk6",
+          "type": "text",
+          "x": 14,
+          "y": 204,
+          "w": 314,
+          "h": 25,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "旗舰新品发布会 · 今晚见"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_s1m5dwcsoh",
+          "type": "text",
+          "x": 14,
+          "y": 235,
+          "w": 314,
+          "h": 63,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 3
+          },
+          "props": {
+            "text": "影像、续航、性能全面升级，直播间预约即可参与抽奖，赢取新品首发资格。"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_rqdev80fpp",
+          "type": "button",
+          "x": 14,
+          "y": 310,
+          "w": 314,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "预约直播",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/live"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791702720000,
+    "updatedAt": 1791702720000
+  }
+}

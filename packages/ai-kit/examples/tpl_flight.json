@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_flight",
+  "name": "航班值机提醒",
+  "usage": "commercial",
+  "category": "notify",
+  "layoutId": "com.hbm.ticket.flight",
+  "cardId": "com.hbm.ticket.flight",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [
+    {
+      "name": "乘机人",
+      "type": "text",
+      "example": "李*四",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "登机口",
+      "type": "text",
+      "example": "C28",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "座位",
+      "type": "text",
+      "example": "32A",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "订单号",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  ],
+  "settings": {
+    "buttonCount": 2
+  },
+  "pages": [
+    {
+      "id": "page_dqdjhctkzx",
+      "mode": "flow",
+      "style": {
+        "height": 345,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_zb8s5nmnwr",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "航班值机已开放"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_e6lffnd6eg",
+          "type": "ticketImage",
+          "x": 0,
+          "y": 49,
+          "w": 342,
+          "h": 230,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "kind": "flight",
+            "from": {
+              "name": "北京首都 T3",
+              "time": "07:45",
+              "date": "10月12日"
+            },
+            "to": {
+              "name": "深圳宝安 T3",
+              "time": "11:05",
+              "date": "10月12日"
+            },
+            "number": "CA1301",
+            "duration": "3时20分",
+            "grid": [
+              {
+                "label": "乘机人",
+                "value": "{#乘机人#}"
+              },
+              {
+                "label": "登机口",
+                "value": "{#登机口#}"
+              },
+              {
+                "label": "座位",
+                "value": "{#座位#}"
+              }
+            ],
+            "extra": [
+              {
+                "label": "订单号",
+                "value": "{#订单号#}"
+              }
+            ],
+            "tip": "请于起飞前 45 分钟完成值机，登机口关闭时间为起飞前 20 分钟。"
+          },
+          "slot": "ticket"
+        },
+        {
+          "id": "el_ly4wi7kn05",
+          "type": "button",
+          "x": 14,
+          "y": 291,
+          "w": 151,
+          "h": 40,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "查看订单",
+            "variant": "secondary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/flight/order"
+          }
+        },
+        {
+          "id": "el_1ascxfom7s",
+          "type": "button",
+          "x": 177,
+          "y": 291,
+          "w": 151,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "在线值机",
+            "variant": "primary"
+          },
+          "slot": "button.1",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/flight/checkin"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791037440000,
+    "updatedAt": 1791037440000
+  }
+}

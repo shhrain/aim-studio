@@ -1,0 +1,4 @@
+{
+  "extends": "@aim/tsconfig/library.json",
+  "include": ["src", "test", "*.config.ts"]
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_notice",
+  "name": "系统升级公告",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.pureText",
+  "cardId": "com.hbm.pureText",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_jk1f6uz1bl",
+      "mode": "flow",
+      "style": {
+        "height": 425,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_uzpqlsse3h",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "系统升级服务公告"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_4q7by97f44",
+          "type": "text",
+          "x": 14,
+          "y": 47,
+          "w": 314,
+          "h": 312,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 15
+          },
+          "props": {
+            "text": "尊敬的用户：\n为提供更稳定的服务，我们将于 10 月 25 日 00:00-06:00 进行系统升级。升级期间网上营业厅、App 部分功能将暂停使用，给您带来的不便敬请谅解。\n升级完成后将自动恢复，无需任何操作。如有疑问请拨打客服热线。"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_uf1r3umgmx",
+          "type": "button",
+          "x": 14,
+          "y": 371,
+          "w": 314,
+          "h": 40,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "联系客服",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "DIAL_PHONE",
+            "target": "10086"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1790976960000,
+    "updatedAt": 1790976960000
+  }
+}

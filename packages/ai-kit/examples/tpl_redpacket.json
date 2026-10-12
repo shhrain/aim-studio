@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_redpacket",
+  "name": "品牌回馈红包",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.redpacket",
+  "cardId": "com.hbm.redpacket",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_xglguov7j8",
+      "mode": "absolute",
+      "style": {
+        "height": 452,
+        "backgroundColor": "transparent",
+        "borderRadius": 16
+      },
+      "elements": [
+        {
+          "id": "el_e8901hanay",
+          "type": "image",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 452,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": true,
+          "style": {
+            "borderRadius": 16
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              342,
+              452
+            ],
+            "fit": "cover",
+            "role": "background"
+          },
+          "slot": "background"
+        },
+        {
+          "id": "el_4krs9b8cfd",
+          "type": "image",
+          "x": 149,
+          "y": 34,
+          "w": 44,
+          "h": 44,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 22
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              1,
+              1
+            ],
+            "fit": "cover",
+            "role": "avatar"
+          },
+          "slot": "avatar"
+        },
+        {
+          "id": "el_xue6s7pudc",
+          "type": "text",
+          "x": 14,
+          "y": 86,
+          "w": 314,
+          "h": 20,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#FFE3C2",
+            "lineHeight": 1.5,
+            "textAlign": "center",
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "梦网商城"
+          },
+          "slot": "name"
+        },
+        {
+          "id": "el_l8147z12rd",
+          "type": "text",
+          "x": 14,
+          "y": 114,
+          "w": 314,
+          "h": 34,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 24,
+            "color": "#FFFFFF",
+            "lineHeight": 1.5,
+            "fontWeight": 700,
+            "textAlign": "center",
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "恭喜发财 大吉大利"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_4d5u1gnpoh",
+          "type": "text",
+          "x": 34,
+          "y": 154,
+          "w": 274,
+          "h": 40,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#FFE9D6",
+            "lineHeight": 1.5,
+            "textAlign": "center",
+            "lineClamp": 2
+          },
+          "props": {
+            "text": "感谢您一直以来的支持，送您一个专属红包，下单立减。"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_yomzpjq003",
+          "type": "button",
+          "x": 71,
+          "y": 374,
+          "w": 200,
+          "h": 42,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 21,
+            "fontSize": 15,
+            "backgroundColor": "#FFD27A",
+            "color": "#C2261B",
+            "fontWeight": 600
+          },
+          "props": {
+            "text": "立即领取",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/redpacket"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791581760000,
+    "updatedAt": 1791581760000
+  }
+}

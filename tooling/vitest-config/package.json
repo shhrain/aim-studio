@@ -1,0 +1,21 @@
+{
+  "name": "@aim/vitest-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "types": "./index.d.ts", "default": "./index.js" },
+    "./setup-dom": "./setup-dom.js"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:"
+  },
+  "peerDependencies": {
+    "@testing-library/react": "^16.0.0",
+    "vitest": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@testing-library/react": { "optional": true }
+  }
+}

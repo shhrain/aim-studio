@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_voucher",
+  "name": "满减券发放",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.cardVoucher",
+  "cardId": "com.hbm.cardVoucher",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_zxw8wkx63n",
+      "mode": "flow",
+      "style": {
+        "height": 210,
+        "backgroundColor": "transparent",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_8f7hz6iup1",
+          "type": "cardVoucher",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 210,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "voucherType": "fullMinus",
+            "amount": "50",
+            "threshold": "满299可用",
+            "tagName": "满减券",
+            "name": "全场通用满减券，部分特价商品除外",
+            "dateType": "fixed",
+            "dateRange": [
+              "2026-10-12",
+              "2026-10-31"
+            ],
+            "button": {
+              "text": "立即领取",
+              "event": {
+                "action": "OPEN_URL",
+                "target": "https://aim.example.com/coupon"
+              }
+            },
+            "dynamicButton": false
+          },
+          "slot": "voucher"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791218880000,
+    "updatedAt": 1791218880000
+  }
+}

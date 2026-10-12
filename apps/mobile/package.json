@@ -1,0 +1,47 @@
+{
+  "name": "@aim/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "description": "5G 阅信体验 H5（Next.js）",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf .next .turbo"
+  },
+  "dependencies": {
+    "@aim/api-client": "workspace:*",
+    "@aim/mock": "workspace:*",
+    "@aim/template-core": "workspace:*",
+    "@aim/template-preview": "workspace:*",
+    "@aim/template-schema": "workspace:*",
+    "@aim/ui": "workspace:*",
+    "@aim/utils": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "lucide-react": "catalog:",
+    "msw": "catalog:",
+    "next": "catalog:",
+    "qrcode.react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@aim/eslint-config": "workspace:*",
+    "@aim/tailwind-config": "workspace:*",
+    "@aim/tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  },
+  "msw": {
+    "workerDirectory": ["public"]
+  }
+}

@@ -1,0 +1,32 @@
+---
+title: 点击事件
+description: 15 种点击事件的字段、苹果端（RCS）与视频短信（RMS）兼容性。
+icon: MousePointerClick
+---
+
+{/* 本文件由 pnpm ai:generate 根据 @aim/template-schema 自动生成，请勿手改 */}
+
+| action | 名称 | 字段（* 必填） | RCS（苹果） | RMS |
+| --- | --- | --- | --- | --- |
+| `VIEW_IMAGE` | 查看大图 | – | 不支持，需补填链接 | – |
+| `OPEN_URL` | 打开链接 | *target（链接）、pageName（页面名称） | 支持 | 链接文本 |
+| `OPEN_APP` | 打开APP | *target（DeepLink）、*packageName（APK包名）、floorType（兜底类型）、floorUrl（兜底链接） | 降级为浏览器 | 链接文本 |
+| `OPEN_QUICK` | 打开快应用 | *target（快应用链接）、floorType（兜底类型）、floorUrl（兜底链接） | 降级为浏览器 | 链接文本 |
+| `OPEN_BROWSER` | 打开浏览器 | *target（链接） | 支持 | 链接文本 |
+| `OPEN_DRAWER` | 打开浮窗 | *target（链接）、pageName（页面名称） | 支持 | 链接文本 |
+| `OPEN_WECHAT_SHOP` | 打开微信小店 | *shopId（微信小店ID）、landingPage（小程序落地页） | 不支持，需补填链接 | – |
+| `OPEN_HMOS` | 打开元服务 | jumpMode（动作类型）、*appId（华为元服务APPID）、target（链接）、parameters（元服务动态参数） | 不支持，需补填链接 | – |
+| `OPEN_MAP` | 打开地图 | *address（地点名称）、*longitude（经度）、*latitude（纬度） | 不支持，需补填链接 | 文本 |
+| `DIAL_PHONE` | 拨打电话 | *target（电话号码） | 支持（拨号） | 链接文本 |
+| `COPY_PARAMETER` | 复制内容 | copyType（复制类型）、*content（复制内容） | 不支持，需补填链接 | 文本 |
+| `OPEN_SMS` | 发送短信 | *target（短信号码）、body（短信正文） | 不支持，需补填链接 | 文本 |
+| `OPEN_EMAIL` | 跳转邮箱 | *target（邮箱地址）、subject（邮件标题）、body（邮件正文） | 不支持，需补填链接 | 文本 |
+| `OPEN_SCHEDULE` | 跳转日程 | *title（日程标题）、description（日程描述）、*startTime（开始时间）、*endTime（结束时间） | 不支持，需补填链接 | 文本 |
+| `OPEN_POPUP` | 打开弹窗 | *title（弹窗标题）、*content（弹窗内容）、buttonText（弹窗按钮名称） | 不支持，需补填链接 | 文本 |
+
+## 校验规则
+
+- 链接字段必须以 `https://` 开头，长度不超过 3000；
+- 电话字段允许数字、`*`、`+`、`-`、空格（3–20 位），可使用参数；
+- 日程的结束时间必须晚于开始时间；
+- 打开 APP / 快应用可配置兜底类型：应用市场、快应用、直接打开 H5、外部浏览器打开 H5。

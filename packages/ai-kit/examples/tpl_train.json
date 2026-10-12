@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_train",
+  "name": "火车出行提醒",
+  "usage": "commercial",
+  "category": "notify",
+  "layoutId": "com.hbm.ticket.train",
+  "cardId": "com.hbm.ticket.train",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [
+    {
+      "name": "乘车人",
+      "type": "text",
+      "example": "张*三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "座位",
+      "type": "text",
+      "example": "05车 12F",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "检票口",
+      "type": "text",
+      "example": "B12",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "订单号",
+      "type": "text",
+      "example": "E1234567890",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  ],
+  "settings": {
+    "buttonCount": 2
+  },
+  "pages": [
+    {
+      "id": "page_v1xnlbn8f0",
+      "mode": "flow",
+      "style": {
+        "height": 345,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_pmrbx9e0xe",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "您的行程即将出发"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_8218i182ql",
+          "type": "ticketImage",
+          "x": 0,
+          "y": 49,
+          "w": 342,
+          "h": 230,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "kind": "train",
+            "from": {
+              "name": "北京南",
+              "time": "08:00",
+              "date": "10月12日"
+            },
+            "to": {
+              "name": "上海虹桥",
+              "time": "12:28",
+              "date": "10月12日"
+            },
+            "number": "G1",
+            "duration": "4时28分",
+            "grid": [
+              {
+                "label": "乘车人",
+                "value": "{#乘车人#}"
+              },
+              {
+                "label": "座位",
+                "value": "{#座位#}"
+              },
+              {
+                "label": "检票口",
+                "value": "{#检票口#}"
+              }
+            ],
+            "extra": [
+              {
+                "label": "订单号",
+                "value": "{#订单号#}"
+              }
+            ],
+            "tip": "请携带有效身份证件，提前30分钟到达车站检票。"
+          },
+          "slot": "ticket"
+        },
+        {
+          "id": "el_fx8m40mltz",
+          "type": "button",
+          "x": 14,
+          "y": 291,
+          "w": 151,
+          "h": 40,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "查看订单",
+            "variant": "secondary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/order"
+          }
+        },
+        {
+          "id": "el_ghad2n5hw9",
+          "type": "button",
+          "x": 177,
+          "y": 291,
+          "w": 151,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "车站导航",
+            "variant": "primary"
+          },
+          "slot": "button.1",
+          "event": {
+            "action": "OPEN_MAP",
+            "address": "北京南站",
+            "longitude": 116.379,
+            "latitude": 39.865
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791097920000,
+    "updatedAt": 1791097920000
+  }
+}

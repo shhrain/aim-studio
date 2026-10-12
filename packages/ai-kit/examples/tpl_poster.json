@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_poster",
+  "name": "双十一主会场海报",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.poster",
+  "cardId": "com.hbm.poster",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_frz8fcp052",
+      "mode": "flow",
+      "style": {
+        "height": 456,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_v3lqzhjj3u",
+          "type": "image",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 456,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 0
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              3,
+              4
+            ],
+            "fit": "cover",
+            "role": "content"
+          },
+          "slot": "media",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/1111"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1790735040000,
+    "updatedAt": 1790735040000
+  }
+}

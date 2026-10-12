@@ -1,0 +1,21 @@
+'use client'
+
+import type { TemplateElement } from '@aim/template-schema'
+import { toCss, u, useAct, useResolver } from '../../hooks'
+import { renderTextPlain } from '../../params'
+
+/** {{label}} */
+export function {{pascalCase type}}View({ el }: { el: TemplateElement<'{{type}}'> }) {
+  const r = useResolver()
+  const act = useAct()
+  return (
+    <div
+      role="button"
+      className="aim-row"
+      style=\{{ height: '100%', padding: `0 ${u(12)}`, borderRadius: u(10), background: 'var(--aim-fill)', ...toCss(el.style) }}
+      onClick={(e) => act(el.event, { element: el, label: el.props.text, e })}
+    >
+      {renderTextPlain(el.props.text, r)}
+    </div>
+  )
+}

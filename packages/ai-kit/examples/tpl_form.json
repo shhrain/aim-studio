@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_form",
+  "name": "预约试驾",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.form.41",
+  "cardId": "com.hbm.form.41",
+  "vendors": [
+    "huawei",
+    "honor"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_4mssa5h59c",
+      "mode": "flow",
+      "style": {
+        "height": 369,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_68x872s9t3",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "预约试驾 赢取好礼"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_9jzzsujqr5",
+          "type": "form",
+          "x": 0,
+          "y": 49,
+          "w": 342,
+          "h": 320,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "fields": [
+              {
+                "label": "姓名",
+                "placeholder": "请输入姓名",
+                "type": "input",
+                "required": true
+              },
+              {
+                "label": "手机号",
+                "placeholder": "请输入手机号",
+                "type": "phone",
+                "required": true
+              },
+              {
+                "label": "城市",
+                "placeholder": "请选择城市",
+                "type": "select",
+                "options": [
+                  "北京",
+                  "上海",
+                  "广州",
+                  "深圳"
+                ]
+              },
+              {
+                "label": "预约日期",
+                "placeholder": "请选择日期",
+                "type": "date"
+              }
+            ],
+            "privacyText": "同意用户隐私协议",
+            "submitText": "立即提交"
+          },
+          "slot": "form"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1790856000000,
+    "updatedAt": 1790856000000
+  }
+}

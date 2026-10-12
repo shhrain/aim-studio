@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_code",
+  "name": "登录验证码",
+  "usage": "commercial",
+  "category": "notify",
+  "layoutId": "com.hbm.notificationPlus",
+  "cardId": "com.hbm.notificationPlus",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [
+    {
+      "name": "param1",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "param2",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "param3",
+      "type": "text",
+      "example": "张三",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "验证码",
+      "type": "text",
+      "example": "826431",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "设备",
+      "type": "text",
+      "example": "iPhone 16",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    {
+      "name": "时间",
+      "type": "text",
+      "example": "10:28",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  ],
+  "settings": {
+    "pairCount": 2,
+    "buttonCount": 2
+  },
+  "pages": [
+    {
+      "id": "page_v4l10qefzs",
+      "mode": "flow",
+      "style": {
+        "height": 364,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_wepf8dgtjy",
+          "type": "text",
+          "x": 14,
+          "y": 14,
+          "w": 314,
+          "h": 25,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "登录验证码"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_10rij7mh71",
+          "type": "text",
+          "x": 14,
+          "y": 45,
+          "w": 314,
+          "h": 21,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "5 分钟内有效，请勿泄露"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_uxezsq7doi",
+          "type": "text",
+          "x": 14,
+          "y": 76,
+          "w": 150,
+          "h": 36,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 26,
+            "color": "#E8A33D",
+            "lineHeight": 1.35,
+            "fontWeight": 700,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#验证码#}"
+          },
+          "slot": "highlight"
+        },
+        {
+          "id": "el_py6qxgrwa6",
+          "type": "text",
+          "x": 170,
+          "y": 86,
+          "w": 158,
+          "h": 20,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.5,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "点击按钮一键复制"
+          },
+          "slot": "highlightUnit"
+        },
+        {
+          "id": "el_o7v2bcgn79",
+          "type": "text",
+          "x": 14,
+          "y": 124,
+          "w": 84,
+          "h": 21,
+          "z": 4,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "登录设备"
+          },
+          "slot": "kv.0.label"
+        },
+        {
+          "id": "el_hvxq6kmn6d",
+          "type": "text",
+          "x": 106,
+          "y": 124,
+          "w": 222,
+          "h": 21,
+          "z": 5,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#设备#}"
+          },
+          "slot": "kv.0.value"
+        },
+        {
+          "id": "el_w3cctnlh11",
+          "type": "text",
+          "x": 14,
+          "y": 151,
+          "w": 84,
+          "h": 21,
+          "z": 6,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#8F959E",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "登录时间"
+          },
+          "slot": "kv.1.label"
+        },
+        {
+          "id": "el_ibcpaum3xw",
+          "type": "text",
+          "x": 106,
+          "y": 151,
+          "w": 222,
+          "h": 21,
+          "z": 7,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#1F2329",
+            "lineHeight": 1.6,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "{#时间#}"
+          },
+          "slot": "kv.1.value"
+        },
+        {
+          "id": "el_m71d5ce7xi",
+          "type": "button",
+          "x": 14,
+          "y": 186,
+          "w": 151,
+          "h": 40,
+          "z": 8,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "不是我本人",
+            "variant": "secondary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/security"
+          }
+        },
+        {
+          "id": "el_gaiphbel46",
+          "type": "button",
+          "x": 177,
+          "y": 186,
+          "w": 151,
+          "h": 40,
+          "z": 9,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "复制验证码",
+            "variant": "primary"
+          },
+          "slot": "button.1",
+          "event": {
+            "action": "COPY_PARAMETER",
+            "copyType": "param",
+            "content": "{#验证码#}"
+          }
+        },
+        {
+          "id": "el_ily3n1tq0z",
+          "type": "image",
+          "x": 14,
+          "y": 240,
+          "w": 314,
+          "h": 110,
+          "z": 10,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 8
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              314,
+              110
+            ],
+            "fit": "cover",
+            "role": "content"
+          },
+          "slot": "media"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1790795520000,
+    "updatedAt": 1790795520000
+  }
+}

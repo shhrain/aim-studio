@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_ecommerce",
+  "name": "爆款耳机限时购",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.ecommerce",
+  "cardId": "com.hbm.ecommerce",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {
+    "themeColor": 1
+  },
+  "pages": [
+    {
+      "id": "page_pai57uey61",
+      "mode": "flow",
+      "style": {
+        "height": 520,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_hcq88niqqn",
+          "type": "eCommerce",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 520,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "media": "image",
+            "images": [
+              {
+                "src": "https://cdn.example.com/sample.png"
+              },
+              {
+                "src": "https://cdn.example.com/sample.png"
+              }
+            ],
+            "currency": "¥",
+            "price": "399.00",
+            "originalPrice": "799.00",
+            "tag": "限时5折",
+            "title": "降噪耳机 Pro 无线蓝牙",
+            "description": "48dB 深度降噪，36 小时超长续航，佩戴轻至 4.5g，通勤运动都适用。",
+            "buttons": [
+              {
+                "text": "加入购物车",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/cart"
+                }
+              },
+              {
+                "text": "立即购买",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/buy"
+                }
+              }
+            ],
+            "themeColor": 1
+          },
+          "slot": "goods"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791339840000,
+    "updatedAt": 1791339840000
+  }
+}

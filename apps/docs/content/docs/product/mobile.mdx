@@ -1,0 +1,40 @@
+---
+title: 移动端体验
+description: 5G 阅信体验 H5：模板浏览、测试发送、记录、通讯录与能力查询。
+icon: Smartphone
+---
+
+## 页面一览
+
+| 路径 | 页面 | 说明 |
+| --- | --- | --- |
+| `/` | 首页 | 模板发送、扫码体验、能力查询、三信融合四个入口 |
+| `/template-list` | 模板列表 | 行业页签、筛选面板、双列瀑布流、下拉刷新、触底加载 |
+| `/detail?tplId=` | 模板详情 | 安卓 / 苹果 / 其他三端预览、厂商皮肤切换、测试发送 |
+| `/send-records` | 发送记录 | 号码搜索、时间与状态筛选、降级说明、预览、失败重发 |
+| `/send-objects` | 通讯录 | 增删改、批量删除；`?mode=select` 为发送选号模式（最多 10 个） |
+| `/send-records/statistics` | 发送统计 | 成功 / 失败、消息形态占比、厂商分布 |
+| `/ability-query` | 能力查询 | 查询号码是否支持阅信 / 5G 消息，保留最近 10 条历史 |
+| `/ability-guide` | 开启指引 | 公开页，各品牌手机开启阅信的设置步骤 |
+| `/scan-experience` | 扫码体验 | 扫码即收体验消息 |
+| `/auth-required` | 登录提示 | 无 / 失效登录态；Mock 环境提供体验登录 |
+| `/preview/:id` | 扫码预览 | 编辑器二维码落地页，支持多厂商与三协议切换 |
+| `/embed` | 嵌入接收端 | iframe 嵌入预览（见 [iframe 嵌入](/docs/sdk/embed)） |
+
+## 登录态
+
+`proxy.ts` 读取 URL 中的 `token` / `phone`（兼容 `loginPhone`），写入 Cookie 后重定向到干净地址；接口请求头携带 `AuthorizationCode`，`subCode = 9001` 时清除登录态并跳转 `/auth-required`。
+
+## 测试发送
+
+1. 输入号码或从通讯录选择（每次最多 10 个）；
+2. 选择发送方式：融合优先（阅信 → 5G 消息 → 视频短信自动降级）或定向发送；
+3. 预览每个号码的可达形态，可单独切换；
+4. 输入图形验证码后提交。含动态参数的模板仅可预览，不可体验发送。
+
+## 适配方案
+
+- **流式 rem**：`html { font-size: clamp(14px, 100vw / 375 × 16, 20px) }`，Tailwind 的 rem 单位随屏宽线性缩放，无需 JS 或 px2rem 插件；
+- **安全区**：顶栏、底栏、底部抽屉均处理 `env(safe-area-inset-*)`，视口启用 `viewport-fit=cover`；
+- **预览**：使用 SDK 的 `fluid` / `thumbnail` 模式，与编辑器同一套渲染；
+- **微信**：在微信内置浏览器中按需加载 JS-SDK 配置分享卡片，失败时静默降级。

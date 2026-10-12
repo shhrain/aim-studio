@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_fashion",
+  "name": "秋装上新",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.carouselImageSixteenToNine",
+  "cardId": "com.hbm.carouselImageSixteenToNine",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {
+    "ratio": "16:9"
+  },
+  "pages": [
+    {
+      "id": "page_0iimnvsl2s",
+      "mode": "flow",
+      "style": {
+        "height": 530,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_yvds7quc3c",
+          "type": "swiper",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 192,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "items": [
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/fashion/0"
+                }
+              },
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/fashion/1"
+                }
+              },
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "event": {
+                  "action": "OPEN_URL",
+                  "target": "https://aim.example.com/fashion/2"
+                }
+              }
+            ],
+            "resourceType": "image",
+            "ratio": [
+              16,
+              9
+            ],
+            "loop": true,
+            "autoplay": true,
+            "interval": 3,
+            "indicator": true
+          },
+          "slot": "media"
+        },
+        {
+          "id": "el_fp5j8rx6fr",
+          "type": "text",
+          "x": 14,
+          "y": 204,
+          "w": 314,
+          "h": 25,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "秋季新品 全场 8 折起"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_9fo6s7uwjg",
+          "type": "text",
+          "x": 14,
+          "y": 235,
+          "w": 314,
+          "h": 229,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 11
+          },
+          "props": {
+            "text": "温柔针织、复古风衣、经典牛仔，百款新品同步上架。会员下单额外再享 95 折，满 299 包邮。"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_q12ghuaqlh",
+          "type": "button",
+          "x": 14,
+          "y": 476,
+          "w": 314,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "进店逛逛",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/fashion"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791642240000,
+    "updatedAt": 1791642240000
+  }
+}

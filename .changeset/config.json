@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [["@aim/template-schema", "@aim/template-core", "@aim/template-preview"]],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@aim/editor", "@aim/mobile", "@aim/docs", "@aim/storybook", "@aim/e2e"]
+}

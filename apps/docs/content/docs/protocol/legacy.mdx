@@ -1,0 +1,36 @@
+---
+title: 旧数据适配
+description: 与旧编辑器 pages / content 数据互通。
+---
+
+```ts
+import { fromLegacyPages, toLegacyPages, toLegacyContent } from '@aim/template-core'
+
+// 导入历史模板（tplContent.pages 字符串）
+const doc = fromLegacyPages(tpl.pages, { cardId: tpl.cardId, name: tpl.tplName, params })
+
+// 写回旧系统
+const pages = toLegacyPages(doc)
+```
+
+## 映射规则
+
+| 旧字段 | 新文档 |
+| --- | --- |
+| `pages[].content[]` | `pages[].elements[]`，坐标 `x / y / w / h / z / angle` 原样保留 |
+| `text`（含 `<input value="{#x#}">`） | `props.text`（参数转为 `{#x#}`） |
+| `title: 'true'`（红包） | 槽位 `name` |
+| `noticeList: 'true'`（通知） | 槽位 `kv.N.label / kv.N.value` |
+| `isBgimg: true` | `props.role = 'background'`、槽位 `background` |
+| `swiper.swiperArr` | `props.items` |
+| `sideslip.sideslipList[].buts` | `props.cards[].buttons` |
+| `content.divTextArea*`（电商） | `props.title / description / price / tag` |
+| `style.fontSize: '14px'` | `style.fontSize: 14` |
+
+导入的模板使用 `absolute` 排版，保证与旧编辑器像素一致；在编辑器中修改版式设置时会按新蓝图重新排版并迁移同名槽位内容。
+
+`legacy` 数据也可以直接交给预览组件：
+
+```tsx
+<TemplatePreview legacy={{ pages: tpl.pages, cardId: tpl.cardId }} />
+```

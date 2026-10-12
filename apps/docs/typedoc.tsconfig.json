@@ -1,0 +1,5 @@
+{
+  "extends": "@aim/tsconfig/react-library.json",
+  "include": ["../../packages/*/src"],
+  "exclude": ["../../packages/*/src/**/*.test.*"]
+}

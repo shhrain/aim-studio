@@ -1,0 +1,36 @@
+@import '@aim/ui/globals.css';
+@import '@aim/template-preview/styles.css';
+
+@source "../";
+
+/*
+ * 流式 rem：以 375 设计宽为基准（1rem = 16px @375），
+ * 随屏幕宽度线性缩放并夹紧在 14px~20px，无需 JS / px2rem 插件。
+ */
+html {
+  font-size: clamp(14px, calc(100vw / 375 * 16), 20px);
+  background: var(--color-muted);
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--page-bg, var(--color-muted));
+}
+
+/* 双列瀑布流 */
+.waterfall {
+  column-count: 2;
+  column-gap: 0.625rem;
+}
+.waterfall > * {
+  break-inside: avoid;
+  margin-bottom: 0.625rem;
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(120% 80% at 100% 0%, oklch(0.75 0.14 230 / 0.55), transparent 60%),
+    linear-gradient(160deg, oklch(0.56 0.21 262), oklch(0.62 0.19 245));
+}

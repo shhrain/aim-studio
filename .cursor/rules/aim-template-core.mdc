@@ -1,0 +1,11 @@
+---
+description: 模板内核包约束
+globs: packages/template-core/**
+alwaysApply: false
+---
+
+- 纯函数、不可变更新：所有文档操作返回新对象，不得修改入参。
+- 不访问 DOM（转换器的 getTextParam 已用正则实现，可在 Node / SSR 运行）。
+- 扩展能力用 `defineElement / defineBlueprint / defineConverter / defineRule` + `registerPlugin`。
+- 三信融合转换：`legacy` 模式必须与 `test/reference` 原实现逐字段一致（parity 测试），改进只放在 `fixed` 模式。
+- 预检规则返回 `PrecheckIssue`，message 需说明原因，suggestion 给出修复方式。

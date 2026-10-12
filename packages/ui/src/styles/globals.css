@@ -1,0 +1,11 @@
+/*
+ * @aim/ui 全局样式入口。应用在根 CSS 中：
+ *   @import "@aim/ui/globals.css";
+ *   @source "<应用自身源码目录>";
+ */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@aim/tailwind-config/tokens.css';
+
+/* 扫描 UI 包自身源码中的类名 */
+@source "../";

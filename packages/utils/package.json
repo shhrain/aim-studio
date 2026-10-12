@@ -1,0 +1,37 @@
+{
+  "name": "@aim/utils",
+  "version": "0.1.0",
+  "description": "AIM 通用工具：HTML 净化、日期/时长格式化、存储、压缩编码、校验",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --sourcemap --clean",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "dompurify": "catalog:",
+    "nanoid": "catalog:"
+  },
+  "devDependencies": {
+    "@aim/eslint-config": "workspace:*",
+    "@aim/tsconfig": "workspace:*",
+    "@aim/vitest-config": "workspace:*",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

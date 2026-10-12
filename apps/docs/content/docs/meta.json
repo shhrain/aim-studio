@@ -1,0 +1,20 @@
+{
+  "title": "AIM Studio",
+  "pages": [
+    "index",
+    "getting-started",
+    "---产品指南---",
+    "...product",
+    "---模板规范---",
+    "...spec",
+    "---预览 SDK---",
+    "...sdk",
+    "---协议与转换---",
+    "...protocol",
+    "---工程与架构---",
+    "...architecture",
+    "api",
+    "---AI 协作---",
+    "ai"
+  ]
+}

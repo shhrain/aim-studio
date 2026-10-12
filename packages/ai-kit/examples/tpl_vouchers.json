@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_vouchers",
+  "name": "会员券包",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.cardVouchers",
+  "cardId": "com.hbm.cardVouchers",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_cq0jqayf1r",
+      "mode": "flow",
+      "style": {
+        "height": 300,
+        "backgroundColor": "#FFF6F0",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_h0liunp4cr",
+          "type": "cardVouchers",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 300,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "title": "您的会员专属券包",
+            "items": [
+              {
+                "voucherType": "fullMinus",
+                "amount": "100",
+                "threshold": "满1000可用",
+                "tagName": "满减券",
+                "name": "家电品类券",
+                "dateType": "days",
+                "days": 7,
+                "button": {
+                  "text": "去使用",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/coupons"
+                  }
+                }
+              },
+              {
+                "voucherType": "fullMinus",
+                "amount": "30",
+                "threshold": "满199可用",
+                "tagName": "满减券",
+                "name": "生鲜品类券",
+                "dateType": "days",
+                "days": 7,
+                "button": {
+                  "text": "去使用",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/coupons"
+                  }
+                }
+              },
+              {
+                "voucherType": "fullMinus",
+                "amount": "10",
+                "threshold": "无门槛",
+                "tagName": "满减券",
+                "name": "全场通用券",
+                "dateType": "days",
+                "days": 7,
+                "button": {
+                  "text": "去使用",
+                  "event": {
+                    "action": "OPEN_URL",
+                    "target": "https://aim.example.com/coupons"
+                  }
+                }
+              }
+            ],
+            "buttonMode": "each",
+            "button": {
+              "text": "一键领取",
+              "event": {
+                "action": "OPEN_URL",
+                "target": ""
+              }
+            }
+          },
+          "slot": "vouchers"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791158400000,
+    "updatedAt": 1791158400000
+  }
+}

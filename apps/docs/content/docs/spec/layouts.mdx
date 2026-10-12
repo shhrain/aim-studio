@@ -1,0 +1,636 @@
+---
+title: 版式
+description: 33 种标准版式与自由版式的槽位、字数限制、设置项与厂商支持。
+icon: LayoutTemplate
+---
+
+{/* 本文件由 pnpm ai:generate 根据 @aim/template-schema 自动生成，请勿手改 */}
+
+## 总览
+
+| 版式 | cardId | 分组 | 分类 | 三信融合 | 厂商数 | 说明 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 图文 | `com.hbm.imageandtext` | 图文 | 服务类 | ✓ | 7 | 大图 + 标题 + 描述 + 按钮，最通用的营销与服务版式 |
+| 横滑 | `com.hbm.sideslip` | 图文 | 服务类 |  | 5 | 多张卡片横向滑动浏览，每张卡片含图、标题、正文与按钮 |
+| 多图文 | `com.hbm.standardimageandtext` | 图文 | 服务类 |  | 7 | 头条大图 + 多条图文列表，适合资讯、活动合集 |
+| 多图文(新) | `com.hbm.standardimageandtext2.v2` | 图文 | 服务类 |  | 5 | 左文右图的多条资讯列表，信息密度更高 |
+| 图片轮播 | `com.hbm.carouselImageSixteenToNine` | 图文 | 服务类 | ✓ | 7 | 多图自动轮播 + 标题 + 长描述 + 按钮 |
+| 图片轮播(新) | `com.hbm.carouselImage.v2` | 图文 | 服务类 |  | 5 | 轮播图 + 双按钮，适合多商品/多活动露出 |
+| 长文本 | `com.hbm.pureText` | 图文 | 服务类 |  | 7 | 标题 + 长正文（最多 350 字），适合公告、说明类内容 |
+| 海报 | `com.hbm.poster` | 图文 | 服务类 |  | 7 | 整张竖版海报，可配置点击跳转 |
+| 视频图文 | `com.hbm.video` | 视频图文 | 服务类 | ✓ | 7 | 视频 + 标题 + 描述 + 按钮 |
+| 图文视频 | `com.hbm.imageVideo` | 视频图文 | 服务类 |  | 5 | 先文字后视频，突出文案 |
+| 视频 | `com.hbm.pureVideo` | 视频图文 | 服务类 |  | 5 | 大尺寸视频 + 简短文字 |
+| 短剧图片 | `com.hbm.shortVideoImage.v2` | 视频图文 | 服务类 |  | 2 | 竖版剧照 + 双按钮（立即观看 / 追剧） |
+| 短剧视频 | `com.hbm.shortVideo.v2` | 视频图文 | 服务类 |  | 2 | 竖版短剧视频 + 双按钮 |
+| 视频轮播 | `com.hbm.carouselVideo` | 视频图文 | 服务类 |  | 5 | 多个视频轮播展示 |
+| 电商 | `com.hbm.ecommerce` | 电商 | 服务类 |  | 5 | 商品主图 + 价格 + 卖点 + 双按钮 |
+| 电商(新) | `com.hbm.ecommerce.v2` | 电商 | 服务类 |  | 5 | 支持图片或视频主图的电商卡片 |
+| 电商(多商品) | `com.hbm.moreGoods` | 电商 | 服务类 |  | 5 | 店铺头部 + 多个商品列表 |
+| 券+商品(竖版) | `com.hbm.ecommerceCoupon.vertical` | 电商 | 服务类 |  | 2 | 优惠券 + 竖向商品列表 |
+| 券+商品(横版) | `com.hbm.ecommerceCoupon.horizontal` | 电商 | 服务类 |  | 2 | 优惠券 + 横向三列商品 |
+| 红包 | `com.hbm.redpacket` | 电商 | 服务类 | ✓ | 7 | 红包封面：发送方名称 + 祝福语 + 领取按钮 |
+| 个性化红包 | `com.hbm.redpacketAnimation.v2` | 电商 | 服务类 | ✓ | 5 | 支持动效与个性化参数的红包 |
+| 单卡券 | `com.hbm.cardVoucher` | 电商 | 服务类 |  | 5 | 单张优惠券：面额、门槛、有效期、领取按钮 |
+| 多卡券 | `com.hbm.cardVouchers` | 电商 | 服务类 |  | 5 | 多张优惠券列表，支持每张单独领取或底部统一按钮 |
+| 一般通知类 | `com.hbm.notification` | 通知 | 通知类 | ✓ | 7 | 标题 + 描述 + 键值对信息 + 按钮，适合账单、物流、预约提醒 |
+| 增强通知类 | `com.hbm.notificationPlus` | 通知 | 通知类 |  | 5 | 突出关键数值（金额、验证码等）的增强通知 |
+| 火车票类 | `com.hbm.ticket.train` | 行程通知 | 通知类 |  | 5 | 车次、出发/到达站与时间、座位信息 |
+| 汽车票类 | `com.hbm.ticket.bus` | 行程通知 | 通知类 |  | 5 | 班次、上车点、检票口等信息 |
+| 机票类 | `com.hbm.ticket.flight` | 行程通知 | 通知类 |  | 5 | 航班、航站楼、登机口与座位信息 |
+| 直飞 | `com.hbm.ticket.direct` | 行程通知 | 通知类 |  | 2 | 直飞航线行程与值机提醒 |
+| 两层表单_4-1 | `com.hbm.form.41` | 问卷表单 | 服务类 |  | 2 | 4 个信息项 + 1 个提交按钮，用于预约、报名 |
+| 两层表单_2-3 | `com.hbm.form.23` | 问卷表单 | 服务类 |  | 2 | 2 个填写项 + 3 个选择项的调研表单 |
+| 文本单选 | `com.hbm.textSelect` | 单选表单 | 服务类 |  | 5 | 问题 + 文本选项，点击选项触发对应事件 |
+| 图片单选 | `com.hbm.imgSelect` | 单选表单 | 服务类 |  | 5 | 问题 + 图片选项（横向滑动） |
+| 自由版式 | `com.hbm.custom` | 自由版式 | 服务类 |  | 2 | 从空白画布开始，自由添加、拖拽与组合 32 种元素 |
+
+## 图文
+
+### 图文
+
+- cardId：`com.hbm.imageandtext`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 图片 | `media` | 图片 | ✓ | 16:9 / 1:1 / 3:4 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.imageandtext" />
+
+### 横滑
+
+- cardId：`com.hbm.sideslip`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 卡片数量 | `cardCount` | 2张 / 3张 / 4张 / 5张 / 6张 | 2 |
+| 图片比例 | `ratio` | 16:9 / 1:1 | 16:9 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 横滑卡片 | `cards` | 横滑卡片 | ✓ | 2-6 项；cards[].title≤13，cards[].content≤30，cards[].buttons[].text≤10 |
+
+<LayoutPreview layout="com.hbm.sideslip" />
+
+### 多图文
+
+- cardId：`com.hbm.standardimageandtext`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 列表条数 | `itemCount` | 1条 / 2条 / 3条 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 头条图片 | `media` | 图片 | ✓ | 16:9 |
+| 头条标题 | `title` | 文本 | ✓ | ≤30字 |
+| 列表标题 | `item.{i}.text` | 文本 | ✓ | ≤30字；数量由 itemCount 决定 |
+| 列表缩略图 | `item.{i}.image` | 图片 | ✓ | 1:1；数量由 itemCount 决定 |
+
+<LayoutPreview layout="com.hbm.standardimageandtext" />
+
+### 多图文(新)
+
+- cardId：`com.hbm.standardimageandtext2.v2`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 列表条数 | `itemCount` | 2条 / 3条 / 4条 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 列表标题 | `item.{i}.text` | 文本 | ✓ | ≤30字；数量由 itemCount 决定 |
+| 列表缩略图 | `item.{i}.image` | 图片 | ✓ | 1:1；数量由 itemCount 决定 |
+
+<LayoutPreview layout="com.hbm.standardimageandtext2.v2" />
+
+### 图片轮播
+
+- cardId：`com.hbm.carouselImageSixteenToNine`（兼容 `com.hbm.carouselQuareImage`、`com.hbm.carouselVerticalImage`）
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 图片比例 | `ratio` | 16:9 / 1:1 / 3:4 | 16:9 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 轮播图 | `media` | 轮播 | ✓ | 2-5 项 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤253字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.carouselImageSixteenToNine" />
+
+### 图片轮播(新)
+
+- cardId：`com.hbm.carouselImage.v2`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 轮播图 | `media` | 轮播 | ✓ | 2-5 项 |
+| 标题 | `title` | 文本 | ✓ | ≤19字 |
+| 描述 | `description` | 文本 |  | ≤130字 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.carouselImage.v2" />
+
+### 长文本
+
+- cardId：`com.hbm.pureText`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 描述 | `description` | 文本 |  | ≤350字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.pureText" />
+
+### 海报
+
+- cardId：`com.hbm.poster`
+- 分组：图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 海报图片 | `media` | 图片 | ✓ | 3:4 / 9:16 |
+
+<LayoutPreview layout="com.hbm.poster" />
+
+## 视频图文
+
+### 视频图文
+
+- cardId：`com.hbm.video`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 视频 | `media` | 视频 | ✓ | 16:9 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.video" />
+
+### 图文视频
+
+- cardId：`com.hbm.imageVideo`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 视频 | `media` | 视频 | ✓ | 16:9 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.imageVideo" />
+
+### 视频
+
+- cardId：`com.hbm.pureVideo`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 视频 | `media` | 视频 | ✓ | 16:9 / 1:1 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.pureVideo" />
+
+### 短剧图片
+
+- cardId：`com.hbm.shortVideoImage.v2`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 剧照 | `media` | 图片 | ✓ | 3:4 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.shortVideoImage.v2" />
+
+### 短剧视频
+
+- cardId：`com.hbm.shortVideo.v2`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 视频 | `media` | 视频 | ✓ | 3:4 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤69字 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.shortVideo.v2" />
+
+### 视频轮播
+
+- cardId：`com.hbm.carouselVideo`
+- 分组：视频图文 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 视频轮播 | `media` | 轮播 | ✓ | 2-4 项 |
+| 标题 | `title` | 文本 | ✓ | ≤17字 |
+| 描述 | `description` | 文本 |  | ≤253字 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.carouselVideo" />
+
+## 电商
+
+### 电商
+
+- cardId：`com.hbm.ecommerce`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮配色 | `themeColor` | 活力橙 / 经典红 / 清新绿 / 湖水蓝 / 尊享紫 / 高级黑 | 1 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 商品 | `goods` | 电商商品 | ✓ | 1-5 项；title≤17，description≤69，buttons[].text≤6，tag≤8 |
+
+<LayoutPreview layout="com.hbm.ecommerce" />
+
+### 电商(新)
+
+- cardId：`com.hbm.ecommerce.v2`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 主图类型 | `media` | 图片 / 视频 | image |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 商品 | `goods` | 电商商品 | ✓ | 1-5 项；title≤17，description≤69，buttons[].text≤6，tag≤8 |
+
+<LayoutPreview layout="com.hbm.ecommerce.v2" />
+
+### 电商(多商品)
+
+- cardId：`com.hbm.moreGoods`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 商品列表 | `goods` | 多商品 | ✓ | 2-4 项；title≤12，subtitle≤20，items[].name≤24，items[].button.text≤4 |
+
+<LayoutPreview layout="com.hbm.moreGoods" />
+
+### 券+商品(竖版)
+
+- cardId：`com.hbm.ecommerceCoupon.vertical`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 券与商品 | `goods` | 券+商品 | ✓ | 1-3 项；title≤12，subtitle≤17，coupon.name≤11，coupon.description≤32，items[].name≤28 |
+
+<LayoutPreview layout="com.hbm.ecommerceCoupon.vertical" />
+
+### 券+商品(横版)
+
+- cardId：`com.hbm.ecommerceCoupon.horizontal`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 券与商品 | `goods` | 券+商品 | ✓ | 3-3 项；title≤12，subtitle≤17，coupon.name≤11，coupon.description≤32，items[].name≤8，items[].tag≤4 |
+
+<LayoutPreview layout="com.hbm.ecommerceCoupon.horizontal" />
+
+### 红包
+
+- cardId：`com.hbm.redpacket`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 红包底图 | `background` | 图片 | ✓ | 242:320 |
+| 头像 | `avatar` | 图片 | ✓ | 1:1 |
+| 发送方名称 | `name` | 文本 | ✓ | ≤18字 |
+| 红包标题 | `title` | 文本 | ✓ | ≤11字 |
+| 描述 | `description` | 文本 |  | ≤54字 |
+| 领取按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.redpacket" />
+
+### 个性化红包
+
+- cardId：`com.hbm.redpacketAnimation.v2`（兼容 `com.hbm.redpacketPersonal`）
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 红包底图 | `background` | 图片 | ✓ | 242:320 |
+| 头像 | `avatar` | 图片 | ✓ | 1:1 |
+| 发送方名称 | `name` | 文本 | ✓ | ≤13字 |
+| 红包标题 | `title` | 文本 | ✓ | ≤11字 |
+| 描述 | `description` | 文本 |  | ≤36字 |
+| 领取按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.redpacketAnimation.v2" />
+
+### 单卡券
+
+- cardId：`com.hbm.cardVoucher`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 卡券 | `voucher` | 单卡券 | ✓ | name≤40，tagName≤6，threshold≤12，button.text≤6 |
+
+<LayoutPreview layout="com.hbm.cardVoucher" />
+
+### 多卡券
+
+- cardId：`com.hbm.cardVouchers`
+- 分组：电商 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 卡券列表 | `vouchers` | 多卡券 | ✓ | 2-4 项；title≤14，items[].name≤26，items[].tagName≤6 |
+
+<LayoutPreview layout="com.hbm.cardVouchers" />
+
+## 问卷表单
+
+### 两层表单_4-1
+
+- cardId：`com.hbm.form.41`
+- 分组：问卷表单 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 表单 | `form` | 表单 | ✓ | 4-4 项；fields[].label≤6，fields[].placeholder≤15，submitText≤6 |
+
+<LayoutPreview layout="com.hbm.form.41" />
+
+### 两层表单_2-3
+
+- cardId：`com.hbm.form.23`
+- 分组：问卷表单 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 表单 | `form` | 表单 | ✓ | 5-5 项；fields[].label≤6，fields[].placeholder≤15，submitText≤6 |
+
+<LayoutPreview layout="com.hbm.form.23" />
+
+## 单选表单
+
+### 文本单选
+
+- cardId：`com.hbm.textSelect`
+- 分组：单选表单 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 描述 | `description` | 文本 |  | ≤30字 |
+| 选项 | `options` | 文本单选 | ✓ | 2-4 项；options[].title≤10 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.textSelect" />
+
+### 图片单选
+
+- cardId：`com.hbm.imgSelect`
+- 分组：单选表单 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 图片选项 | `options` | 图片单选 | ✓ | 2-4 项；options[].title≤8 |
+| 按钮 | `button.0` | 按钮 | ✓ | ≤10字 |
+
+<LayoutPreview layout="com.hbm.imgSelect" />
+
+## 通知
+
+### 一般通知类
+
+- cardId：`com.hbm.notification`
+- 分组：通知 · 通知类
+- 协议：阅信（AIM）、5G 消息（RCS）、视频短信（RMS）
+- 厂商：华为、荣耀、小米、vivo、OPPO、三星、华硕
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 参数对数量 | `pairCount` | 2对 / 3对 / 4对 / 5对 / 6对 / 7对 / 8对 | 2 |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 顶部图片 | `media` | 图片 | ✓ | 342:120 |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 描述 | `description` | 文本 |  | ≤20字 |
+| 参数名称 | `kv.{i}.label` | 文本 | ✓ | ≤6字；数量由 pairCount 决定 |
+| 参数值 | `kv.{i}.value` | 文本 | ✓ | ≤20字；数量由 pairCount 决定 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.notification" />
+
+### 增强通知类
+
+- cardId：`com.hbm.notificationPlus`
+- 分组：通知 · 通知类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 参数对数量 | `pairCount` | 2对 / 3对 / 4对 / 5对 / 6对 / 7对 / 8对 | 2 |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 描述 | `description` | 文本 |  | ≤20字 |
+| 重点数值 | `highlight` | 文本 | ✓ | ≤12字 |
+| 数值说明 | `highlightUnit` | 文本 |  | ≤8字 |
+| 参数名称 | `kv.{i}.label` | 文本 | ✓ | ≤6字；数量由 pairCount 决定 |
+| 参数值 | `kv.{i}.value` | 文本 | ✓ | ≤20字；数量由 pairCount 决定 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+| 底部图片 | `media` | 图片 | ✓ | 342:120 |
+
+<LayoutPreview layout="com.hbm.notificationPlus" />
+
+## 行程通知
+
+### 火车票类
+
+- cardId：`com.hbm.ticket.train`
+- 分组：行程通知 · 通知类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 行程信息 | `ticket` | 票据信息 | ✓ | number≤10，from.name≤10，to.name≤10，grid[].label≤6，grid[].value≤12，tip≤60 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.ticket.train" />
+
+### 汽车票类
+
+- cardId：`com.hbm.ticket.bus`
+- 分组：行程通知 · 通知类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 行程信息 | `ticket` | 票据信息 | ✓ | number≤10，from.name≤10，to.name≤10，grid[].label≤6，grid[].value≤12，tip≤60 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.ticket.bus" />
+
+### 机票类
+
+- cardId：`com.hbm.ticket.flight`
+- 分组：行程通知 · 通知类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀、小米、vivo、OPPO
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 行程信息 | `ticket` | 票据信息 | ✓ | number≤10，from.name≤10，to.name≤10，grid[].label≤6，grid[].value≤12，tip≤60 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.ticket.flight" />
+
+### 直飞
+
+- cardId：`com.hbm.ticket.direct`
+- 分组：行程通知 · 通知类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+| 设置 | key | 可选值 | 默认 |
+| --- | --- | --- | --- |
+| 按钮数量 | `buttonCount` | 1个 / 2个 | 2 |
+
+| 槽位 | key | 元素 | 必填 | 规则 |
+| --- | --- | --- | --- | --- |
+| 标题 | `title` | 文本 | ✓ | ≤15字 |
+| 行程信息 | `ticket` | 票据信息 | ✓ | number≤10，from.name≤10，to.name≤10，grid[].label≤6，grid[].value≤12，tip≤60 |
+| 按钮 | `button.{i}` | 按钮 | ✓ | ≤10字；数量由 buttonCount 决定 |
+
+<LayoutPreview layout="com.hbm.ticket.direct" />
+
+## 自由版式
+
+### 自由版式
+
+- cardId：`com.hbm.custom`
+- 分组：自由版式 · 服务类
+- 协议：阅信（AIM）
+- 厂商：华为、荣耀
+
+自由版式：无固定槽位，可添加任意元素并自由拖拽。
+
+<LayoutPreview layout="com.hbm.custom" />
+

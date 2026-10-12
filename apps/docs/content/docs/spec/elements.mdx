@@ -1,0 +1,44 @@
+---
+title: 元素
+description: 32 种画布元素及其 props 字段。
+icon: Shapes
+---
+
+{/* 本文件由 pnpm ai:generate 根据 @aim/template-schema 自动生成，请勿手改 */}
+
+元素数据结构见 [模板文档](/docs/spec/document)。props 字段的类型与默认值以 `elementPropsSchemas` 为准。
+
+| 类型 | 名称 | 分组 | 可点击 | props 字段 |
+| --- | --- | --- | --- | --- |
+| `text` | 文本 | basic | ✓ | text、rich |
+| `image` | 图片 | basic | ✓ | src、srcParam、ratio、fit、alt、role |
+| `video` | 视频 | basic |  | src、cover、duration、size、ratio |
+| `audio` | 音频 | basic |  | src、title、duration、size |
+| `button` | 按钮 | basic | ✓ | text、variant |
+| `hotZone` | 热区 | basic | ✓ | label |
+| `shape` | 形状 | basic |  | shape |
+| `qrCode` | 二维码 | basic |  | src、content |
+| `swiper` | 轮播 | media | ✓ | items、resourceType、ratio、loop、autoplay、interval、indicator |
+| `sideslip` | 横滑卡片 | media | ✓ | ratio、showContent、cards |
+| `eCommerce` | 电商商品 | marketing | ✓ | media、images、video、currency、price、originalPrice、tag、title、description、buttons、themeColor |
+| `moreGoods` | 多商品 | marketing | ✓ | title、subtitle、showIcon、items |
+| `ecommerceCoupon` | 券+商品 | marketing | ✓ | direction、logo、title、subtitle、coupon、items |
+| `cardVoucher` | 单卡券 | marketing | ✓ | voucherType、amount、threshold、tagName、name、dateType、dateRange、days、customDate、image、button、dynamicButton |
+| `cardVouchers` | 多卡券 | marketing | ✓ | title、items、buttonMode、button |
+| `countdown` | 倒计时 | marketing | ✓ | endTime、label |
+| `ticketImage` | 票据信息 | service |  | kind、from、to、number、duration、grid、extra、tip |
+| `tel` | 电话 | service | ✓ | styleType、text、phone、image |
+| `map` | 地图 | service | ✓ | mode、title、address、longitude、latitude |
+| `serviceNumber` | 服务号 | service | ✓ | mode、avatar、name、description |
+| `agreement` | 协议 | service |  | text、links |
+| `form` | 表单 | form |  | title、fields、privacyText、submitText |
+| `input` | 输入框 | form |  | label、placeholder、inputStyle |
+| `textarea` | 多行输入 | form |  | label、placeholder、inputStyle |
+| `radioGroup` | 单选 | form |  | label、options |
+| `checkboxGroup` | 多选 | form |  | label、options |
+| `picker` | 下拉选择 | form |  | label、placeholder、options |
+| `datePicker` | 日期选择 | form |  | label、placeholder |
+| `timePicker` | 时间选择 | form |  | label、placeholder |
+| `textSelect` | 文本单选 | form | ✓ | options、activeIndex |
+| `imgSelect` | 图片单选 | form | ✓ | options、showTitle、activeIndex |
+| `submitButton` | 提交按钮 | form | ✓ | text |

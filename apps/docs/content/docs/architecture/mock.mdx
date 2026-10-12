@@ -1,0 +1,46 @@
+---
+title: Mock 与接口契约
+description: MSW 全量 Mock、错误码与切换真实后端。
+icon: Server
+---
+
+## 设计
+
+- 接口契约（路径、请求、响应类型）定义在 `@aim/api-client/contracts`；
+- `@aim/mock` 基于契约实现 MSW handlers，并复用 `@aim/template-core` 的预检、转换逻辑，行为与真实后端一致；
+- 同一套 handlers 用于浏览器（Service Worker）、Vitest（`msw/node`）、Storybook 与 Playwright。
+
+## 响应格式
+
+```json
+{ "subCode": 0, "message": "success", "data": {}, "pageInfo": { "total": 18, "pageIndex": 0, "pageSize": 8 } }
+```
+
+| subCode | 含义 | 前端处理 |
+| --- | --- | --- |
+| 0 | 成功 | – |
+| 1001 | 参数错误 | 提示 |
+| 1002 | 验证码错误 | 刷新验证码 |
+| 1003 | 频率限制 | 提示稍后再试 |
+| 2001 / 2002 | 不存在 / 已存在 | 提示 |
+| 3001 / 3002 | 上游异常 / 超时 | 提示 |
+| 5000 | 系统异常 | 提示，可重试 |
+| 9001 | 登录失效 | 清除登录态，跳转 `/auth-required` |
+
+## 接口清单
+
+**移动端**（前缀 `/rcs/aim-experience/api/v1`）：`auth/image-code`、`template/filter-options`、`template/list`、`template/detail`、`send/preview`、`send/experience`、`send/detail`、`send/recent`、`send/statistics`、`ability/query`、`contacts/page`、`contacts`（POST / PUT / DELETE）、`wechat/signature`。
+
+**编辑器**（前缀 `/api/editor/v1`）：`templates`（CRUD、duplicate、submit）、`materials`、`precheck/deep`、`tools/link-check`、`ai/copywriting`、`feedback`。
+
+**扫码预览**：移动端 Route Handler `POST /api/share`、`GET /api/share/:id`（进程内存，30 分钟过期）。
+
+## 切换真实后端
+
+```bash
+# apps/*/.env.local
+NEXT_PUBLIC_API_MOCK=false
+NEXT_PUBLIC_API_BASE=https://api.example.com
+```
+
+业务代码只依赖 `@aim/api-client`，无需修改。

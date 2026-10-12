@@ -1,0 +1,10 @@
+---
+description: 模板协议包约束
+globs: packages/template-schema/**
+alwaysApply: false
+---
+
+- 只放类型、Zod Schema 与静态目录数据，不依赖 React、DOM、Node API。
+- 新增版式：在 `LAYOUTS` 中声明槽位（maxLength / ratios / count / limits / repeat）、settings、vendors、protocols，并在 template-core 补充蓝图。
+- 新增元素：同步 `ELEMENT_TYPES`、`ELEMENT_META`、`elementPropsSchemas`（字段使用 zod，默认值写在 core 的 builtin）。
+- 修改后运行 `pnpm --filter @aim/template-schema test` 与 `pnpm ai:generate`。

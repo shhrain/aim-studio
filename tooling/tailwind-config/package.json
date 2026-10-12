@@ -1,0 +1,15 @@
+{
+  "name": "@aim/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./postcss": "./postcss.config.js"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:"
+  }
+}

@@ -1,0 +1,30 @@
+---
+title: 编辑器桥接
+description: 在预览之上构建编辑器：选中、行内编辑、问题标记与拖拽叠加层。
+---
+
+`TemplatePreview` 的 `editor` 属性让同一套渲染直接成为编辑画布，编辑器与预览永远一致。
+
+```tsx
+<TemplatePreview
+  document={doc}
+  interactive="none"
+  paramDisplay="token"
+  ignoreVendorSupport
+  editor={{
+    selectedId,
+    issueIds,                               // 有问题的元素，红色虚线标记
+    onSelect: (id) => setSelected(id),
+    editingId,
+    onEditStart: (id) => setEditing(id),    // 双击文本
+    onTextCommit: (id, text) => save(id, text),
+    renderOverlay: (el) => el.id === selectedId ? <DragHandles el={el} /> : null,
+  }}
+/>
+```
+
+- 提供 `editor` 时，点击元素只触发 `onSelect`，不会执行点击事件；
+- `renderOverlay` 渲染在元素内部（`position: absolute; inset: 0`），可实现拖拽、缩放手柄；
+- 画布单位换算：`元素坐标 = 像素位移 ÷ (卡片实际宽度 / 342)`。
+
+参考实现见 `apps/editor/src/features/editor/canvas`。

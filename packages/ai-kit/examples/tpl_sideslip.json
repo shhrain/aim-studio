@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_sideslip",
+  "name": "精选好物推荐",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.sideslip",
+  "cardId": "com.hbm.sideslip",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {
+    "cardCount": 3,
+    "ratio": "16:9"
+  },
+  "pages": [
+    {
+      "id": "page_df3r66us2a",
+      "mode": "flow",
+      "style": {
+        "height": 282,
+        "backgroundColor": "transparent",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_a7u4tljgue",
+          "type": "sideslip",
+          "x": 0,
+          "y": 14,
+          "w": 342,
+          "h": 268,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {},
+          "props": {
+            "ratio": [
+              16,
+              9
+            ],
+            "showContent": true,
+            "cards": [
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "title": "降噪耳机 Pro",
+                "content": "主动降噪 48dB，续航 36 小时",
+                "buttons": [
+                  {
+                    "text": "立即购买",
+                    "event": {
+                      "action": "OPEN_URL",
+                      "target": "https://aim.example.com/goods/0"
+                    }
+                  }
+                ]
+              },
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "title": "智能手表 S3",
+                "content": "血氧心率全天候监测",
+                "buttons": [
+                  {
+                    "text": "立即购买",
+                    "event": {
+                      "action": "OPEN_URL",
+                      "target": "https://aim.example.com/goods/1"
+                    }
+                  }
+                ]
+              },
+              {
+                "src": "https://cdn.example.com/sample.png",
+                "title": "便携充电宝",
+                "content": "22.5W 快充，口袋大小",
+                "buttons": [
+                  {
+                    "text": "立即购买",
+                    "event": {
+                      "action": "OPEN_URL",
+                      "target": "https://aim.example.com/goods/2"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "slot": "cards"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791400320000,
+    "updatedAt": 1791400320000
+  }
+}

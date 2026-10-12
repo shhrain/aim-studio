@@ -1,0 +1,48 @@
+---
+title: 工程化
+description: pnpm catalog、Turborepo、Changesets、测试与 CI。
+icon: Wrench
+---
+
+## 技术栈
+
+| 类别 | 选型 |
+| --- | --- |
+| 包管理 | pnpm workspace + **catalog**（全仓库统一依赖版本） |
+| 任务编排 | Turborepo 2（依赖图构建、缓存、远程缓存） |
+| 版本发布 | Changesets（linked：schema / core / preview） |
+| 应用框架 | Next.js 16（App Router、Turbopack、`proxy.ts`）、React 19 |
+| 样式 | Tailwind CSS v4（`@theme` token）、shadcn/ui + Radix |
+| 状态 / 数据 | Zustand + Immer + zundo、TanStack Query 5 |
+| 校验 | Zod 4 |
+| 文档 | Fumadocs（llms.txt、Markdown 内容协商）、Storybook 9、TypeDoc |
+| 测试 | Vitest 4 + Testing Library、Playwright（E2E + 截图对比） |
+| 规范 | TypeScript strict、ESLint 9 flat config、Prettier、lefthook + commitlint |
+
+## 依赖规范
+
+```bash
+pnpm check:deps   # 外部依赖必须使用 catalog:，内部包必须使用 workspace:*
+```
+
+## Turborepo 任务
+
+| 任务 | 说明 |
+| --- | --- |
+| `build` | 依赖先行（`^build`），输出 `dist/`、`.next/`、`storybook-static/` |
+| `typecheck` / `lint` / `test` | 可并行、带缓存 |
+| `dev` / `storybook` | 常驻任务，不缓存 |
+
+## 发版流程
+
+```bash
+pnpm changeset          # 选择包与版本级别
+pnpm version-packages   # 生成版本号与 CHANGELOG
+pnpm release            # 构建 packages/* 并发布
+```
+
+CI（`.github/workflows/ci.yml`）在 PR 上执行：格式检查 → lint → 类型检查 → 单元测试 → 构建 → Changeset 状态检查 → E2E。合并到 main 后 `release.yml` 通过 `changesets/action` 自动创建版本 PR 或发布。
+
+## 提交规范
+
+Conventional Commits，scope 取包名：`feat(preview): 支持暗色模式`、`fix(core): 修正红包类型判定`。

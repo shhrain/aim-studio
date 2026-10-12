@@ -1,0 +1,51 @@
+---
+title: AI 协作
+description: 让任意 AI 编程 Agent 高效、正确地使用模板能力。
+icon: Sparkles
+---
+
+## 开箱即用的提示词
+
+[`packages/ai-kit/PROMPT.md`](https://github.com/) 是一份完整的系统提示词，覆盖：
+
+1. 角色设定与回答语言；
+2. 产品术语：阅信 / 5G 消息 / 视频短信 / 三信融合 / 版式 / 槽位 / 参数 / 预检；
+3. 仓库分层与依赖方向；
+4. `TemplateDocument` 数据模型；
+5. 版式、元素、点击事件、厂商、参数类型规范表（由 schema 自动生成）；
+6. 常用 API 示例（创建、修改、预检、转换、预览）；
+7. 企业级设计语言与交互规范；
+8. 标准工作流、禁止事项、示例文档与示例任务。
+
+### 在不同工具中使用
+
+| 工具 | 用法 |
+| --- | --- |
+| Cursor | 已生成 `.cursor/rules/*.mdc`（全局 + 按目录生效），并在根目录提供 `AGENTS.md` |
+| Claude Code / Codex 等 | 读取根目录 `AGENTS.md`，并在会话开头引用 `packages/ai-kit/PROMPT.md` |
+| 通用对话模型 | 将 `PROMPT.md` 全文作为系统提示词，或提供文档站 `/llms-full.txt` |
+| 自建 Agent | `import { buildPrompt } from '@aim/ai-kit'` 在运行时生成 |
+
+## llms.txt
+
+文档站按 [llms.txt](https://llmstxt.org) 约定提供：
+
+- `/llms.txt`：文档索引；
+- `/llms-full.txt`：全部文档的纯文本；
+- 任意文档页加 `.md` 后缀（或 `Accept: text/markdown`）获取 Markdown 原文。
+
+## 保持同步
+
+规范的唯一事实来源是 `@aim/template-schema`。修改版式、元素、事件或厂商后运行：
+
+```bash
+pnpm ai:generate
+```
+
+将同时更新 `PROMPT.md`、`AGENTS.md` 生成区块、`.cursor/rules`、文档站「模板规范」章节与 `packages/ai-kit/examples/*.json`。
+
+## 推荐提问方式
+
+- 明确版式与厂商：“为 **图文（com.hbm.imageandtext）** 模板在 **vivo** 上……”
+- 指明分层：“在 **template-core** 增加一条预检规则……”
+- 要求验证：“完成后运行 `pnpm --filter @aim/template-core test`”

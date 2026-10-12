@@ -1,0 +1,11 @@
+---
+description: 应用层约定（编辑器 / 移动端）
+globs: apps/editor/**, apps/mobile/**
+alwaysApply: false
+---
+
+- Next.js 16 App Router：页面文件为服务端组件，交互逻辑放在同目录 `*-view.tsx`（'use client'）。
+- 数据请求使用 `@/lib/api` 导出的 api / hooks；错误由 http 客户端统一 toast，9001 统一跳转登录。
+- 编辑器状态在 `features/editor/store.ts`（zustand + zundo）；修改文档用 `update(fn)` 或 `mutateElement(id, recipe)`。
+- 移动端使用 `@aim/ui/mobile` 组件，处理安全区；预览用 `mode="fluid"` 或 `TemplateThumbnail`。
+- 交互规范：主操作唯一、破坏性操作二次确认、空状态给出下一步、加载使用骨架屏。

@@ -1,0 +1,12 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="介绍" />
+
+# AIM Studio 组件工作台
+
+- **UI**：`@aim/ui` 企业级组件（shadcn/ui + Radix + Tailwind v4），PC 与移动端共用设计 token
+- **Mobile**：`@aim/ui/mobile` 移动端组件（导航栏、标签栏、底部抽屉、下拉刷新、列表单元格）
+- **Preview**：`@aim/template-preview` 预览 SDK，含 **版式 × 厂商 × 协议** 全矩阵
+- **Data**：通过 `msw-storybook-addon` 复用 `@aim/mock` 的接口 Mock
+
+修改组件后在此目测，视觉回归由 `e2e/visual.spec.ts` 对编辑器「版式画廊」截图比对。

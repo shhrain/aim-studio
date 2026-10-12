@@ -1,0 +1,73 @@
+---
+title: 三信融合转换
+description: AIM 模板转换为 RCS（5G 消息）与 RMS（视频短信）的规则。
+icon: Layers
+---
+
+```ts
+import { convertDocument, buildSubmitPayload } from '@aim/template-core'
+
+const result = convertDocument(doc)            // 不支持的版式返回 null
+const { rcsTplRequest, rmsTplRequest } = buildSubmitPayload(result, { tplName: doc.name })
+```
+
+支持的版式：图文、视频图文、图片轮播（16:9 / 1:1 / 3:4）、红包、个性化红包、一般通知类。
+
+<IntegratedDemo layout="com.hbm.notification" />
+
+## RCS（苹果 / 5G 消息）
+
+| AIM | RCS `sourceMaterial` | 规则 |
+| --- | --- | --- |
+| 版式 | `tplType` | 图文 / 通知 → `card`；轮播 → `multiCard`；红包 type1 → `media`，type2/3 → `card` |
+| 主图 / 视频 / 轮播项 | `content[].media` | `mtalAddress`、`coverUrl`（视频取封面）、宽高 |
+| 第 1 个文本 | `content[].title` | 红包中“发送方名称”以外的第一个文本 |
+| 第 2 个文本 | `content[].description` | 通知类追加键值对：`\n名称：值` |
+| 按钮 | `actionSheet` / `content[].buttons` | 见下表 |
+| 参数 | `params[]` | `pName: ${x}`、`pType: TEXT`、`pLen: 100`、`pDesc: 示例` |
+| 布局 | `content[].layout` | `{"height":"tall_height","orientation":"vertical","width":"medium_width"}` |
+
+### 按钮事件映射
+
+| AIM 事件 | RCS | application |
+| --- | --- | --- |
+| 打开链接 / 打开浮窗 | `urlAction` | `webview` |
+| 打开浏览器 | `urlAction` | `browser` |
+| 打开 APP / 打开快应用 | 降级为浏览器 `urlAction` | `browser` |
+| 拨打电话 | `dialerAction` | – |
+| 复制 / 短信 / 邮件 / 日程 / 弹窗 | 不支持：链接置空，`editRcsBtns` 列出待补填按钮 | – |
+
+### 红包类型
+
+| 类型 | 条件 | RCS 形态 |
+| --- | --- | --- |
+| type 1 | 无参数，或仅 1 个参数且为按钮链接 | `media` 卡片，按钮留在 `actionSheet` |
+| type 2 | 其余含参数情况 | `card`，按钮并入卡片 |
+| type 3 | type 2 且发送方名称含参数 | `card`，RMS 文案前缀【发送方】 |
+
+红包需截图生成审核图（`needCapture`），提交时通过 `applyCapturedImage` 回填。
+
+## RMS（其他终端 / 视频短信）
+
+| 规则 | 说明 |
+| --- | --- |
+| 帧序列 | 媒体帧 + 文本帧，相邻文本帧合并（以空行分隔） |
+| 图片尺寸 | 画布宽 260，宽度超出时等比缩放 |
+| 标题 | 取首个标题，剔除动态参数 |
+| 按钮 | 转为文本帧：`按钮名:` + 换行 + 链接 |
+| 快应用 | `hap://` → `https://hapjs.org/` |
+| 打开 APP | `https://twise.cn/toApp.html?toApp=<deeplink>` |
+| 媒体链接 | 媒体自身跳转与按钮不同时追加 `点击查看:` 文本帧 |
+| 拒收文案 | 剔除 “拒收请回复R” |
+| 通知类 | 描述后追加 `\n\n名称：值`，首帧移至末尾 |
+
+## 参数转换
+
+编辑器中的参数占位 `{#x#}`、旧编辑器的参数节点 `<input value="{#x#}">` 在导出协议时统一转换为 `${x}`。
+
+## 兼容模式
+
+`convertToProtocols({ cardId, content, params })` 与 5G 阅信体验平台的原实现 **逐字段一致**（`test/parity.test.ts` 对照测试保证）。`convertDocument` 默认启用 `mode: 'fixed'`，额外修正历史问题：
+
+- 多层转义的参数链接（如 `actionDetail` 中的 URL）也会转换为 `${x}`；
+- 媒体缺少点击事件或链接为空时不再输出空的“点击查看”。

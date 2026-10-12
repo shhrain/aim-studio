@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "tpl_travel",
+  "name": "国庆出游季",
+  "usage": "commercial",
+  "category": "service",
+  "layoutId": "com.hbm.imageandtext",
+  "cardId": "com.hbm.imageandtext",
+  "vendors": [
+    "huawei",
+    "honor",
+    "xiaomi",
+    "vivo",
+    "oppo",
+    "samsung",
+    "asus"
+  ],
+  "recognition": "shortLink",
+  "params": [],
+  "settings": {},
+  "pages": [
+    {
+      "id": "page_3qi1k1ujdl",
+      "mode": "flow",
+      "style": {
+        "height": 364,
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 12
+      },
+      "elements": [
+        {
+          "id": "el_13paxzkzqy",
+          "type": "image",
+          "x": 0,
+          "y": 0,
+          "w": 342,
+          "h": 192,
+          "z": 0,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 0
+          },
+          "props": {
+            "src": "https://cdn.example.com/sample.png",
+            "ratio": [
+              16,
+              9
+            ],
+            "fit": "cover",
+            "role": "content"
+          },
+          "slot": "media",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/travel"
+          }
+        },
+        {
+          "id": "el_t2vbt3b5w5",
+          "type": "text",
+          "x": 14,
+          "y": 204,
+          "w": 314,
+          "h": 25,
+          "z": 1,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 17,
+            "color": "#1F2329",
+            "lineHeight": 1.45,
+            "fontWeight": 600,
+            "lineClamp": 1
+          },
+          "props": {
+            "text": "国庆出游季 · 精选线路直降"
+          },
+          "slot": "title"
+        },
+        {
+          "id": "el_pd9df4fmo9",
+          "type": "text",
+          "x": 14,
+          "y": 235,
+          "w": 314,
+          "h": 63,
+          "z": 2,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "fontSize": 13,
+            "color": "#646A73",
+            "lineHeight": 1.6,
+            "lineClamp": 3
+          },
+          "props": {
+            "text": "海岛、古镇、亲子乐园 300+ 线路限时特惠，提前预订再享早鸟立减，名额有限先到先得。"
+          },
+          "slot": "description"
+        },
+        {
+          "id": "el_wpm2xyx762",
+          "type": "button",
+          "x": 14,
+          "y": 310,
+          "w": 314,
+          "h": 40,
+          "z": 3,
+          "angle": 0,
+          "visible": true,
+          "locked": false,
+          "style": {
+            "borderRadius": 20,
+            "fontSize": 15
+          },
+          "props": {
+            "text": "立即抢购",
+            "variant": "primary"
+          },
+          "slot": "button.0",
+          "event": {
+            "action": "OPEN_URL",
+            "target": "https://aim.example.com/travel/buy"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "status": "draft",
+    "createdAt": 1791763200000,
+    "updatedAt": 1791763200000
+  }
+}

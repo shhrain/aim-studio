@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+dist
+.next
+.source
+.turbo
+storybook-static
+coverage
+**/public/mockServiceWorker.js
+packages/template-core/test/reference

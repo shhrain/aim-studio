@@ -32,7 +32,7 @@ export function buildSpecDocs(): Record<string, string> {
     [
       '## 总览',
       '',
-      layoutsSummaryTable(),
+      layoutsSummaryTable({ compact: true }),
       '',
       ...groups.flatMap((g) => [
         `## ${LAYOUT_GROUPS[g.key].label}`,

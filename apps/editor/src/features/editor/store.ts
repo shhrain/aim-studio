@@ -17,7 +17,8 @@ interface EditorState {
   editingId: string | null
   vendor: VendorId
   paramDisplay: 'token' | 'example'
-  zoom: number
+  /** 'fit'：按画布可视高度自适应 */
+  zoom: number | 'fit'
   panel: RailPanel | null
   saveState: SaveState
   lastSavedAt?: number
@@ -64,7 +65,7 @@ export const useEditor = create<EditorState>()(
       editingId: null,
       vendor: 'huawei',
       paramDisplay: 'token',
-      zoom: 1,
+      zoom: 'fit',
       panel: 'layouts',
       saveState: 'idle',
       report: null,

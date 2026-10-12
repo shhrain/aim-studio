@@ -77,8 +77,8 @@ export function TopBar({ saveNow }: { saveNow: () => Promise<boolean> }) {
           aria-label="模板名称"
           onChange={(e) => update((d) => ({ ...d, name: e.target.value }))}
           className={cn(
-            'hover:border-border focus:border-primary focus:bg-card h-8 w-56 rounded-md border border-transparent bg-transparent px-2 text-[15px] font-semibold transition outline-none',
-            !doc.name && 'placeholder:text-destructive/70',
+            'hover:border-border focus:border-primary focus:bg-card placeholder:text-muted-foreground h-8 w-56 rounded-md border border-transparent bg-transparent px-2 text-[15px] font-semibold transition outline-none placeholder:font-normal',
+            !doc.name && 'border-border border-dashed',
           )}
         />
         <Badge variant={status.variant} dot title={TEMPLATE_STATUS_LABEL[doc.meta.status]}>

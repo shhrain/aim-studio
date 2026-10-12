@@ -8,22 +8,35 @@ import {
   type PreviewMode,
 } from '@aim/template-preview'
 import { LAYOUTS, VENDOR_LIST, type Protocol } from '@aim/template-schema'
-import { useMemo, useState } from 'react'
+import { ChevronDownIcon } from 'lucide-react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { buildSampleTemplatesLite } from './samples'
 
 /** 首页 Hero：切换示例模板 */
 export function HeroPreview() {
   const docs = useMemo(() => buildSampleTemplatesLite(), [])
   const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => setI((v) => v + 1), 4000)
+    return () => clearInterval(t)
+  }, [paused])
+  const current = docs[i % docs.length]
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div
+      className="flex flex-col items-center gap-3"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <TemplatePreview
-        document={docs[i % docs.length]}
+        document={current}
         vendor="huawei"
         width={300}
         paramDisplay="example"
         showTime={false}
       />
+      <div className="text-fd-muted-foreground text-xs">{current?.name}</div>
       <div className="flex gap-1.5">
         {docs.map((d, idx) => (
           <button
@@ -70,6 +83,71 @@ export function LayoutPreview({
   )
 }
 
+function PlaygroundField({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1">
+      <span className="text-fd-muted-foreground text-xs">{label}</span>
+      {children}
+    </label>
+  )
+}
+
+function NativeSelect({
+  value,
+  onChange,
+  children,
+  ...rest
+}: {
+  value: string
+  onChange: (v: string) => void
+  children: ReactNode
+  'aria-label': string
+}) {
+  return (
+    <span className="relative inline-flex">
+      <select
+        {...rest}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="bg-fd-background hover:border-fd-primary/50 focus-visible:ring-fd-primary/30 h-8 min-w-28 appearance-none rounded-md border py-0 pr-8 pl-2.5 text-sm transition outline-none focus-visible:ring-2"
+      >
+        {children}
+      </select>
+      <ChevronDownIcon className="text-fd-muted-foreground pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2" />
+    </span>
+  )
+}
+
+function Seg<T extends string>({
+  value,
+  onChange,
+  options,
+}: {
+  value: T
+  onChange: (v: T) => void
+  options: [T, string][]
+}) {
+  return (
+    <span className="bg-fd-background inline-flex h-8 items-center gap-0.5 rounded-md border p-0.5">
+      {options.map(([v, label]) => (
+        <button
+          key={v}
+          type="button"
+          aria-pressed={v === value}
+          onClick={() => onChange(v)}
+          className={`h-full rounded px-2.5 text-xs transition ${
+            v === value
+              ? 'bg-fd-primary text-fd-primary-foreground'
+              : 'text-fd-muted-foreground hover:text-fd-foreground'
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </span>
+  )
+}
+
 /** 可交互 Playground：切换版式 / 厂商 / 模式 / 协议 */
 export function PreviewPlayground() {
   const [layout, setLayout] = useState('com.hbm.imageandtext')
@@ -78,54 +156,50 @@ export function PreviewPlayground() {
   const [protocol, setProtocol] = useState<Protocol>('aim')
   const [log, setLog] = useState('点击预览中的按钮查看事件')
   const doc = useMemo(() => createDocument({ layoutId: layout, name: '示例', now: 0 }), [layout])
-  const select = 'rounded-md border bg-fd-background px-2 py-1 text-sm'
   return (
     <div className="not-prose my-6 overflow-hidden rounded-xl border">
-      <div className="bg-fd-muted/40 flex flex-wrap items-center gap-2 border-b p-3">
-        <select
-          className={select}
-          value={layout}
-          onChange={(e) => setLayout(e.target.value)}
-          aria-label="版式"
-        >
-          {LAYOUTS.map((l) => (
-            <option key={l.id} value={l.id}>
-              {l.name}
-            </option>
-          ))}
-        </select>
-        <select
-          className={select}
-          value={vendor}
-          onChange={(e) => setVendor(e.target.value)}
-          aria-label="厂商"
-        >
-          {VENDOR_LIST.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.name}
-            </option>
-          ))}
-        </select>
-        <select
-          className={select}
-          value={mode}
-          onChange={(e) => setMode(e.target.value as PreviewMode)}
-          aria-label="模式"
-        >
-          {(['phone', 'bare', 'fluid', 'thumbnail'] as const).map((m) => (
-            <option key={m}>{m}</option>
-          ))}
-        </select>
-        <select
-          className={select}
-          value={protocol}
-          onChange={(e) => setProtocol(e.target.value as Protocol)}
-          aria-label="协议"
-        >
-          {(['aim', 'rcs', 'rms'] as const).map((p) => (
-            <option key={p}>{p}</option>
-          ))}
-        </select>
+      <div className="bg-fd-muted/40 flex flex-wrap items-end gap-x-4 gap-y-3 border-b p-3">
+        <PlaygroundField label="版式">
+          <NativeSelect value={layout} onChange={setLayout} aria-label="版式">
+            {LAYOUTS.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+              </option>
+            ))}
+          </NativeSelect>
+        </PlaygroundField>
+        <PlaygroundField label="厂商">
+          <NativeSelect value={vendor} onChange={setVendor} aria-label="厂商">
+            {VENDOR_LIST.map((v) => (
+              <option key={v.id} value={v.id}>
+                {v.name}
+              </option>
+            ))}
+          </NativeSelect>
+        </PlaygroundField>
+        <PlaygroundField label="模式 mode">
+          <Seg
+            value={mode}
+            onChange={setMode}
+            options={[
+              ['phone', '手机'],
+              ['bare', '卡片'],
+              ['fluid', '自适应'],
+              ['thumbnail', '缩略图'],
+            ]}
+          />
+        </PlaygroundField>
+        <PlaygroundField label="协议 protocol">
+          <Seg
+            value={protocol}
+            onChange={setProtocol}
+            options={[
+              ['aim', '阅信'],
+              ['rcs', '5G 消息'],
+              ['rms', '视频短信'],
+            ]}
+          />
+        </PlaygroundField>
       </div>
       <div className="demo-grid bg-fd-card flex flex-col items-center gap-3 py-6">
         <TemplatePreview

@@ -6,8 +6,11 @@ export function VendorTags({ vendors, max = 4 }: { vendors: VendorId[]; max?: nu
       {vendors.slice(0, max).map((v) => (
         <span
           key={v}
-          className="inline-flex h-4 items-center rounded px-1 text-[10px] text-white"
-          style={{ background: VENDORS[v].brandColor }}
+          className="inline-flex h-4 items-center rounded px-1 text-[10px] font-medium"
+          style={{
+            color: VENDORS[v].brandColor,
+            background: `color-mix(in oklab, ${VENDORS[v].brandColor} 10%, transparent)`,
+          }}
         >
           {VENDORS[v].name}
         </span>

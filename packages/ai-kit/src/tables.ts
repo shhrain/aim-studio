@@ -44,14 +44,30 @@ function slotRule(s: SlotDefinition): string {
   return esc(parts.join('；'))
 }
 
-export function layoutsSummaryTable(): string {
+/**
+ * 版式总览表。
+ * @param options.compact 文档站使用：合并分组 / 分类，省略说明（说明在各版式小节中展示）
+ */
+export function layoutsSummaryTable(options: { compact?: boolean } = {}): string {
+  const category = (l: LayoutDefinition) => (l.category === 'service' ? '服务类' : '通知类')
+  if (options.compact)
+    return table(
+      ['版式', 'cardId', '分组 · 分类', '三信融合', '厂商数'],
+      LAYOUTS.map((l) => [
+        l.name,
+        code(l.id),
+        `${LAYOUT_GROUPS[l.group].label} · ${category(l)}`,
+        l.protocols.includes('rcs') ? '✓' : '',
+        String(l.vendors.length),
+      ]),
+    )
   return table(
     ['版式', 'cardId', '分组', '分类', '三信融合', '厂商数', '说明'],
     LAYOUTS.map((l) => [
       l.name,
       code(l.id),
       LAYOUT_GROUPS[l.group].label,
-      l.category === 'service' ? '服务类' : '通知类',
+      category(l),
       l.protocols.includes('rcs') ? '✓' : '',
       String(l.vendors.length),
       esc(l.description),
@@ -62,6 +78,8 @@ export function layoutsSummaryTable(): string {
 export function layoutDetail(l: LayoutDefinition): string {
   const lines = [
     `### ${l.name}`,
+    '',
+    esc(l.description),
     '',
     `- cardId：${code(l.id)}${l.aliases?.length ? `（兼容 ${l.aliases.map(code).join('、')}）` : ''}`,
     `- 分组：${LAYOUT_GROUPS[l.group].label} · ${l.category === 'service' ? '服务类' : '通知类'}`,

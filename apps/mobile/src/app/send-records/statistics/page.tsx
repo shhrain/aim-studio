@@ -2,8 +2,10 @@
 
 import { MESSAGE_TYPE_LABEL, type MessageType } from '@aim/api-client'
 import { VENDORS, type VendorId } from '@aim/template-schema'
-import { Empty, Skeleton } from '@aim/ui'
+import { Button, Empty, Skeleton } from '@aim/ui'
 import { CellGroup, Cell, NavBar } from '@aim/ui/mobile'
+import { BarChart3Icon } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AppTabBar } from '@/components/app-tabbar'
 import { hooks } from '@/lib/api'
@@ -61,7 +63,31 @@ export default function StatisticsPage() {
           <Skeleton className="h-44 rounded-xl" />
         </div>
       ) : !data || data.total === 0 ? (
-        <Empty title="暂无统计数据" description="完成一次测试发送后即可查看" />
+        <div className="space-y-3 py-3">
+          <div className="mx-3 grid grid-cols-3 gap-2">
+            {['发送总数', '成功', '失败'].map((label) => (
+              <div key={label} className="bg-card shadow-panel rounded-xl p-3 text-center">
+                <div className="text-muted-foreground/60 text-2xl font-semibold tabular-nums">
+                  0
+                </div>
+                <div className="text-muted-foreground text-xs">{label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="bg-card shadow-panel mx-3 rounded-xl">
+            <Empty
+              className="px-6"
+              icon={<BarChart3Icon />}
+              title="还没有发送数据"
+              description="挑选一个模板发送到手机，这里会展示成功率、消息形态与终端厂商分布"
+              action={
+                <Button size="sm" asChild>
+                  <Link href="/template-list">去发送体验</Link>
+                </Button>
+              }
+            />
+          </div>
+        </div>
       ) : (
         <div className="space-y-3 py-3">
           <div className="mx-3 grid grid-cols-3 gap-2">

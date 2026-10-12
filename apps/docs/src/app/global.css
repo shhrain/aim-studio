@@ -22,6 +22,15 @@ body {
   font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
 }
 
+/* 规范表格：表头与 ID 不折行，表格过宽时横向滚动 */
+.prose th {
+  white-space: nowrap;
+}
+.prose td > code {
+  white-space: nowrap;
+  font-size: 0.8em;
+}
+
 .demo-grid {
   background-image: radial-gradient(
     color-mix(in oklch, currentColor 10%, transparent) 1px,

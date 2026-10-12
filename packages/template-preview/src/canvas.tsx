@@ -43,13 +43,25 @@ export function buildFlowRows(elements: AnyElement[]): FlowRow[] {
   return rows
 }
 
+/** 浅色文字（#RGB / #RRGGBB，亮度 > 0.75） */
+function isLightColor(color: string | undefined): boolean {
+  const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color ?? '')
+  if (!m) return false
+  const hex = m[1]!.length === 3 ? [...m[1]!].map((c) => c + c).join('') : m[1]!
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+  return 0.299 * r! + 0.587 * g! + 0.114 * b! > 0.75
+}
+
 function ElementShell({
   el,
   style,
+  overlay,
   children,
 }: {
   el: AnyElement
   style: CSSProperties
+  /** 叠加在图片等元素上方 */
+  overlay?: boolean
   children: ReactNode
 }) {
   const { editor } = usePreview()
@@ -59,6 +71,9 @@ function ElementShell({
       className="aim-el"
       data-type={el.type}
       data-slot={el.slot}
+      data-overlay={
+        overlay && el.type === 'text' && isLightColor(el.style?.color) ? 'light' : undefined
+      }
       data-selectable={selectable || undefined}
       data-selected={editor?.selectedId === el.id || undefined}
       data-issue={editor?.issueIds?.has(el.id) || undefined}
@@ -168,6 +183,7 @@ export function CardCanvas({ page, className, footer }: CardCanvasProps) {
                 <ElementShell
                   key={el.id}
                   el={el}
+                  overlay
                   style={{
                     position: 'absolute',
                     left: u(el.x),

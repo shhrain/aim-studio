@@ -1,5 +1,12 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
+import { BookOpenIcon, PenToolIcon, SmartphoneIcon } from 'lucide-react'
 import { appName } from './shared'
+
+export const appUrls = {
+  editor: process.env.NEXT_PUBLIC_EDITOR_URL ?? 'http://localhost:3000',
+  mobile: process.env.NEXT_PUBLIC_MOBILE_URL ?? 'http://localhost:3001',
+  storybook: process.env.NEXT_PUBLIC_STORYBOOK_URL ?? 'http://localhost:6006',
+}
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -18,6 +25,30 @@ export function baseOptions(): BaseLayoutProps {
       { text: '模板规范', url: '/docs/spec/layouts' },
       { text: '预览 SDK', url: '/docs/sdk' },
       { text: 'llms.txt', url: '/llms.txt', external: true },
+      {
+        type: 'icon',
+        text: '模板编辑器',
+        label: '打开模板编辑器',
+        icon: <PenToolIcon />,
+        url: appUrls.editor,
+        external: true,
+      },
+      {
+        type: 'icon',
+        text: '移动端体验',
+        label: '打开移动端体验',
+        icon: <SmartphoneIcon />,
+        url: appUrls.mobile,
+        external: true,
+      },
+      {
+        type: 'icon',
+        text: '组件库 Storybook',
+        label: '打开 Storybook',
+        icon: <BookOpenIcon />,
+        url: appUrls.storybook,
+        external: true,
+      },
     ],
   }
 }

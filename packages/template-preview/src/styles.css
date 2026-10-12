@@ -124,6 +124,18 @@
   border-radius: 50%;
   background: var(--aim-danger);
 }
+/* 图片上的浅色文字：底部渐变遮罩 + 轻投影，保证任意图片上可读 */
+.aim-el[data-overlay='light']::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--u) * -28) calc(var(--u) * -14) calc(var(--u) * -8);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  pointer-events: none;
+  z-index: -1;
+}
+.aim-el[data-overlay='light'] .aim-text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
 .aim-thumbnail .aim-el,
 .aim-thumbnail .aim-el * {
   pointer-events: none !important;
@@ -1126,14 +1138,27 @@
 }
 .aim-multi-footer {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--aim-line);
   font-size: 12px;
   color: var(--aim-text-2);
 }
+.aim-multi-footer-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.aim-multi-footer-text span {
+  color: var(--aim-text);
+  font-weight: 500;
+}
 .aim-multi-footer small {
   color: var(--aim-text-3);
+  font-size: 11px;
 }
 .aim-tabs {
   display: inline-flex;

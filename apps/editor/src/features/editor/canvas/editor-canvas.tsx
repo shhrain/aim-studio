@@ -4,18 +4,48 @@ import { updateElement } from '@aim/template-core'
 import { TemplatePreview, type EditorBridge } from '@aim/template-preview'
 import { VENDORS, getLayout, type AnyElement } from '@aim/template-schema'
 import { Button, Hint, Segmented, cn } from '@aim/ui'
-import { MinusIcon, PlusIcon, Redo2Icon, Undo2Icon } from 'lucide-react'
-import { useMemo } from 'react'
+import { MinusIcon, PlusIcon, Redo2Icon, ScanIcon, Undo2Icon } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useStore } from 'zustand'
 import { redo, undo, useEditor } from '../store'
 import { FreeHandles } from './free-handles'
 
 const BASE_WIDTH = 400
+/** 手机外壳宽高比（与 @aim/template-preview 的 .aim-phone 一致） */
+const PHONE_RATIO = 620 / 300
+/** 画布上下留白：工具栏 + 底部提示 */
+const CANVAS_CHROME = 64 + 40 + 28
+const MIN_ZOOM = 0.6
+const MAX_ZOOM = 1.4
+
+/** 按可视高度计算适应缩放比例 */
+function useFitZoom(ready: boolean) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [fit, setFit] = useState(1)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => {
+      const h = entry!.contentRect.height
+      const z = (h - CANVAS_CHROME) / (BASE_WIDTH * PHONE_RATIO)
+      setFit(Math.min(1, Math.max(MIN_ZOOM, Math.floor(z * 100) / 100)))
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [ready])
+  return [ref, fit] as const
+}
 
 export function EditorCanvas() {
   const doc = useEditor((s) => s.doc)
   const vendor = useEditor((s) => s.vendor)
-  const zoom = useEditor((s) => s.zoom)
+  const zoomSetting = useEditor((s) => s.zoom)
+  const [scrollerRef, fitZoom] = useFitZoom(Boolean(doc))
+  const zoom = zoomSetting === 'fit' ? fitZoom : zoomSetting
+  const step = (d: number) =>
+    useEditor.getState().set({
+      zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.round((zoom + d) * 10) / 10)),
+    })
   const paramDisplay = useEditor((s) => s.paramDisplay)
   const selectedId = useEditor((s) => s.selectedId)
   const editingId = useEditor((s) => s.editingId)
@@ -30,7 +60,7 @@ export function EditorCanvas() {
     () =>
       new Set(
         (report?.issues ?? [])
-          .filter((i) => i.elementId && i.level !== 'info')
+          .filter((i) => i.elementId && i.level === 'error')
           .map((i) => i.elementId!),
       ),
     [report],
@@ -107,8 +137,8 @@ export function EditorCanvas() {
           size="icon-xs"
           variant="ghost"
           aria-label="缩小"
-          disabled={zoom <= 0.7}
-          onClick={() => set({ zoom: Math.round((zoom - 0.1) * 10) / 10 })}
+          disabled={zoom <= MIN_ZOOM}
+          onClick={() => step(-0.1)}
         >
           <MinusIcon />
         </Button>
@@ -117,11 +147,22 @@ export function EditorCanvas() {
           size="icon-xs"
           variant="ghost"
           aria-label="放大"
-          disabled={zoom >= 1.4}
-          onClick={() => set({ zoom: Math.round((zoom + 0.1) * 10) / 10 })}
+          disabled={zoom >= MAX_ZOOM}
+          onClick={() => step(0.1)}
         >
           <PlusIcon />
         </Button>
+        <Hint content="适应窗口">
+          <Button
+            size="icon-xs"
+            variant={zoomSetting === 'fit' ? 'secondary' : 'ghost'}
+            aria-label="适应窗口"
+            aria-pressed={zoomSetting === 'fit'}
+            onClick={() => set({ zoom: 'fit' })}
+          >
+            <ScanIcon />
+          </Button>
+        </Hint>
         <div className="bg-border mx-1 h-5 w-px" />
         <Hint content="撤销 Ctrl+Z">
           <Button
@@ -153,6 +194,7 @@ export function EditorCanvas() {
         </div>
       )}
       <div
+        ref={scrollerRef}
         className="canvas-grid flex min-h-0 flex-1 items-start justify-center overflow-auto px-10 pt-16 pb-10"
         onClick={() => select(null)}
       >

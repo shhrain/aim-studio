@@ -46,16 +46,21 @@ function QrFooter({
       alive = false
     }
   }, [vendor, qrcode])
-  if (!url) return <div className="aim-skeleton" style={{ width: 96, height: 96 }} />
   return (
     <div className="aim-multi-footer">
-      <QRCodeSVG value={url} size={96} marginSize={1} />
-      {tip ?? (
-        <>
-          <span>打开微信 / 相机，扫码预览</span>
-          <small>（二维码 30 分钟内有效）</small>
-        </>
+      {url ? (
+        <QRCodeSVG value={url} size={64} marginSize={1} />
+      ) : (
+        <div className="aim-skeleton" style={{ width: 64, height: 64 }} />
       )}
+      <div className="aim-multi-footer-text">
+        {tip ?? (
+          <>
+            <span>扫码真机预览</span>
+            <small>微信 / 相机扫一扫</small>
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
+import { zhCN } from '@/lib/zh-cn'
 import './global.css'
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <RootProvider>{children}</RootProvider>
+        <RootProvider i18n={{ locale: 'zh-CN', translations: zhCN }}>{children}</RootProvider>
       </body>
     </html>
   )

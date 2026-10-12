@@ -19,7 +19,9 @@ export function LayoutsPanel({ onSwitch }: { onSwitch: () => void }) {
         <div className="space-y-1.5 border-t p-3">
           <div className="flex items-center gap-1.5">
             <span className="font-medium">{layout?.name}</span>
-            {layout && <Badge variant="outline">{LAYOUT_GROUPS[layout.group].label}</Badge>}
+            {layout && LAYOUT_GROUPS[layout.group].label !== layout.name && (
+              <Badge variant="outline">{LAYOUT_GROUPS[layout.group].label}</Badge>
+            )}
             {layout?.protocols.includes('rcs') && <Badge variant="success">三信融合</Badge>}
           </div>
           <p className="text-muted-foreground text-xs">{layout?.description}</p>

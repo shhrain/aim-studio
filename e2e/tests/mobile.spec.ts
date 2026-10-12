@@ -50,7 +50,7 @@ test.describe('移动端体验', () => {
   test('能力查询', async ({ page }) => {
     await login(page)
     await page.goto('/ability-query')
-    await page.getByPlaceholder(/输入手机号/).fill('13800138000,13912345678')
+    await page.getByPlaceholder('输入要查询的手机号').fill('13800138000,13912345678')
     await page.getByRole('button', { name: '立即查询' }).click()
     await expect(page.locator('li', { hasText: '13912345678' })).toBeVisible()
   })

@@ -356,6 +356,7 @@
   height: 100%;
   overflow: hidden;
   touch-action: pan-y;
+  user-select: none;
 }
 .aim-swiper-track {
   display: flex;
@@ -393,11 +394,26 @@
   gap: calc(var(--u) * 12);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: calc(var(--u) * 14);
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
   padding: 0 calc(var(--u) * 14) calc(var(--u) * 4);
 }
 .aim-hscroll::-webkit-scrollbar {
   display: none;
+}
+/* 桌面端：可拖拽提示，拖拽中禁止选中文字 */
+@media (hover: hover) and (pointer: fine) {
+  .aim-root [data-drag-scroll] {
+    cursor: grab;
+  }
+}
+.aim-root [data-dragging] {
+  cursor: grabbing;
+  user-select: none;
+}
+.aim-root [data-dragging] * {
+  pointer-events: none;
 }
 .aim-slide-card {
   flex: 0 0 calc(var(--u) * 210);
@@ -1030,6 +1046,7 @@
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
 }
 .aim-rcs-cards::-webkit-scrollbar {
   display: none;

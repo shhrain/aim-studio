@@ -2,7 +2,7 @@
 
 import type { TemplateElement } from '@aim/template-schema'
 import { useState } from 'react'
-import { u, useAct, useResolver } from '../hooks'
+import { dragScrollRef, u, useAct, useResolver } from '../hooks'
 import { renderTextPlain } from '../params'
 
 function Field({ label, children }: { label?: string; children: React.ReactNode }) {
@@ -163,7 +163,7 @@ export function ImgSelectView({ el }: { el: TemplateElement<'imgSelect'> }) {
   const act = useAct()
   const [active, setActive] = useState(el.props.activeIndex)
   return (
-    <div className="aim-hscroll">
+    <div className="aim-hscroll" ref={dragScrollRef}>
       {el.props.options.map((o, i) => (
         <div
           key={i}

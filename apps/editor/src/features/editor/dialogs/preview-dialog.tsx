@@ -58,7 +58,7 @@ export function PreviewDialog() {
             多厂商真机效果；扫描二维码在手机上预览（30 分钟内有效）。
           </DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue="vendors" className="min-h-0">
+        <Tabs defaultValue="vendors" className="flex min-h-0 flex-col">
           <TabsList>
             <TabsTrigger value="vendors">多厂商</TabsTrigger>
             <TabsTrigger value="integrated" disabled={!integrated}>
@@ -67,7 +67,7 @@ export function PreviewDialog() {
             <TabsTrigger value="interact">交互体验</TabsTrigger>
             <TabsTrigger value="json">数据</TabsTrigger>
           </TabsList>
-          <DialogBody className="mt-3 h-full">
+          <DialogBody className="mt-3 min-h-0 flex-1">
             <TabsContent value="vendors">
               <MultiVendorPreview
                 document={doc}

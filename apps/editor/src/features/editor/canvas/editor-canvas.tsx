@@ -3,7 +3,7 @@
 import { updateElement } from '@aim/template-core'
 import { TemplatePreview, type EditorBridge } from '@aim/template-preview'
 import { VENDORS, getLayout, type AnyElement } from '@aim/template-schema'
-import { Button, Hint, Segmented, cn } from '@aim/ui'
+import { Button, Hint, ScrollRow, Segmented, cn } from '@aim/ui'
 import { MinusIcon, PlusIcon, Redo2Icon, ScanIcon, Undo2Icon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useStore } from 'zustand'
@@ -13,8 +13,8 @@ import { FreeHandles } from './free-handles'
 const BASE_WIDTH = 400
 /** 手机外壳宽高比（与 @aim/template-preview 的 .aim-phone 一致） */
 const PHONE_RATIO = 620 / 300
-/** 画布上下留白：工具栏 + 底部提示 */
-const CANVAS_CHROME = 64 + 40 + 28
+/** 画布滚动区上下留白 + 底部提示 */
+const CANVAS_CHROME = 20 + 40 + 28
 const MIN_ZOOM = 0.6
 const MAX_ZOOM = 1.4
 
@@ -91,9 +91,14 @@ export function EditorCanvas() {
   const vendors = layout?.vendors ?? doc.vendors
 
   return (
-    <div className="relative flex min-w-0 flex-1 flex-col">
-      <div className="bg-card/95 shadow-panel absolute top-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-xl border p-1 backdrop-blur">
-        <div className="flex items-center gap-0.5 px-1" role="radiogroup" aria-label="预览厂商">
+    <div className="canvas-grid @container/canvas relative flex min-w-0 flex-1 flex-col">
+      <div className="bg-card/95 shadow-panel z-10 mx-3 mt-3 flex max-w-[calc(100%-1.5rem)] flex-wrap items-center justify-center gap-1 self-center rounded-xl border p-1 backdrop-blur *:shrink-0">
+        <ScrollRow
+          wrapperClassName="min-w-28 max-w-full !shrink"
+          className="items-center gap-0.5 px-1"
+          role="radiogroup"
+          aria-label="预览厂商"
+        >
           {vendors.map((v) => (
             <Hint
               key={v}
@@ -120,8 +125,8 @@ export function EditorCanvas() {
               </button>
             </Hint>
           ))}
-        </div>
-        <div className="bg-border mx-1 h-5 w-px" />
+        </ScrollRow>
+        <div className="bg-border mx-1 h-5 w-px @max-[34rem]/canvas:hidden" />
         <Segmented
           size="sm"
           value={paramDisplay}
@@ -132,7 +137,7 @@ export function EditorCanvas() {
           ]}
           aria-label="参数显示"
         />
-        <div className="bg-border mx-1 h-5 w-px" />
+        <div className="bg-border mx-1 h-5 w-px @max-[34rem]/canvas:hidden" />
         <Button
           size="icon-xs"
           variant="ghost"
@@ -163,7 +168,7 @@ export function EditorCanvas() {
             <ScanIcon />
           </Button>
         </Hint>
-        <div className="bg-border mx-1 h-5 w-px" />
+        <div className="bg-border mx-1 h-5 w-px @max-[34rem]/canvas:hidden" />
         <Hint content="撤销 Ctrl+Z">
           <Button
             size="icon-xs"
@@ -189,13 +194,13 @@ export function EditorCanvas() {
       </div>
 
       {doc.meta.status === 'reviewing' && (
-        <div className="border-info/30 bg-info/10 text-info absolute top-14 left-1/2 z-10 -translate-x-1/2 rounded-lg border px-3 py-1.5 text-xs">
+        <div className="border-info/30 bg-info/10 text-info mx-3 mt-2 self-center rounded-lg border px-3 py-1.5 text-xs">
           模板审核中，当前为只读预览；审核完成后可继续编辑。
         </div>
       )}
       <div
         ref={scrollerRef}
-        className="canvas-grid flex min-h-0 flex-1 items-start justify-center overflow-auto px-10 pt-16 pb-10"
+        className="flex min-h-0 flex-1 items-start justify-center overflow-auto px-6 pt-5 pb-10"
         onClick={() => select(null)}
       >
         <div className="flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>

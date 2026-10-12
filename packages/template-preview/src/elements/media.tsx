@@ -3,7 +3,7 @@
 import type { AnyElement, LinkButton, TemplateElement } from '@aim/template-schema'
 import { useEffect, useRef, useState } from 'react'
 import { usePreview } from '../context'
-import { u, useAct, useResolver } from '../hooks'
+import { dragScrollRef, u, useAct, useResolver } from '../hooks'
 import { renderTextHtml, renderTextPlain } from '../params'
 import { lazy } from './basic'
 
@@ -13,10 +13,13 @@ export function SwiperView({ el }: { el: TemplateElement<'swiper'> }) {
   const items = el.props.items
   const [index, setIndex] = useState(0)
   const [playing, setPlaying] = useState<number | null>(null)
-  const startX = useRef<number | null>(null)
+  const drag = useRef<{ x: number; id: number; moved: boolean } | null>(null)
+  const swallowClick = useRef(false)
+  const wheelLock = useRef(0)
   const count = items.length
   const go = (i: number) =>
     setIndex(el.props.loop ? (i + count) % count : Math.max(0, Math.min(count - 1, i)))
+  const canGo = (dir: number) => el.props.loop || (dir > 0 ? index < count - 1 : index > 0)
 
   useEffect(() => {
     if (!el.props.autoplay || thumbnail || editor || count < 2 || playing != null) return
@@ -32,13 +35,39 @@ export function SwiperView({ el }: { el: TemplateElement<'swiper'> }) {
   return (
     <div
       className="aim-swiper"
+      data-drag-scroll={count > 1 && !thumbnail ? true : undefined}
       style={{ borderRadius: u(el.style?.borderRadius) }}
-      onTouchStart={(e) => (startX.current = e.touches[0]?.clientX ?? null)}
-      onTouchEnd={(e) => {
-        if (startX.current == null) return
-        const dx = (e.changedTouches[0]?.clientX ?? 0) - startX.current
+      onPointerDown={(e) => {
+        if (count < 2 || (e.pointerType === 'mouse' && e.button !== 0)) return
+        drag.current = { x: e.clientX, id: e.pointerId, moved: false }
+      }}
+      onPointerMove={(e) => {
+        if (drag.current?.id === e.pointerId && Math.abs(e.clientX - drag.current.x) > 6)
+          drag.current.moved = true
+      }}
+      onPointerUp={(e) => {
+        const d = drag.current
+        drag.current = null
+        if (!d || d.id !== e.pointerId || !d.moved) return
+        const dx = e.clientX - d.x
         if (Math.abs(dx) > 30) go(index + (dx < 0 ? 1 : -1))
-        startX.current = null
+        swallowClick.current = true
+      }}
+      onPointerCancel={() => (drag.current = null)}
+      onClickCapture={(e) => {
+        if (!swallowClick.current) return
+        swallowClick.current = false
+        e.stopPropagation()
+        e.preventDefault()
+      }}
+      onWheel={(e) => {
+        // 仅响应横向滚动（触控板 / Shift+滚轮），纵向滚轮留给页面
+        const delta = e.shiftKey ? e.deltaY : e.deltaX
+        if (Math.abs(delta) <= Math.abs(e.shiftKey ? e.deltaX : e.deltaY)) return
+        const dir = Math.sign(delta)
+        if (count < 2 || thumbnail || !dir || !canGo(dir) || Date.now() < wheelLock.current) return
+        wheelLock.current = Date.now() + 450
+        go(index + dir)
       }}
     >
       <div className="aim-swiper-track" style={{ transform: `translateX(-${index * 100}%)` }}>
@@ -138,7 +167,7 @@ export function SideslipView({ el }: { el: TemplateElement<'sideslip'> }) {
   const act = useAct()
   const [w, h] = el.props.ratio
   return (
-    <div className="aim-hscroll">
+    <div className="aim-hscroll" ref={dragScrollRef}>
       {el.props.cards.map((card, i) => (
         <div
           key={i}

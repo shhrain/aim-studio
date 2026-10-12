@@ -3,7 +3,7 @@
 import { MESSAGE_TYPE_LABEL, type SendRecord, type SendStatus } from '@aim/api-client'
 import { TemplatePreview } from '@aim/template-preview'
 import { VENDORS } from '@aim/template-schema'
-import { Badge, Button, Empty, Input, Skeleton, cn } from '@aim/ui'
+import { Badge, Button, Empty, Input, ScrollRow, Skeleton, cn } from '@aim/ui'
 import { BottomSheet, NavBar, PullRefresh } from '@aim/ui/mobile'
 import { formatDate } from '@aim/utils'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
@@ -64,7 +64,7 @@ export function RecordsView() {
           onChange={(e) => setKeyword(e.target.value.replace(/\D/g, ''))}
           className="bg-card"
         />
-        <div className="flex gap-2 overflow-x-auto">
+        <ScrollRow className="gap-2">
           {RANGES.map((r) => (
             <button
               key={r.key}
@@ -92,7 +92,7 @@ export function RecordsView() {
               {STATUS[s].label}
             </button>
           ))}
-        </div>
+        </ScrollRow>
       </div>
       <PullRefresh onRefresh={() => list.refetch()}>
         <div className="space-y-2.5 px-3 pb-4">

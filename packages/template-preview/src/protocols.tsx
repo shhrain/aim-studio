@@ -1,7 +1,7 @@
 'use client'
 
 import type { RcsSourceMaterial, RmsFrame } from '@aim/template-schema'
-import { u, useResolver } from './hooks'
+import { dragScrollRef, u, useResolver } from './hooks'
 import { lazy } from './elements/basic'
 import { renderTextHtml, renderTextPlain } from './params'
 
@@ -13,7 +13,7 @@ export function RcsView({ material }: { material: RcsSourceMaterial }) {
   return (
     <div className="aim-scope">
       <div className="aim-rcs">
-        <div className="aim-rcs-cards" data-multi={multi || undefined}>
+        <div className="aim-rcs-cards" data-multi={multi || undefined} ref={dragScrollRef}>
           {material.content.map((c, i) => {
             const buttons = c.buttons ?? (multi ? [] : sheet)
             const isVideo = c.media?.mtalType === 'video'

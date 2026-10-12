@@ -29,7 +29,7 @@ export default defineConfig({
   projects: [
     {
       name: 'editor',
-      testMatch: /(editor|visual)\.spec\.ts/,
+      testMatch: /(editor|visual|scroll)\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },

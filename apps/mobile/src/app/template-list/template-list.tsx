@@ -2,7 +2,7 @@
 
 import type { ExperienceTemplate, TemplateListQuery } from '@aim/api-client'
 import { TemplateThumbnail } from '@aim/template-preview'
-import { Badge, Button, Empty, Skeleton, cn } from '@aim/ui'
+import { Badge, Button, Empty, ScrollRow, Skeleton, cn } from '@aim/ui'
 import { BottomSheet, NavBar, PullRefresh } from '@aim/ui/mobile'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { FlameIcon, SlidersHorizontalIcon } from 'lucide-react'
@@ -80,7 +80,10 @@ export function TemplateList() {
           </button>
         }
       />
-      <div className="bg-muted/95 sticky top-[calc(44px+env(safe-area-inset-top))] z-20 flex scrollbar-none gap-2 overflow-x-auto px-3 py-2.5 backdrop-blur">
+      <ScrollRow
+        wrapperClassName="bg-muted/95 sticky top-[calc(44px+env(safe-area-inset-top))] z-20 backdrop-blur"
+        className="gap-2 px-3 py-2.5"
+      >
         {[{ id: 'all', name: '全部' }, ...(options.data?.industries ?? [])].map((i) => (
           <button
             key={i.id}
@@ -96,7 +99,7 @@ export function TemplateList() {
             {i.name}
           </button>
         ))}
-      </div>
+      </ScrollRow>
       <Link
         href="/ability-guide"
         className="bg-warning/15 text-warning-foreground mx-3 mb-2.5 flex items-center justify-between rounded-lg px-3 py-2 text-xs"

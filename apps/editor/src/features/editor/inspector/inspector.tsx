@@ -4,12 +4,43 @@ import { duplicateElement, removeElement, updateElement } from '@aim/template-co
 import { ELEMENT_META, expandSlots, getLayout, type ActionEvent } from '@aim/template-schema'
 import { Alert, Button, Hint, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from '@aim/ui'
 import { CopyIcon, Settings2Icon, Trash2Icon, XIcon } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import type { PrecheckIssue } from '@aim/template-core'
 import { useEditor, useSelectedElement } from '../store'
 import { AutoForm, setIn, type Path } from './auto-form'
 import { EventEditor } from './event-editor'
 import { StyleEditor } from './style-editor'
 import { TemplateSettings } from './template-settings'
+
+const ISSUE_PREVIEW = 2
+
+/** 选中元素的检测问题：默认显示前两条，其余折叠，避免挤占表单空间 */
+function IssueList({ issues }: { issues: PrecheckIssue[] }) {
+  const [expanded, setExpanded] = useState(false)
+  const shown = expanded ? issues : issues.slice(0, ISSUE_PREVIEW)
+  return (
+    <div className="max-h-[40%] shrink-0 space-y-1.5 overflow-y-auto border-b p-3">
+      {shown.map((i, idx) => (
+        <Alert
+          key={idx}
+          variant={i.level === 'error' ? 'destructive' : 'warning'}
+          className="py-2 text-xs"
+        >
+          {i.message}
+        </Alert>
+      ))}
+      {issues.length > ISSUE_PREVIEW && (
+        <button
+          type="button"
+          className="text-muted-foreground hover:text-foreground w-full text-center text-xs"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? '收起' : `还有 ${issues.length - ISSUE_PREVIEW} 个问题，展开查看`}
+        </button>
+      )}
+    </div>
+  )
+}
 
 export function Inspector() {
   const el = useSelectedElement()
@@ -82,20 +113,8 @@ export function Inspector() {
               <XIcon />
             </Button>
           </header>
-          {issues.length > 0 && (
-            <div className="space-y-1.5 border-b p-3">
-              {issues.map((i, idx) => (
-                <Alert
-                  key={idx}
-                  variant={i.level === 'error' ? 'destructive' : 'warning'}
-                  className="py-2 text-xs"
-                >
-                  {i.message}
-                </Alert>
-              ))}
-            </div>
-          )}
-          <Tabs defaultValue="content" className="min-h-0 flex-1 gap-0" key={el.id}>
+          {issues.length > 0 && <IssueList key={`issues-${el.id}`} issues={issues} />}
+          <Tabs defaultValue="content" className="min-h-0 flex-1 gap-0" key={`tabs-${el.id}`}>
             <TabsList variant="line" className="w-full justify-start gap-5 px-4">
               <TabsTrigger value="content">内容</TabsTrigger>
               <TabsTrigger value="style">样式</TabsTrigger>

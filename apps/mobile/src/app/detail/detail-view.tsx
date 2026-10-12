@@ -2,7 +2,7 @@
 
 import { TemplatePreview } from '@aim/template-preview'
 import { PROTOCOL_META, VENDORS, type Protocol, type VendorId } from '@aim/template-schema'
-import { Alert, Badge, Button, Empty, Segmented, Skeleton, cn } from '@aim/ui'
+import { Alert, Badge, Button, Empty, ScrollRow, Segmented, Skeleton, cn } from '@aim/ui'
 import { NavBar, SafePage } from '@aim/ui/mobile'
 import { SendIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -71,7 +71,7 @@ export function DetailView() {
             />
           </div>
           {protocol === 'aim' && (
-            <div className="flex scrollbar-none gap-2 overflow-x-auto px-4">
+            <ScrollRow className="gap-2 px-4">
               {data.factories.map((v) => (
                 <button
                   key={v}
@@ -85,7 +85,7 @@ export function DetailView() {
                   {VENDORS[v].name}
                 </button>
               ))}
-            </div>
+            </ScrollRow>
           )}
           <div className="px-4">
             <div className="shadow-panel overflow-hidden rounded-2xl">

@@ -828,6 +828,9 @@ importers:
       '@aim/tailwind-config':
         specifier: workspace:*
         version: link:../../tooling/tailwind-config
+      '@aim/utils':
+        specifier: workspace:*
+        version: link:../utils
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1

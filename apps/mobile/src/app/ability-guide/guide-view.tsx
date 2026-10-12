@@ -1,7 +1,7 @@
 'use client'
 
 import { VENDOR_LIST, type VendorId } from '@aim/template-schema'
-import { Alert, cn } from '@aim/ui'
+import { Alert, ScrollRow, cn } from '@aim/ui'
 import { NavBar } from '@aim/ui/mobile'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -18,7 +18,7 @@ export function GuideView() {
         title="阅信开启指引"
         onBack={() => (history.length > 1 ? router.back() : router.push('/'))}
       />
-      <div className="flex scrollbar-none gap-2 overflow-x-auto px-3 py-3">
+      <ScrollRow className="gap-2 px-3 py-3">
         {VENDOR_LIST.map((v) => (
           <button
             key={v.id}
@@ -33,7 +33,7 @@ export function GuideView() {
             {v.name}
           </button>
         ))}
-      </div>
+      </ScrollRow>
       <section className="bg-card shadow-panel mx-3 rounded-2xl p-4">
         <p className="text-muted-foreground text-xs">适用系统：{guide.system}</p>
         <ol className="mt-4 space-y-4">

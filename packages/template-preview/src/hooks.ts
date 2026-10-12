@@ -1,10 +1,15 @@
 'use client'
 
 import type { ActionEvent, AnyElement, ElementStyle } from '@aim/template-schema'
+import { enableDragScroll } from '@aim/utils'
 import { useMemo, type CSSProperties } from 'react'
 import { dispatchAction } from './actions'
 import { usePreview } from './context'
 import type { ParamResolver } from './params'
+
+/** 横向滚动容器的 ref：桌面端鼠标拖拽 / 滚轮横滑（React 19 ref 清理函数） */
+export const dragScrollRef = (node: HTMLElement | null) =>
+  node ? enableDragScroll(node) : undefined
 
 /** 画布单位：u(14) → calc(var(--u) * 14) */
 export const u = (n: number | undefined) =>

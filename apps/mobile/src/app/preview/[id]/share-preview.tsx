@@ -10,7 +10,7 @@ import {
   type TemplateDocument,
   type VendorId,
 } from '@aim/template-schema'
-import { Empty, Segmented, Spinner, cn } from '@aim/ui'
+import { Empty, ScrollRow, Segmented, Spinner, cn } from '@aim/ui'
 import { formatDate } from '@aim/utils'
 import { ClockIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -87,7 +87,7 @@ export function SharePreview({ id }: { id: string }) {
           />
         )}
         {protocol === 'aim' && (
-          <div className="mt-3 flex scrollbar-none gap-2 overflow-x-auto">
+          <ScrollRow wrapperClassName="mt-3" className="gap-2">
             {doc.vendors.map((v) => (
               <button
                 key={v}
@@ -101,7 +101,7 @@ export function SharePreview({ id }: { id: string }) {
                 {VENDORS[v as VendorId]?.name ?? v}
               </button>
             ))}
-          </div>
+          </ScrollRow>
         )}
       </header>
       <TemplatePreview

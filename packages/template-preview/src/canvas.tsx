@@ -191,7 +191,7 @@ export function CardCanvas({ page, className, footer }: CardCanvasProps) {
   return (
     <div className={`aim-scope ${className ?? ''}`}>
       <div
-        className={`aim-card${editor ? 'aim-editing' : ''}`}
+        className={editor ? 'aim-card aim-editing' : 'aim-card'}
         data-mode={page.mode}
         data-transparent={transparent || undefined}
         style={cardStyle}

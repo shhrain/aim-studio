@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import {
   MultiVendorPreview,
   TemplatePreview,
+  TemplateThumbnail,
   buildFlowRows,
   renderTextHtml,
   sanitizeRich,
@@ -47,6 +48,29 @@ describe('TemplatePreview', () => {
       const { unmount } = render(<TemplatePreview document={doc} mode={mode} />)
       unmount()
     }
+  })
+
+  it('缩略图不拦截点击，事件冒泡给外层卡片', () => {
+    let doc = createDocument({ layoutId: 'com.hbm.imageandtext' })
+    const btn = findBySlot(doc, 'button.0')!
+    doc = updateElement(doc, btn.id, { props: { text: '立即查看' } })
+    const onPick = vi.fn()
+    const { container } = render(
+      <div onClick={onPick}>
+        <TemplateThumbnail document={doc} />
+      </div>,
+    )
+    expect(container.querySelector('.aim-root.aim-thumbnail')).toBeTruthy()
+    fireEvent.click(screen.getByText('立即查看'))
+    expect(onPick).toHaveBeenCalledTimes(1)
+  })
+
+  it('编辑态卡片带 aim-editing 类名', () => {
+    const doc = createDocument({ layoutId: 'com.hbm.imageandtext' })
+    const { container } = render(
+      <TemplatePreview document={doc} mode="bare" editor={{ onSelect: () => {} }} />,
+    )
+    expect(container.querySelector('.aim-card.aim-editing')).toBeTruthy()
   })
 
   it('不支持的厂商显示提示', () => {

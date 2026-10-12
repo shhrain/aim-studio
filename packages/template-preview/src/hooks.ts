@@ -22,7 +22,7 @@ export function useResolver(): ParamResolver {
   )
 }
 
-/** 点击事件：编辑态只选中，不触发事件 */
+/** 点击事件：编辑态只选中；缩略图 / interactive="none" 不处理，交给外层容器 */
 export function useAct() {
   const ctx = usePreview()
   const resolver = useResolver()
@@ -30,7 +30,7 @@ export function useAct() {
     event: ActionEvent | undefined,
     opts: { element?: AnyElement; label?: string; image?: string; e?: React.MouseEvent } = {},
   ) => {
-    if (!event || ctx.editor) return
+    if (!event || ctx.editor || ctx.thumbnail || ctx.interactive === 'none') return
     opts.e?.stopPropagation()
     dispatchAction({ event, element: opts.element, label: opts.label }, ctx, resolver, opts.image)
   }

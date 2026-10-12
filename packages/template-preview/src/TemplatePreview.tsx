@@ -204,7 +204,9 @@ export function TemplatePreview(props: TemplatePreviewProps) {
 
   return (
     <div
-      className={`aim-root${mode === 'thumbnail' ? 'aim-thumbnail' : ''} ${className ?? ''}`}
+      className={['aim-root', mode === 'thumbnail' && 'aim-thumbnail', className]
+        .filter(Boolean)
+        .join(' ')}
       data-mode={mode}
       data-vendor={theme.id}
       data-protocol={protocol}

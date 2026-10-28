@@ -1,6 +1,6 @@
 {
   "name": "@aim/tailwind-config",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "AIM 设计令牌（Tailwind v4 @theme）与共享 PostCSS 配置",
   "type": "module",
   "exports": {

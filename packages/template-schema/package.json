@@ -1,6 +1,6 @@
 {
   "name": "@aim/template-schema",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "5G 阅信模板协议：类型、Zod Schema、版式目录、槽位与字数限制、点击事件、参数语法、厂商矩阵",
   "type": "module",
   "sideEffects": false,

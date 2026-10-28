@@ -1,6 +1,6 @@
 {
   "name": "@aim/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "AIM 企业级 UI 组件库（shadcn/ui + Radix + Tailwind v4），PC 与移动端共用设计 token",
   "type": "module",
   "sideEffects": [

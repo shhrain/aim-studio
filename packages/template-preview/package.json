@@ -1,6 +1,6 @@
 {
   "name": "@aim/template-preview",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "5G 阅信模板预览 SDK：React 渲染器、多厂商手机壳、AIM/RCS/RMS 三协议、移动端自适应、iframe 嵌入与 Web Component",
   "type": "module",
   "sideEffects": [

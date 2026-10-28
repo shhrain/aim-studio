@@ -4,11 +4,11 @@
   "description": "AIM Studio — 5G 阅信模板平台 Monorepo（模板编辑器 / 移动端体验 / 模板预览 SDK / 文档）",
   "packageManager": "pnpm@9.15.7",
   "engines": {
-    "node": ">=20.9.0"
+    "node": ">=24"
   },
   "scripts": {
     "dev": "turbo run dev",
-    "dev:editor": "turbo run dev --filter=@aim/editor...",
+    "dev:editor": "turbo run dev --filter=@aim/web...",
     "dev:mobile": "turbo run dev --filter=@aim/mobile...",
     "dev:docs": "turbo run dev --filter=@aim/docs",
     "storybook": "turbo run storybook --filter=@aim/storybook",
@@ -29,7 +29,14 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build --filter=./packages/* && changeset publish",
-    "clean": "turbo run clean && rimraf node_modules"
+    "deploy": "bash deploy/deploy.sh",
+    "deploy:verify": "pnpm --filter @aim/e2e verify:deploy",
+    "clean": "turbo run clean && rimraf node_modules",
+    "dev:web": "turbo run dev --filter=@aim/web...",
+    "dev:api": "pnpm --filter @aim/api dev",
+    "db:generate": "pnpm --filter @aim/db generate",
+    "db:migrate": "pnpm --filter @aim/db migrate",
+    "db:seed": "pnpm --filter @aim/api seed"
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",

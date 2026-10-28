@@ -29,6 +29,7 @@
     "@aim/tsconfig": "workspace:*",
     "@aim/vitest-config": "workspace:*",
     "eslint": "catalog:",
+    "jsdom": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

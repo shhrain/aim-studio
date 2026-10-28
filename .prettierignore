@@ -5,6 +5,10 @@ dist
 .turbo
 storybook-static
 coverage
+.cache
+**/test-results
+**/playwright-report
+apps/docs/public/typedoc
 **/public/mockServiceWorker.js
 packages/template-core/test/reference
 scripts/templates

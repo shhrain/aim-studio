@@ -14,6 +14,8 @@ export function createVitestConfig(options = {}) {
     plugins: options.react ? [react()] : [],
     test: {
       environment,
+      pool: 'threads',
+      maxWorkers: 2,
       globals: false,
       include: ['src/**/*.test.{ts,tsx}', 'test/**/*.test.{ts,tsx}'],
       setupFiles: [...(environment === 'jsdom' ? [setupDom] : []), ...(options.setupFiles ?? [])],

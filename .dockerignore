@@ -1,0 +1,35 @@
+# 依赖与构建产物（镜像内重新安装 / 构建）
+node_modules
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+**/.source
+**/storybook-static
+**/coverage
+**/*.tsbuildinfo
+
+# 测试、脚手架与本地产物（镜像内不需要）
+e2e
+.changeset
+plopfile.*
+plop-templates
+scripts
+
+# 版本控制、编辑器、日志
+.git
+.github
+.vscode
+.idea
+.cursor
+*.log
+
+# 部署本地配置（含主机地址等，不进入镜像）
+deploy/.env
+**/.env*.local
+
+.cache
+data
+deploy/backups
+.env
+apps/api/test

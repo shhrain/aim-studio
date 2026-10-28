@@ -9,12 +9,16 @@
     "e2e:update": "playwright test --update-snapshots",
     "e2e:report": "playwright show-report",
     "shots": "node scripts/shots.mjs",
+    "verify:deploy": "tsx scripts/verify-deploy.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@aim/tsconfig": "workspace:*",
     "@playwright/test": "catalog:",
     "@types/node": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@aim/template-core": "workspace:*",
+    "@aim/template-schema": "workspace:*",
+    "tsx": "catalog:"
   }
 }

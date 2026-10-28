@@ -50,7 +50,9 @@
     "radix-ui": "catalog:",
     "sonner": "catalog:",
     "tailwind-merge": "catalog:",
-    "vaul": "catalog:"
+    "vaul": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:"
   },
   "peerDependencies": {
     "react": "^19.0.0",

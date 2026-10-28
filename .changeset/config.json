@@ -8,5 +8,5 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "privatePackages": { "version": false, "tag": false },
-  "ignore": ["@aim/editor", "@aim/mobile", "@aim/docs", "@aim/storybook", "@aim/e2e"]
+  "ignore": ["@aim/web", "@aim/api", "@aim/mobile", "@aim/docs", "@aim/storybook", "@aim/e2e"]
 }

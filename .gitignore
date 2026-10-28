@@ -13,8 +13,17 @@ blob-report
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+deploy/.env
 .DS_Store
 *.log
 .vercel
 .idea
 e2e/shots
+
+# 平台运行时数据
+.cache/
+data/
+deploy/backups/
+.env
+
+apps/docs/public/typedoc/

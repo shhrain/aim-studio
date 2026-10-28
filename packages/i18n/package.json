@@ -1,0 +1,27 @@
+{
+  "name": "@aim/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "catalog:",
+    "tsx": "catalog:",
+    "tsup": "catalog:",
+    "eslint": "catalog:",
+    "vitest": "catalog:",
+    "@types/node": "catalog:",
+    "@aim/tsconfig": "workspace:*",
+    "@aim/eslint-config": "workspace:*",
+    "@aim/vitest-config": "workspace:*"
+  }
+}

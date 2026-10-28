@@ -25,6 +25,13 @@ export function precheck(doc: TemplateDocument, options: { only?: string[] } = {
       })
     }
   }
+  for (const issue of issues) {
+    issue.messageKey ??= issue.code
+    issue.messageParams ??= {
+      ...(issue.slot ? { slot: issue.slot } : {}),
+      ...(issue.target ? { target: issue.target } : {}),
+    }
+  }
   const errors = issues.filter((i) => i.level === 'error')
   const warnings = issues.filter((i) => i.level === 'warning')
   const infos = issues.filter((i) => i.level === 'info')

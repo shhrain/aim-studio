@@ -52,6 +52,14 @@ export interface ExperienceTemplate {
   integrated: boolean
   hot?: number
   document: TemplateDocument
+  /** 已发布版本的转换快照，包含服务端审核图与 RCS 替代链接。 */
+  conversion?: IntegratedResult | null
+}
+
+/** 审核/发送时的不可变渲染快照；预览不能重新读取当前草稿。 */
+export interface TemplateSnapshot {
+  document: TemplateDocument
+  conversion: IntegratedResult | null
 }
 
 /** 1=AIM 阅信 2=RCS 5G消息 3=RMS 视频短信 */
@@ -89,6 +97,7 @@ export interface SendExperienceBody {
 export type SendStatus = 'SENDING' | 'SUCCESS' | 'FAILED'
 
 export interface SendRecord {
+  mode?: 'simulated' | 'disabled' | 'live'
   id: string
   requestId: string
   tplId: string
@@ -189,6 +198,8 @@ export interface TemplateQuery {
 }
 
 export interface SubmitTemplateBody {
+  /** 三信转换缺失动作的替代链接，以稳定元素 ID 为键。 */
+  rcsFallbacks?: Record<string, string>
   document: TemplateDocument
   integrated?: IntegratedResult | null
   /** 提交前快速预检结果（服务端复核） */

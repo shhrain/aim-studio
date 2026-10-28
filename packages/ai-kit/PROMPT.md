@@ -27,7 +27,8 @@
 ## 3. 仓库结构与依赖方向
 
 ```
-apps/editor    Next.js 模板编辑器（PC）       apps/mobile   Next.js 体验 H5
+apps/web       Next.js 主站与模板创作         apps/mobile   Next.js 体验 H5
+apps/api       Hono 服务端与任务进程
 apps/docs      Fumadocs 文档                  apps/storybook 组件与预览矩阵
 packages/template-schema  协议：类型 / Zod / 版式目录 / 事件 / 厂商（纯数据）
 packages/template-core    内核：文档操作 / 蓝图 / 预检 / 三信融合转换 / 旧数据适配（纯函数）
@@ -174,16 +175,16 @@ interface Element {
 
 ## 8. 厂商
 
-| vendor | 厂商 | 旧 factoryType | 审核时效 | 支持版式数 |
-| --- | --- | --- | --- | --- |
-| `huawei` | 华为 | 1 | 加急 1-2 小时，常规上/下午集中审核 | 34 |
-| `honor` | 荣耀 | 7 | 免审 | 34 |
-| `xiaomi` | 小米 | 2 | 免审 | 26 |
-| `vivo` | vivo | 4 | 免审 | 26 |
-| `oppo` | OPPO | 3 | 免审 | 26 |
-| `samsung` | 三星 | 6 | 1 个工作日 | 8 |
-| `asus` | 华硕 | 5 | 1 个工作日 | 8 |
-| `coolpad` | 酷派 | 8 | 1 个工作日 | 0 |
+| vendor | 厂商 | 旧 factoryType | 支持版式数 |
+| --- | --- | --- | --- |
+| `huawei` | 华为 | 1 | 34 |
+| `honor` | 荣耀 | 7 | 34 |
+| `xiaomi` | 小米 | 2 | 26 |
+| `vivo` | vivo | 4 | 26 |
+| `oppo` | OPPO | 3 | 26 |
+| `samsung` | 三星 | 6 | 8 |
+| `asus` | 华硕 | 5 | 8 |
+| `coolpad` | 酷派 | 8 | 0 |
 
 ## 9. 参数类型
 

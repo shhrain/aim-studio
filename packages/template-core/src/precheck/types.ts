@@ -5,6 +5,9 @@ export interface PrecheckIssue {
   code: string
   level: IssueLevel
   message: string
+  /** 可翻译的稳定消息键，旧宿主仍可使用 message。 */
+  messageKey?: string
+  messageParams?: Record<string, string | number>
   /** 关联元素（用于点击定位） */
   elementId?: string
   slot?: string

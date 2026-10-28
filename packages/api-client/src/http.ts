@@ -74,6 +74,8 @@ export interface HttpClientOptions {
 }
 
 export interface RequestOptions {
+  /** 单次请求头，例如幂等键。 */
+  headers?: Record<string, string>
   query?: Record<string, string | number | boolean | undefined | null>
   body?: unknown
   signal?: AbortSignal
@@ -107,15 +109,26 @@ export function createHttpClient(options: HttpClientOptions = {}) {
     const timer = setTimeout(() => controller.abort(), timeout)
     opts.signal?.addEventListener('abort', () => controller.abort())
     const token = options.getToken?.()
-    const headers: Record<string, string> = { Accept: 'application/json', ...options.headers }
-    if (opts.body !== undefined) headers['Content-Type'] = 'application/json'
+    const headers: Record<string, string> = {
+      Accept: 'application/json',
+      ...options.headers,
+      ...opts.headers,
+    }
+    const multipart = typeof FormData !== 'undefined' && opts.body instanceof FormData
+    if (opts.body !== undefined && !multipart) headers['Content-Type'] = 'application/json'
     if (token) headers.AuthorizationCode = token
     let res: Response
     try {
       res = await doFetch(buildUrl(path, opts.query), {
         method,
         headers,
-        body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+        credentials: 'include',
+        cache: 'no-store',
+        body: multipart
+          ? (opts.body as FormData)
+          : opts.body === undefined
+            ? undefined
+            : JSON.stringify(opts.body),
         signal: controller.signal,
       })
     } catch (err) {
@@ -149,7 +162,7 @@ export function createHttpClient(options: HttpClientOptions = {}) {
         opts,
       )
     }
-    if (json.subCode !== SUB_CODE.OK)
+    if (!res.ok || json.subCode !== SUB_CODE.OK)
       throw fail(new ApiError(json.subCode, json.message, path, res.status), opts)
     return (opts.raw ? json : json.data) as T
   }

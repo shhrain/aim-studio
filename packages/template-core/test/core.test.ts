@@ -37,6 +37,10 @@ describe('版式蓝图', () => {
     const doc = createDocument({ layoutId: id, name: '测试模板' })
     const parsed = parseTemplateDocument(doc)
     if (!parsed.success) throw new Error(JSON.stringify(parsed.error.issues.slice(0, 3)))
+    const before = JSON.stringify(doc)
+    expect(() => precheck(doc)).not.toThrow()
+    expect(() => convertDocument(doc)).not.toThrow()
+    expect(JSON.stringify(doc)).toBe(before)
     const layout = requireLayout(id)
     if (!layout.free) {
       const slotKeys = new Set(doc.pages[0]!.elements.map((e) => e.slot))

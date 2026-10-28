@@ -1,4 +1,11 @@
-import { createDocument, findBySlot, syncParams, updateElement } from '@aim/template-core'
+import {
+  createDocument,
+  findBySlot,
+  syncParams,
+  updateElement,
+  convertDocument,
+  applyCapturedImage,
+} from '@aim/template-core'
 import { LAYOUTS, VENDOR_IDS } from '@aim/template-schema'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
@@ -35,6 +42,25 @@ describe('sanitizeRich', () => {
 })
 
 describe('TemplatePreview', () => {
+  it('已审核的红包预览使用转换快照中的审核图片', () => {
+    const doc = createDocument({ layoutId: 'com.hbm.redpacket' })
+    const conversion = applyCapturedImage(convertDocument(doc)!, {
+      rcsSrc: '/api/v1/files/captured',
+      rmsSrc: '/api/v1/files/captured',
+    })
+    const { container, rerender } = render(
+      <TemplatePreview document={doc} protocol="rcs" conversion={conversion} />,
+    )
+    expect(container.querySelector('.aim-rcs-media')).toHaveAttribute(
+      'src',
+      '/api/v1/files/captured',
+    )
+    rerender(<TemplatePreview document={doc} protocol="rms" conversion={conversion} />)
+    expect(container.querySelector('.aim-rms-frame img')).toHaveAttribute(
+      'src',
+      '/api/v1/files/captured',
+    )
+  })
   it.each(LAYOUTS.map((l) => [l.name, l.id]))('%s 在全部厂商与模式下可渲染', (_n, id) => {
     const doc = createDocument({ layoutId: id, name: 'T' })
     for (const vendor of VENDOR_IDS) {

@@ -70,7 +70,17 @@ export function buildSpecDocs(): Record<string, string> {
   const vendors = page(
     '厂商',
     '8 个手机厂商与各版式的支持矩阵。',
-    ['## 厂商', '', vendorsTable(), '', '## 支持矩阵', '', vendorMatrix()].join('\n'),
+    [
+      '平台本期仅提供内部审核；厂商目录表示模板兼容范围，不代表已接入厂商审核或承诺审核时效。',
+      '',
+      '## 厂商',
+      '',
+      vendorsTable(),
+      '',
+      '## 支持矩阵',
+      '',
+      vendorMatrix(),
+    ].join('\n'),
     'Smartphone',
   )
   const params = page(

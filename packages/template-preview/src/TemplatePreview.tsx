@@ -6,6 +6,7 @@ import {
   VENDORS,
   getLayout,
   type Protocol,
+  type IntegratedResult,
   type TemplateDocument,
   type VendorId,
 } from '@aim/template-schema'
@@ -36,6 +37,8 @@ export interface LegacyTemplateInput {
 export interface TemplatePreviewProps {
   /** 模板文档（新协议） */
   document?: TemplateDocument | null
+  /** 已审核版本的服务端转换快照；未提供时按当前文档实时转换。 */
+  conversion?: IntegratedResult | null
   /** 旧编辑器 pages（自动适配为新协议） */
   legacy?: LegacyTemplateInput
   /** 预览协议：aim（安卓阅信）/ rcs（苹果 5G 消息）/ rms（其他终端彩信） */
@@ -128,8 +131,8 @@ export function TemplatePreview(props: TemplatePreviewProps) {
   const theme = getVendorTheme(vendor)
   const { api, layer } = useFeedback()
   const integrated = useMemo(
-    () => (doc && protocol !== 'aim' ? convertDocument(doc) : null),
-    [doc, protocol],
+    () => (doc && protocol !== 'aim' ? (props.conversion ?? convertDocument(doc)) : null),
+    [doc, protocol, props.conversion],
   )
 
   const ctx: PreviewContextValue = useMemo(

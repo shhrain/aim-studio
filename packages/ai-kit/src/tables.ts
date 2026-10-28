@@ -156,12 +156,11 @@ export function actionsTable(): string {
 
 export function vendorsTable(): string {
   return table(
-    ['vendor', '厂商', '旧 factoryType', '审核时效', '支持版式数'],
+    ['vendor', '厂商', '旧 factoryType', '支持版式数'],
     VENDOR_LIST.map((v) => [
       code(v.id),
       v.name,
       String(v.legacyFactoryType),
-      v.reviewTime,
       String(LAYOUTS.filter((l) => l.vendors.includes(v.id)).length),
     ]),
   )

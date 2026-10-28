@@ -48,23 +48,23 @@ export const queryKeys = {
 
 /* ------------------------------ 编辑器 ------------------------------ */
 
-export function createEditorHooks(api: EditorApi) {
+export function createEditorHooks(api: EditorApi, scope: () => string = () => '') {
   return {
     useTemplates: (q: TemplateQuery) =>
       useQuery({
-        queryKey: queryKeys.editor.templates(q),
+        queryKey: [...queryKeys.editor.templates(q), scope()],
         queryFn: () => api.templates(q),
         placeholderData: keepPreviousData,
       }),
     useTemplate: (id: string | undefined) =>
       useQuery({
-        queryKey: queryKeys.editor.template(id ?? ''),
+        queryKey: [...queryKeys.editor.template(id ?? ''), scope()],
         queryFn: () => api.template(id!),
         enabled: Boolean(id),
       }),
     useMaterials: (type?: 'image' | 'video' | 'audio', keyword?: string) =>
       useQuery({
-        queryKey: queryKeys.editor.materials(type, keyword),
+        queryKey: [...queryKeys.editor.materials(type, keyword), scope()],
         queryFn: () => api.materials({ type, keyword }),
       }),
     useSaveTemplate: () => {
@@ -73,7 +73,7 @@ export function createEditorHooks(api: EditorApi) {
         mutationFn: async ({ doc, isNew }: { doc: TemplateDocument; isNew?: boolean }) =>
           isNew ? api.createTemplate(doc) : api.saveTemplate(doc),
         onSuccess: (res) => {
-          qc.setQueryData(queryKeys.editor.template(res.id), res)
+          qc.setQueryData([...queryKeys.editor.template(res.id), scope()], res)
           void qc.invalidateQueries({ queryKey: ['editor', 'templates'] })
         },
       })
@@ -101,27 +101,28 @@ export function createEditorHooks(api: EditorApi) {
     },
     useDeepPrecheck: (taskId: string | undefined) =>
       useQuery({
-        queryKey: queryKeys.editor.precheck(taskId ?? ''),
+        queryKey: [...queryKeys.editor.precheck(taskId ?? ''), scope()],
         queryFn: () => api.deepPrecheck(taskId!),
         enabled: Boolean(taskId),
-        refetchInterval: (q) => (q.state.data?.status === 'running' ? 800 : false),
+        refetchIntervalInBackground: false,
+        refetchInterval: (q) => q.state.data?.status === 'running' ? 1000 : false,
       }),
   }
 }
 
 /* ------------------------------ 移动端 ------------------------------ */
 
-export function createExperienceHooks(api: ExperienceApi) {
+export function createExperienceHooks(api: ExperienceApi, scope: () => string = () => '') {
   return {
     useFilterOptions: () =>
       useQuery({
-        queryKey: queryKeys.experience.filters,
+        queryKey: [...queryKeys.experience.filters, scope()],
         queryFn: api.filterOptions,
         staleTime: 5 * 60_000,
       }),
     useTemplateDetail: (tplId: string | undefined) =>
       useQuery({
-        queryKey: queryKeys.experience.detail(tplId ?? ''),
+        queryKey: [...queryKeys.experience.detail(tplId ?? ''), scope()],
         queryFn: () => api.templateDetail(tplId!),
         enabled: Boolean(tplId),
       }),

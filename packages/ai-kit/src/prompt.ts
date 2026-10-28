@@ -43,7 +43,8 @@ export function buildPrompt(exampleJson: string): string {
 ## 3. 仓库结构与依赖方向
 
 \`\`\`
-apps/editor    Next.js 模板编辑器（PC）       apps/mobile   Next.js 体验 H5
+apps/web       Next.js 主站与模板创作         apps/mobile   Next.js 体验 H5
+apps/api       Hono 服务端与任务进程
 apps/docs      Fumadocs 文档                  apps/storybook 组件与预览矩阵
 packages/template-schema  协议：类型 / Zod / 版式目录 / 事件 / 厂商（纯数据）
 packages/template-core    内核：文档操作 / 蓝图 / 预检 / 三信融合转换 / 旧数据适配（纯函数）

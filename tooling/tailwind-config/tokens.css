@@ -7,7 +7,31 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --aim-font-sans:
+    'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --aim-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-sans: var(--aim-font-sans);
+  --font-mono: var(--aim-font-mono);
   --radius: 0.5rem;
+  --font-size-ui: 13px;
+  --font-size-caption: 12px;
+  --font-size-meta: 11px;
+  --font-size-section: 16px;
+  --font-size-heading: 20px;
+  --control-height: 34px;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --surface-subtle: color-mix(in srgb, var(--card) 65%, var(--background));
+  --success-surface: color-mix(in srgb, var(--success) 10%, var(--card));
+  --success-fg: oklch(0.44 0.11 155);
+  --warning-surface: color-mix(in srgb, var(--warning) 12%, var(--card));
+  --warning-fg: oklch(0.48 0.11 70);
+  --danger-surface: color-mix(in srgb, var(--destructive) 10%, var(--card));
+  --danger-fg: oklch(0.48 0.18 25);
+  --info-surface: color-mix(in srgb, var(--info) 10%, var(--card));
+  --info-fg: oklch(0.46 0.12 250);
+  --overlay: oklch(0.15 0.01 260 / 42%);
   --background: oklch(0.985 0.003 247);
   --foreground: oklch(0.21 0.02 260);
   --card: oklch(1 0 0);
@@ -36,7 +60,12 @@
   --canvas: oklch(0.955 0.008 255);
 }
 
-.dark {
+/* 高于 :root，避免 Tailwind 后写出的 :root 变量把深色主题盖回去 */
+html.dark {
+  --success-fg: oklch(0.77 0.1 155);
+  --warning-fg: oklch(0.8 0.1 70);
+  --danger-fg: oklch(0.77 0.12 25);
+  --info-fg: oklch(0.78 0.09 250);
   --background: oklch(0.17 0.015 260);
   --foreground: oklch(0.96 0.005 255);
   --card: oklch(0.21 0.018 260);
@@ -60,10 +89,8 @@
 }
 
 @theme inline {
-  --font-sans:
-    'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system,
-    'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-sans: var(--aim-font-sans);
+  --font-mono: var(--aim-font-mono);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);

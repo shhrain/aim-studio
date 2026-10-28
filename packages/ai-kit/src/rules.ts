@@ -57,7 +57,7 @@ alwaysApply: false
 `,
     'aim-apps.mdc': `---
 description: 应用层约定（编辑器 / 移动端）
-globs: apps/editor/**, apps/mobile/**
+globs: apps/web/**, apps/mobile/**
 alwaysApply: false
 ---
 

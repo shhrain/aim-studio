@@ -1,3 +1,5 @@
 export * from './contracts'
 export * from './endpoints'
 export * from './http'
+export { createWorkspaceEditorApi } from './platform-editor'
+export { createWorkspaceExperienceApi } from './platform-experience'

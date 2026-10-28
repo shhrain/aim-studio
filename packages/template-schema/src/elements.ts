@@ -396,17 +396,74 @@ export type TemplateElement<T extends ElementType = ElementType> = Omit<ElementB
 /** 任意元素（可通过 type 收窄） */
 export type AnyElement = { [K in ElementType]: TemplateElement<K> }[ElementType]
 
-export const templateElementSchema = elementBaseSchema
-  .extend({ props: z.record(z.string(), z.unknown()) })
-  .superRefine((el, ctx) => {
-    const schema = elementPropsSchemas[el.type]
-    const result = schema.safeParse(el.props)
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        ctx.addIssue({ ...issue, path: ['props', ...issue.path] } as never)
-      }
-    }
-  })
+/** 按 type 同时解析基础属性和 props，返回可收窄的联合类型。 */
+export const templateElementSchema = z.discriminatedUnion('type', [
+  elementBaseSchema.extend({ type: z.literal('text'), props: elementPropsSchemas.text }),
+  elementBaseSchema.extend({ type: z.literal('image'), props: elementPropsSchemas.image }),
+  elementBaseSchema.extend({ type: z.literal('video'), props: elementPropsSchemas.video }),
+  elementBaseSchema.extend({ type: z.literal('audio'), props: elementPropsSchemas.audio }),
+  elementBaseSchema.extend({ type: z.literal('button'), props: elementPropsSchemas.button }),
+  elementBaseSchema.extend({ type: z.literal('hotZone'), props: elementPropsSchemas.hotZone }),
+  elementBaseSchema.extend({ type: z.literal('shape'), props: elementPropsSchemas.shape }),
+  elementBaseSchema.extend({ type: z.literal('qrCode'), props: elementPropsSchemas.qrCode }),
+  elementBaseSchema.extend({ type: z.literal('swiper'), props: elementPropsSchemas.swiper }),
+  elementBaseSchema.extend({ type: z.literal('sideslip'), props: elementPropsSchemas.sideslip }),
+  elementBaseSchema.extend({ type: z.literal('eCommerce'), props: elementPropsSchemas.eCommerce }),
+  elementBaseSchema.extend({ type: z.literal('moreGoods'), props: elementPropsSchemas.moreGoods }),
+  elementBaseSchema.extend({
+    type: z.literal('ecommerceCoupon'),
+    props: elementPropsSchemas.ecommerceCoupon,
+  }),
+  elementBaseSchema.extend({
+    type: z.literal('cardVoucher'),
+    props: elementPropsSchemas.cardVoucher,
+  }),
+  elementBaseSchema.extend({
+    type: z.literal('cardVouchers'),
+    props: elementPropsSchemas.cardVouchers,
+  }),
+  elementBaseSchema.extend({ type: z.literal('countdown'), props: elementPropsSchemas.countdown }),
+  elementBaseSchema.extend({
+    type: z.literal('ticketImage'),
+    props: elementPropsSchemas.ticketImage,
+  }),
+  elementBaseSchema.extend({ type: z.literal('tel'), props: elementPropsSchemas.tel }),
+  elementBaseSchema.extend({ type: z.literal('map'), props: elementPropsSchemas.map }),
+  elementBaseSchema.extend({
+    type: z.literal('serviceNumber'),
+    props: elementPropsSchemas.serviceNumber,
+  }),
+  elementBaseSchema.extend({ type: z.literal('agreement'), props: elementPropsSchemas.agreement }),
+  elementBaseSchema.extend({ type: z.literal('form'), props: elementPropsSchemas.form }),
+  elementBaseSchema.extend({ type: z.literal('input'), props: elementPropsSchemas.input }),
+  elementBaseSchema.extend({ type: z.literal('textarea'), props: elementPropsSchemas.textarea }),
+  elementBaseSchema.extend({
+    type: z.literal('radioGroup'),
+    props: elementPropsSchemas.radioGroup,
+  }),
+  elementBaseSchema.extend({
+    type: z.literal('checkboxGroup'),
+    props: elementPropsSchemas.checkboxGroup,
+  }),
+  elementBaseSchema.extend({ type: z.literal('picker'), props: elementPropsSchemas.picker }),
+  elementBaseSchema.extend({
+    type: z.literal('datePicker'),
+    props: elementPropsSchemas.datePicker,
+  }),
+  elementBaseSchema.extend({
+    type: z.literal('timePicker'),
+    props: elementPropsSchemas.timePicker,
+  }),
+  elementBaseSchema.extend({
+    type: z.literal('textSelect'),
+    props: elementPropsSchemas.textSelect,
+  }),
+  elementBaseSchema.extend({ type: z.literal('imgSelect'), props: elementPropsSchemas.imgSelect }),
+  elementBaseSchema.extend({
+    type: z.literal('submitButton'),
+    props: elementPropsSchemas.submitButton,
+  }),
+])
 
 /** 类型守卫 */
 export function isElementOf<T extends ElementType>(

@@ -83,12 +83,40 @@ export function supportsIntegrated(cardId: string): boolean {
   return INTEGRATED_CARD_IDS.includes(cardId)
 }
 
-/** 新文档 → 三信融合协议（不支持的版式返回 null） */
-export function convertDocument(doc: TemplateDocument): IntegratedResult | null {
+/** 三信转换中需要补填链接的按钮，以文档元素 ID 标识。 */
+export function getRcsFallbackTargets(doc: TemplateDocument) {
+  const converted = convertDocument(doc)
+  const buttons =
+    doc.pages[0]?.elements
+      .filter((e) => e.visible && e.type === 'button')
+      .sort((a, b) => a.y - b.y || a.x - b.x) ?? []
+  return (converted?.editRcsBtns ?? []).flatMap((button) =>
+    buttons[button.btIndex] ? [{ ...button, elementId: buttons[button.btIndex]!.id }] : [],
+  )
+}
+
+/** 新文档转换；替代链接只改变 RCS 协议，不改写 AIM 原始事件。 */
+export function convertDocument(
+  doc: TemplateDocument,
+  options: { rcsFallbacks?: Record<string, string> } = {},
+): IntegratedResult | null {
   if (!supportsIntegrated(doc.cardId)) return null
+  const content = toLegacyContent(doc)
+  if (options.rcsFallbacks) {
+    const buttons =
+      doc.pages[0]?.elements
+        .filter((e) => e.visible && e.type === 'button')
+        .sort((a, b) => a.y - b.y || a.x - b.x) ?? []
+    const legacyButtons = content.filter((e) => e.type === 'button').reverse()
+    buttons.forEach((button, index) => {
+      const target = options.rcsFallbacks?.[button.id]
+      if (target && legacyButtons[index])
+        legacyButtons[index]!.event = { action: 'OPEN_URL', target }
+    })
+  }
   return convertToProtocols({
     cardId: doc.cardId,
-    content: toLegacyContent(doc),
+    content,
     params: doc.params.map((p) => ({ name: p.name, example: p.example })),
     mode: 'fixed',
   })

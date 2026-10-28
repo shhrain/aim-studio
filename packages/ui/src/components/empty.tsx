@@ -38,7 +38,7 @@ export function Empty({
       >
         {icon ?? <InboxIcon className={size === 'sm' ? 'size-5' : 'size-6'} />}
       </div>
-      <div className="mt-1 text-sm font-medium">{title}</div>
+      <h3 className="mt-1 text-sm font-medium">{title}</h3>
       {description && <div className="text-muted-foreground max-w-sm text-xs">{description}</div>}
       {action && <div className="mt-2">{action}</div>}
     </div>

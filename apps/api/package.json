@@ -1,0 +1,56 @@
+{
+  "name": "@aim/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run --passWithNoTests",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "worker": "tsx src/worker.ts",
+    "seed": "tsx src/seed.ts",
+    "test:integration": "tsx test/integration.ts",
+    "test:migrations": "tsx test/migrations.ts"
+  },
+  "dependencies": {
+    "hono": "catalog:",
+    "@hono/node-server": "catalog:",
+    "@aim/db": "workspace:*",
+    "@aim/api-contracts": "workspace:*",
+    "@aim/template-schema": "workspace:*",
+    "@aim/template-core": "workspace:*",
+    "@aim/utils": "workspace:*",
+    "better-auth": "catalog:",
+    "@better-auth/drizzle-adapter": "catalog:",
+    "pg-boss": "catalog:",
+    "nodemailer": "catalog:",
+    "@aws-sdk/client-s3": "catalog:",
+    "file-type": "catalog:",
+    "sanitize-html": "catalog:",
+    "zod": "catalog:",
+    "drizzle-orm": "catalog:",
+    "pg": "catalog:",
+    "tsx": "catalog:",
+    "sharp": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "tsup": "catalog:",
+    "eslint": "catalog:",
+    "vitest": "catalog:",
+    "@types/node": "catalog:",
+    "@types/nodemailer": "catalog:",
+    "@types/sanitize-html": "catalog:",
+    "@types/pg": "catalog:",
+    "@aim/tsconfig": "workspace:*",
+    "@aim/eslint-config": "workspace:*",
+    "@aim/vitest-config": "workspace:*",
+    "embedded-postgres": "catalog:"
+  }
+}

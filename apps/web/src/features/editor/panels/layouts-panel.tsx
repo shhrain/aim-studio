@@ -1,0 +1,66 @@
+'use client'
+import { useEditorCopy } from '@/features/editor/lib/copy'
+
+import { TemplateThumbnail } from '@aim/template-preview'
+import { LAYOUT_GROUPS, getLayout } from '@aim/template-schema'
+import { Badge, Button } from '@aim/ui'
+import { RepeatIcon } from 'lucide-react'
+import { useEditor } from '../store'
+
+export function LayoutsPanel({ onSwitch }: { onSwitch: () => void }) {
+  const ec = useEditorCopy()
+
+  const doc = useEditor((s) => s.doc)
+  if (!doc) return null
+  const layout = getLayout(doc.layoutId)
+  return (
+    <div className="space-y-4 p-4">
+      <div className="bg-card overflow-hidden rounded-xl border">
+        <div className="canvas-grid max-h-56 overflow-hidden px-6 pt-4">
+          <TemplateThumbnail document={doc} paramDisplay="example" />
+        </div>
+        <div className="space-y-1.5 border-t p-3">
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium">{ec(layout?.name ?? '')}</span>
+            {layout && LAYOUT_GROUPS[layout.group].label !== layout.name && (
+              <Badge variant="outline">{ec(LAYOUT_GROUPS[layout.group].label)}</Badge>
+            )}
+            {layout?.protocols.includes('rcs') && (
+              <Badge variant="success">{ec('ee0b0e8a473')}</Badge>
+            )}
+          </div>
+          <p className="text-muted-foreground text-xs">{ec(layout?.description ?? '')}</p>
+        </div>
+      </div>
+      <Button variant="outline" block onClick={onSwitch}>
+        <RepeatIcon />
+        {ec('eaf730b7418')}
+      </Button>
+      <p className="text-muted-foreground text-xs leading-relaxed">{ec('ecefc8ee83e')}</p>
+      {layout && (
+        <div className="bg-muted/60 space-y-2 rounded-lg p-3 text-xs">
+          <div className="font-medium">{ec('e3a1009f175')}</div>
+          <ul className="text-muted-foreground space-y-1">
+            {layout.slots.map((s) => (
+              <li key={s.key} className="flex justify-between gap-2">
+                <span>
+                  {ec(s.label)}
+                  {s.required && <span className="text-destructive">*</span>}
+                </span>
+                <span>
+                  {s.maxLength
+                    ? `≤${s.maxLength}字`
+                    : s.count
+                      ? `${s.count.min}-${s.count.max}项`
+                      : s.ratios
+                        ? s.ratios.map((r) => r.join(':')).join(' / ')
+                        : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}

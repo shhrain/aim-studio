@@ -20,6 +20,7 @@ export function clearAuth() {
     sessionStorage.removeItem('aim:role')
     sessionStorage.removeItem('aim:sendDraft')
     sessionStorage.removeItem('aim:user')
-    for (const key of Object.keys(sessionStorage)) if (key.startsWith('aim:ability-history:')) sessionStorage.removeItem(key)
+    for (const key of Object.keys(sessionStorage))
+      if (key.startsWith('aim:ability-history:')) sessionStorage.removeItem(key)
   }
 }

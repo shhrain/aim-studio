@@ -71,7 +71,7 @@ export function ScrollRow({
       <div
         ref={ref}
         className={cn(
-          'scrollbar-none flex overflow-x-auto overscroll-x-contain data-[dragging]:cursor-grabbing data-[dragging]:select-none data-[dragging]:*:pointer-events-none',
+          'flex scrollbar-none overflow-x-auto overscroll-x-contain data-[dragging]:cursor-grabbing data-[dragging]:select-none data-[dragging]:*:pointer-events-none',
           className,
         )}
         {...props}

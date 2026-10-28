@@ -51,7 +51,10 @@ export function RecordsView() {
     queryFn: ({ pageParam }) => api.sendDetail({ ...q, pageNum: pageParam, pageSize: 10 }),
     getNextPageParam: (last) => (last.current < last.pages ? last.current + 1 : undefined),
     refetchIntervalInBackground: false,
-    refetchInterval: (q) => q.state.data?.pages.some(page => page.records.some(record => record.status === 'SENDING')) ? 2000 : false,
+    refetchInterval: (q) =>
+      q.state.data?.pages.some((page) => page.records.some((record) => record.status === 'SENDING'))
+        ? 2000
+        : false,
   })
   const records = list.data?.pages.flatMap((p) => p.records) ?? []
   const detail = useQuery({

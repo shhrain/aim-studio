@@ -105,7 +105,7 @@ export function createEditorHooks(api: EditorApi, scope: () => string = () => ''
         queryFn: () => api.deepPrecheck(taskId!),
         enabled: Boolean(taskId),
         refetchIntervalInBackground: false,
-        refetchInterval: (q) => q.state.data?.status === 'running' ? 1000 : false,
+        refetchInterval: (q) => (q.state.data?.status === 'running' ? 1000 : false),
       }),
   }
 }

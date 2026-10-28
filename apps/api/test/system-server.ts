@@ -47,15 +47,23 @@ const spawnNode = async (
   })
   children.push(child)
   child.on('exit', (code) => {
-    if (!closing) { console.error(`${name} 进程意外退出：${code}；检查 .cache/qa-${name}.log`); void stop(1) }
+    if (!closing) {
+      console.error(`${name} 进程意外退出：${code}；检查 .cache/qa-${name}.log`)
+      void stop(1)
+    }
   })
-  child.on('error', (error) => { console.error(`${name} 启动失败：${error.name}`); void stop(1) })
+  child.on('error', (error) => {
+    console.error(`${name} 启动失败：${error.name}`)
+    void stop(1)
+  })
   await file.close()
   return child
 }
 await spawnNode(
   'worker',
-  production ? [root + 'apps/api/dist/worker.js'] : ['--import', 'tsx', root + 'apps/api/src/worker.ts'],
+  production
+    ? [root + 'apps/api/dist/worker.js']
+    : ['--import', 'tsx', root + 'apps/api/src/worker.ts'],
   root + 'apps/api',
 )
 if (production) await spawnNode('api', [root + 'apps/api/dist/server.js'], root + 'apps/api')

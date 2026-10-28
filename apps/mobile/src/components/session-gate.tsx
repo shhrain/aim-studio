@@ -25,7 +25,9 @@ export function SessionGate({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState('disabled')
   const qc = useQueryClient()
   useEffect(() => {
-    const refresh = () => { if (document.visibilityState === 'visible') setAttempt(a => a + 1) }
+    const refresh = () => {
+      if (document.visibilityState === 'visible') setAttempt((a) => a + 1)
+    }
     document.addEventListener('visibilitychange', refresh)
     return () => document.removeEventListener('visibilitychange', refresh)
   }, [])
@@ -41,7 +43,10 @@ export function SessionGate({ children }: { children: ReactNode }) {
     ])
       .then(([rows, caps, user]) => {
         if (!active) return
-        if (sessionStorage.getItem('aim:user') !== user.id) { clearAuth(); qc.clear() }
+        if (sessionStorage.getItem('aim:user') !== user.id) {
+          clearAuth()
+          qc.clear()
+        }
         sessionStorage.setItem('aim:user', user.id)
         setSpaces(rows)
         setMode(caps.mode)

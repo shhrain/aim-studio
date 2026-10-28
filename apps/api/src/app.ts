@@ -108,6 +108,8 @@ app.onError((e, c) => {
 })
 app.get('/api/openapi.json', (c) => c.json(buildOpenApi(app.routes)))
 app.get('/health/live', (c) => c.json({ status: 'ok' }))
+// 网关把 /api/* 全部转发到 API；/api/health 与前端健康检查保持一致。
+app.get('/api/health', (c) => c.json({ status: 'ok' }))
 app.get('/health/ready', async (c) => {
   await pool.query('SELECT 1')
   return c.json({ status: 'ok' })

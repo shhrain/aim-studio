@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import {
   pgTable,
   text,
@@ -237,20 +238,27 @@ export const jobs = pgTable(
   },
   (t) => [uniqueIndex('jobs_idempotency').on(t.workspaceId, t.kind, t.idempotencyKey)],
 )
-export const deliveries = pgTable('deliveries', {
-  id: text('id').primaryKey(),
-  workspaceId: text('workspace_id')
-    .notNull()
-    .references(() => organization.id),
-  jobId: text('job_id')
-    .notNull()
-    .references(() => jobs.id),
-  mobile: text('mobile').notNull(),
-  status: text('status').notNull().default('pending'),
-  messageType: integer('message_type').notNull(),
-  providerEventId: text('provider_event_id').unique(),
-  createdAt: at('created_at'),
-})
+export const deliveries = pgTable(
+  'deliveries',
+  {
+    id: text('id').primaryKey(),
+    workspaceId: text('workspace_id')
+      .notNull()
+      .references(() => organization.id),
+    jobId: text('job_id')
+      .notNull()
+      .references(() => jobs.id),
+    mobile: text('mobile').notNull(),
+    status: text('status').notNull().default('pending'),
+    messageType: integer('message_type').notNull(),
+    providerEventId: text('provider_event_id').unique(),
+    createdAt: at('created_at'),
+  },
+  (t) => [
+    index('deliveries_workspace_created').on(t.workspaceId, t.createdAt),
+    index('deliveries_job').on(t.jobId),
+  ],
+)
 export const shares = pgTable('shares', {
   id: text('id').primaryKey(),
   tokenHash: text('token_hash').notNull().unique(),
@@ -268,19 +276,23 @@ export const shares = pgTable('shares', {
     .references(() => user.id),
   createdAt: at('created_at'),
 })
-export const audit = pgTable('audit_logs', {
-  id: text('id').primaryKey(),
-  workspaceId: text('workspace_id')
-    .notNull()
-    .references(() => organization.id),
-  userId: text('user_id')
-    .notNull()
-    .references(() => user.id),
-  action: text('action').notNull(),
-  targetId: text('target_id'),
-  details: jsonb('details'),
-  createdAt: at('created_at'),
-})
+export const audit = pgTable(
+  'audit_logs',
+  {
+    id: text('id').primaryKey(),
+    workspaceId: text('workspace_id')
+      .notNull()
+      .references(() => organization.id),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id),
+    action: text('action').notNull(),
+    targetId: text('target_id'),
+    details: jsonb('details'),
+    createdAt: at('created_at'),
+  },
+  (t) => [index('audit_workspace_created').on(t.workspaceId, t.createdAt)],
+)
 export const notifications = pgTable('notifications', {
   id: text('id').primaryKey(),
   workspaceId: text('workspace_id')
@@ -304,17 +316,26 @@ export const feedback = pgTable('feedback', {
   content: text('content').notNull(),
   createdAt: at('created_at'),
 })
-export const outbox = pgTable('outbox', {
-  id: text('id').primaryKey(),
-  topic: text('topic').notNull(),
-  payload: jsonb('payload').notNull(),
-  attempts: integer('attempts').notNull().default(0),
-  availableAt: at('available_at'),
-  failedAt: timestamp('failed_at', { withTimezone: true }),
-  error: text('error'),
-  deliveredAt: timestamp('delivered_at', { withTimezone: true }),
-  createdAt: at('created_at'),
-})
+export const outbox = pgTable(
+  'outbox',
+  {
+    id: text('id').primaryKey(),
+    topic: text('topic').notNull(),
+    payload: jsonb('payload').notNull(),
+    attempts: integer('attempts').notNull().default(0),
+    availableAt: at('available_at'),
+    failedAt: timestamp('failed_at', { withTimezone: true }),
+    error: text('error'),
+    deliveredAt: timestamp('delivered_at', { withTimezone: true }),
+    createdAt: at('created_at'),
+  },
+  // worker 每 5 秒轮询待处理事件；部分索引避免全表扫描。
+  (t) => [
+    index('outbox_pending')
+      .on(t.availableAt)
+      .where(sql`delivered_at IS NULL AND failed_at IS NULL`),
+  ],
+)
 export const rateLimits = pgTable('rate_limits', {
   key: text('key').primaryKey(),
   hits: integer('hits').notNull().default(1),

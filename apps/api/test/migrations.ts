@@ -40,6 +40,17 @@ try {
     (await pool.query("SELECT to_regclass('public.share_materials') AS name")).rows[0].name,
     'share_materials',
   )
+  for (const name of [
+    'audit_workspace_created',
+    'deliveries_workspace_created',
+    'deliveries_job',
+    'outbox_pending',
+  ])
+    assert.equal(
+      (await pool.query("SELECT to_regclass('public.' || $1) AS name", [name])).rows[0].name,
+      name,
+      '0003 索引必须存在：' + name,
+    )
   const before = (await pool.query('SELECT count(*)::int total FROM drizzle.__drizzle_migrations'))
     .rows[0].total
   const broken = {

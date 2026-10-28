@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppTabBar } from '@/components/app-tabbar'
 import { VendorTags } from '@/components/vendor-tags'
+import { getIdentity } from '@/lib/auth'
 import { api, hooks } from '@/lib/api'
 
 type Filters = Pick<
@@ -32,7 +33,7 @@ export function TemplateList() {
   )
 
   const list = useInfiniteQuery({
-    queryKey: ['experience', 'list', query],
+    queryKey: ['experience', getIdentity(), 'list', query],
     initialPageParam: 0,
     queryFn: ({ pageParam }) =>
       api.templateList({ ...query, pageIndex: pageParam, pageSize: PAGE_SIZE }),

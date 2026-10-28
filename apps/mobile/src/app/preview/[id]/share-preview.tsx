@@ -1,6 +1,6 @@
 'use client'
 
-import { parseShareHash } from '@aim/template-core'
+import { ApiError, createHttpClient } from '@aim/api-client'
 import { TemplatePreview } from '@aim/template-preview'
 import {
   PROTOCOL_META,
@@ -28,24 +28,27 @@ export function SharePreview({ id }: { id: string }) {
 
   useEffect(() => {
     void (async () => {
-      if (id === 'share') {
-        const r = await parseShareHash(location.hash)
-        if (!r.ok) return setState({ status: 'error', message: r.message })
-        setState({
-          status: 'ok',
-          doc: r.payload.doc,
-          vendor: r.payload.vendor,
-          expiresAt: r.payload.expiresAt,
-        })
-        if (r.payload.vendor) setVendor(r.payload.vendor)
-        return
-      }
-      const res = await fetch(`/api/share/${id}`)
-      const json = await res.json()
-      if (!res.ok) return setState({ status: 'error', message: json.message })
-      setState({ status: 'ok', doc: json.document, vendor: json.vendor, expiresAt: json.expiresAt })
-      if (json.vendor) setVendor(json.vendor)
-    })().catch(() => setState({ status: 'error', message: '加载失败，请检查网络后重试' }))
+      const json = await createHttpClient().get<{
+        document: TemplateDocument
+        vendor?: string
+        expiresAt: string
+      }>('/api/v1/public/shares/' + encodeURIComponent(id))
+      setState({
+        status: 'ok',
+        doc: json.document,
+        vendor: json.vendor,
+        expiresAt: new Date(json.expiresAt).getTime(),
+      })
+      setVendor(json.vendor ?? json.document.vendors[0] ?? 'huawei')
+    })().catch((error) =>
+      setState({
+        status: 'error',
+        message:
+          error instanceof ApiError && error.status === 404
+            ? '分享已过期、被撤销或不存在，请向分享者获取新链接。'
+            : '加载失败，请检查网络后刷新重试。',
+      }),
+    )
   }, [id])
 
   if (state.status === 'loading')

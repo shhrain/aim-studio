@@ -4,31 +4,49 @@
 
 ## 产品一句话
 
-AIM Studio 是 5G 阅信（AIM，Android 厂商富媒体消息）模板平台：用户在编辑器里选择版式、填写槽位、配置点击事件与参数，预览多厂商效果后提交审核；同一份模板可转换为 RCS（5G 消息 / iPhone）与 RMS（彩信）协议做三信融合下发。
+AIM Studio 是 5G 阅信（AIM，Android 厂商富媒体消息）模板平台。用户在工作空间里选择版式、填写槽位、配置点击事件与参数，预览多厂商效果后提交内部审核并发布；同一份模板可转换为 RCS（5G 消息 / iPhone）与 RMS（彩信）协议做三信融合下发。主站是 `apps/web`，服务端是 `apps/api`。
 
 ## 依赖方向（不可反向）
 
 ```
 template-schema  <-  template-core  <-  template-preview  <-  apps/*
 utils            <-  (all)
+api-contracts    <-  api-client / db / apps/api / apps/web
+db               <-  apps/api
+i18n             <-  apps/web
 api-client       <-  mock / apps/*
 ui               <-  apps/*, storybook
 ```
 
-- `template-schema` 只放类型、Zod Schema、静态目录数据，**不得**依赖 React 或 DOM。
+- `template-schema` 只放类型、Zod Schema、静态目录数据，**不得**依赖 React、DOM、数据库或账号。
 - `template-core` 纯函数，可在 Node / 浏览器 / Worker 运行，**不得**访问 DOM。
 - `template-preview` 只依赖 schema/core/utils，样式写在自带的 `styles.css`（`aim-` 前缀 + CSS 变量），**不得**依赖 Tailwind 或 `@aim/ui`，保证任意宿主可嵌入。
-- 应用通过 `@aim/api-client` 访问接口，**不得**直接 `fetch` 业务接口。
+- `api-contracts` 只放 Zod 模型、错误码和权限，不依赖数据库或 React。`db` 只允许服务端引用。
+- 应用通过 `@aim/api-client` 访问接口，**不得**直接 `fetch` 业务接口。不要信任客户端传入的 `whois`、创建者、审核状态或 `precheckPassed`。
 
 ## 约定
 
 - TypeScript strict；导出的公共 API 必须有类型与 JSDoc。
 - 所有外部依赖版本写在 `pnpm-workspace.yaml` 的 `catalog`，包内用 `catalog:`；内部包用 `workspace:*`。运行 `pnpm check:deps` 校验。
 - 新增元素类型 / 版式使用脚手架：`pnpm gen:element`、`pnpm gen:layout`。
-- 文案使用简体中文；用户可见的错误需给出可执行的下一步。
+- 主站文案走 `@aim/i18n`（`zh-CN` / `en`）。用户可见的错误需给出可执行的下一步，逻辑判断使用错误码而不是中文字符串。
 - 模板参数占位统一 `{#参数名#}`；协议导出时转为 `${参数名}`。
 - 用户输入的富文本渲染前必须经过 `@aim/utils` 的 `sanitizeHtml`。
 - 修改可发布包需 `pnpm changeset`。
+- 由 Mock 提供的资源（如验证码图片）必须经 `fetch` 获取：非安全上下文下 Mock 降级为页面内 fetch 拦截，`<img src>` 等直接请求不会被拦截。
+- 新增跨应用地址、构建期环境变量时，同步更新 `deploy/docker-compose.yml` 的 build args、`deploy/.env.example` 与 `turbo.json` 的 `globalEnv`。
+
+## 部署
+
+```bash
+bash deploy/deploy.sh up          # Docker 一键部署（Windows：deploy/deploy.ps1 up）
+bash deploy/deploy.sh config      # 打印地址与模式（不需要 Docker，不打印密钥）
+bash deploy/deploy.sh doctor      # 检查 Compose、容器和 HTTP 入口
+```
+
+`down` 保留数据卷。生产使用版本化 SQL 迁移，不要在启动时执行 `drizzle-kit push`。
+
+详见 `deploy/README.md` 与 `apps/docs/content/docs/deployment.mdx`。
 
 ## 验证
 

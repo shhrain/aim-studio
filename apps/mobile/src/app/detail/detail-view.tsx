@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { SendFlow } from '@/components/send-flow'
 import { hooks } from '@/lib/api'
 import { loadDraft } from '@/lib/send-draft'
+import { canWrite } from '@/lib/auth'
 
 export function DetailView() {
   const router = useRouter()
@@ -28,14 +29,18 @@ export function DetailView() {
     if (tplId && sp.get('send') === '1' && loadDraft(tplId)) setSending(true)
   }, [tplId, sp])
 
-  const disabled = !data || data.paramcnt > 0
+  const disabled = !data || data.paramcnt > 0 || !canWrite()
   return (
     <SafePage
       footer={
         data && (
           <Button block size="xl" disabled={disabled} onClick={() => setSending(true)}>
             <SendIcon />
-            {data.paramcnt > 0 ? '含动态参数，暂不支持体验发送' : '测试发送'}
+            {!canWrite()
+              ? '当前角色只可预览'
+              : data.paramcnt > 0
+                ? '含动态参数，暂不支持体验发送'
+                : '测试发送'}
           </Button>
         )
       }
@@ -91,12 +96,13 @@ export function DetailView() {
             <div className="shadow-panel overflow-hidden rounded-2xl">
               <TemplatePreview
                 document={data.document}
+                conversion={data.conversion}
                 protocol={protocol}
                 vendor={vendor}
                 mode="fluid"
                 paramDisplay="example"
                 interactive="native"
-                chatbotName="梦网5G阅信"
+                chatbotName="AIM Studio"
               />
             </div>
           </div>

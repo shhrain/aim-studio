@@ -7,21 +7,23 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const STEPS = [
-  '使用微信「扫一扫」扫描二维码',
-  '关注服务号并授权手机号',
-  '约 10 秒后收到阅信体验消息',
+  '使用手机扫描二维码打开模板列表',
+  '使用已验证的邮箱账号登录工作空间',
+  '浏览已发布模板，预览不同终端的效果',
 ]
 
 export default function ScanExperiencePage() {
   const router = useRouter()
   const [url, setUrl] = useState('')
-  useEffect(() => setUrl(`${location.origin}/template-list`), [])
+  useEffect(() => setUrl(`${location.origin}/m/template-list`), [])
   return (
     <main className="mx-auto min-h-dvh max-w-screen-sm">
       <NavBar title="扫码体验" onBack={() => router.push('/')} />
       <section className="hero-gradient shadow-float mx-3 mt-3 flex flex-col items-center rounded-3xl px-6 pt-8 pb-6 text-white">
-        <h2 className="text-lg font-semibold">扫一扫，立即体验 5G 阅信</h2>
-        <p className="mt-1 text-xs opacity-80">把二维码分享给同事，让 TA 也收到一条富媒体短信</p>
+        <h2 className="text-lg font-semibold">在手机上预览阅信模板</h2>
+        <p className="mt-1 text-xs opacity-80">
+          扫描二维码进入工作空间。模拟任务不会发送真实短信。
+        </p>
         <div className="mt-5 rounded-2xl bg-white p-3">
           {url && <QRCodeSVG value={url} size={180} marginSize={1} />}
         </div>
@@ -38,7 +40,7 @@ export default function ScanExperiencePage() {
       </section>
       <div className="p-4">
         <Button block size="lg" variant="outline" onClick={() => router.push('/template-list')}>
-          直接选择模板发送
+          浏览已发布模板
         </Button>
       </div>
     </main>

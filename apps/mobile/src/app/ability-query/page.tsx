@@ -4,7 +4,7 @@ import type { AbilityResult } from '@aim/api-client'
 import { VENDORS } from '@aim/template-schema'
 import { Badge, Button, Textarea, toast } from '@aim/ui'
 import { NavBar } from '@aim/ui/mobile'
-import { local, parseMobiles } from '@aim/utils'
+import { parseMobiles } from '@aim/utils'
 import {
   CheckCircle2Icon,
   HistoryIcon,
@@ -17,9 +17,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
-import { getPhone } from '@/lib/auth'
-
-const HISTORY_KEY = 'abilityQueryHistory'
+import { getPhone, getIdentity, canWrite } from '@/lib/auth'
 
 const ABILITY_LEVELS = [
   {
@@ -44,13 +42,21 @@ const ABILITY_LEVELS = [
 
 export default function AbilityQueryPage() {
   const router = useRouter()
+  const HISTORY_KEY = 'aim:ability-history:' + getIdentity()
+  const writable = canWrite()
   const [myPhone, setMyPhone] = useState<string>()
   useEffect(() => setMyPhone(getPhone() || undefined), [])
   const [input, setInput] = useState('')
   const [results, setResults] = useState<AbilityResult[] | null>(null)
   const [history, setHistory] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  useEffect(() => setHistory(local.get<string[]>(HISTORY_KEY, [])), [])
+  useEffect(() => {
+    try {
+      setHistory(JSON.parse(sessionStorage.getItem(HISTORY_KEY) ?? '[]'))
+    } catch {
+      sessionStorage.removeItem(HISTORY_KEY)
+    }
+  }, [HISTORY_KEY])
 
   const query = async (source = input) => {
     const { valid } = parseMobiles(source)
@@ -61,7 +67,9 @@ export default function AbilityQueryPage() {
       setResults(res.mobiles)
       const next = [...new Set([...valid, ...history])].slice(0, 10)
       setHistory(next)
-      local.set(HISTORY_KEY, next)
+      sessionStorage.setItem(HISTORY_KEY, JSON.stringify(next))
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '查询失败，请稍后重试')
     } finally {
       setLoading(false)
     }
@@ -95,7 +103,19 @@ export default function AbilityQueryPage() {
               </button>
             )}
           </div>
-          <Button block size="lg" className="mt-3" loading={loading} onClick={() => void query()}>
+          {!writable && (
+            <p className="text-muted-foreground text-xs">
+              当前角色只可查看，请联系管理员开通能力查询权限。
+            </p>
+          )}
+          <Button
+            block
+            size="lg"
+            className="mt-3"
+            disabled={!writable}
+            loading={loading}
+            onClick={() => void query()}
+          >
             立即查询
           </Button>
         </div>
@@ -129,7 +149,7 @@ export default function AbilityQueryPage() {
               <button
                 type="button"
                 className="flex items-center gap-1"
-                onClick={() => (setHistory([]), local.remove(HISTORY_KEY))}
+                onClick={() => (setHistory([]), sessionStorage.removeItem(HISTORY_KEY))}
               >
                 <Trash2Icon className="size-3.5" />
                 清空

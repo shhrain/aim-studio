@@ -1,5 +1,6 @@
 'use client'
 
+import { createHttpClient } from '@aim/api-client'
 import { api } from './api'
 
 interface Wx {
@@ -19,6 +20,8 @@ export const isWechat = () =>
 export async function setupWechatShare(share: { title: string; desc: string; imgUrl?: string }) {
   if (!isWechat()) return
   try {
+    const capability = await createHttpClient().get<{ wechat: boolean }>('/api/v1/capabilities')
+    if (!capability.wechat) return
     const w = window as unknown as { wx?: Wx }
     if (!w.wx) {
       await new Promise<void>((resolve, reject) => {

@@ -1,6 +1,11 @@
 'use client'
 
-import { MESSAGE_TYPE_LABEL, type SendRecord, type SendStatus } from '@aim/api-client'
+import {
+  MESSAGE_TYPE_LABEL,
+  type SendRecord,
+  type SendStatus,
+  type TemplateSnapshot,
+} from '@aim/api-client'
 import { TemplatePreview } from '@aim/template-preview'
 import { VENDORS } from '@aim/template-schema'
 import { Badge, Button, Empty, Input, ScrollRow, Skeleton, cn } from '@aim/ui'
@@ -13,8 +18,9 @@ import { useRouter } from 'next/navigation'
 import { useDeferredValue, useState } from 'react'
 import { AppTabBar } from '@/components/app-tabbar'
 import { SendFlow } from '@/components/send-flow'
+import { createHttpClient } from '@aim/api-client'
 import { api } from '@/lib/api'
-import { getPhone } from '@/lib/auth'
+import { getIdentity } from '@/lib/auth'
 
 const STATUS: Record<SendStatus, { label: string; variant: 'success' | 'destructive' | 'info' }> = {
   SUCCESS: { label: '发送成功', variant: 'success' },
@@ -29,7 +35,7 @@ const RANGES = [
 
 export function RecordsView() {
   const router = useRouter()
-  const whois = getPhone()
+  const whois = getIdentity()
   const [keyword, setKeyword] = useState('')
   const mobile = useDeferredValue(keyword)
   const [range, setRange] = useState('30')
@@ -44,12 +50,26 @@ export function RecordsView() {
     initialPageParam: 1,
     queryFn: ({ pageParam }) => api.sendDetail({ ...q, pageNum: pageParam, pageSize: 10 }),
     getNextPageParam: (last) => (last.current < last.pages ? last.current + 1 : undefined),
+    refetchIntervalInBackground: false,
+    refetchInterval: (q) => q.state.data?.pages.some(page => page.records.some(record => record.status === 'SENDING')) ? 2000 : false,
   })
   const records = list.data?.pages.flatMap((p) => p.records) ?? []
   const detail = useQuery({
-    queryKey: ['experience', 'detail', resend?.tplId ?? previewing?.tplId],
-    queryFn: () => api.templateDetail((resend ?? previewing)!.tplId),
-    enabled: Boolean(resend ?? previewing),
+    queryKey: ['experience', whois, 'record-template', resend?.tplId ?? previewing?.id],
+    queryFn: () => api.templateDetail(resend!.tplId),
+    enabled: Boolean(resend),
+  })
+  const snapshot = useQuery({
+    queryKey: ['experience', whois, 'snapshot', previewing?.id],
+    queryFn: () =>
+      createHttpClient().get<TemplateSnapshot>(
+        '/api/v1/workspaces/' +
+          encodeURIComponent(whois) +
+          '/experience/records/' +
+          previewing!.id +
+          '/template',
+      ),
+    enabled: !!previewing,
   })
 
   return (
@@ -114,6 +134,7 @@ export function RecordsView() {
                 <header className="flex items-center gap-2">
                   <span className="line-clamp-1 flex-1 font-medium">{r.tplName}</span>
                   <Badge variant={STATUS[r.status].variant} dot>
+                    {r.mode === 'simulated' ? '模拟 · ' : ''}
                     {STATUS[r.status].label}
                   </Badge>
                 </header>
@@ -191,10 +212,11 @@ export function RecordsView() {
             : undefined
         }
       >
-        {detail.data && previewing && (
+        {snapshot.data && previewing && (
           <div className="overflow-hidden rounded-xl">
             <TemplatePreview
-              document={detail.data.document}
+              document={snapshot.data.document}
+              conversion={snapshot.data.conversion}
               protocol={({ 1: 'aim', 2: 'rcs', 3: 'rms' } as const)[previewing.messageType]}
               vendor={previewing.factory}
               mode="fluid"

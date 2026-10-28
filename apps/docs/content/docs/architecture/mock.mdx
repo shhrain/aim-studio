@@ -4,11 +4,18 @@ description: MSW 全量 Mock、错误码与切换真实后端。
 icon: Server
 ---
 
+<Callout type="warn" title="正式流程不走 Mock">
+  主站和移动体验默认请求 `@aim/api`。下面的 MSW 只用于
+  Storybook、组件测试和显式打开的演示模式。不要再用 URL token 或 `mockLogin`
+  作为生产登录。账号、权限和数据隔离见 [平台说明](/docs/platform)。
+</Callout>
+
 ## 设计
 
-- 接口契约（路径、请求、响应类型）定义在 `@aim/api-client/contracts`；
+- 业务契约在 `@aim/api-contracts`；`@aim/api-client` 负责发起请求。下面列出的是 Mock 仍覆盖的旧体验路径，便于对照组件测试：
 - `@aim/mock` 基于契约实现 MSW handlers，并复用 `@aim/template-core` 的预检、转换逻辑，行为与真实后端一致；
-- 同一套 handlers 用于浏览器（Service Worker）、Vitest（`msw/node`）、Storybook 与 Playwright。
+- 同一套 handlers 用于浏览器（Service Worker）、Vitest（`msw/node`）、Storybook 与 Playwright；
+- 浏览器只在 HTTPS / `localhost` 下允许 Service Worker。`startMockWorker()` 在非安全上下文（如 Docker 部署后通过 `http://内网IP` 访问）会自动降级为**页面内 fetch 拦截**（`getResponse(handlers, request)`），未命中的请求原样透传；因此业务代码中的 Mock 接口请求统一走 `fetch`（如验证码图片先 `fetch` 再转为 blob URL）。
 
 ## 响应格式
 

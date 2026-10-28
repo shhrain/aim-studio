@@ -1,0 +1,88 @@
+# AIM Studio 平台部署
+
+主站、移动端、API、任务进程和 PostgreSQL 使用同一套 Compose；默认业务数据真实持久化，Mock 不参与正式流程。需要 Docker Engine / Docker Desktop、Compose v2 和 curl；建议至少 8 GB 可用内存、12 GB 磁盘。
+
+## 一键启动
+
+```powershell
+# Windows，仓库根目录
+.\deploy\deploy.ps1 up
+```
+
+```bash
+# Linux / macOS / WSL / Git Bash
+bash deploy/deploy.sh up
+```
+
+首次创建 `deploy/.env`，自动生成随机数据库密码和认证密钥。已有配置缺失的新字段会补齐，已有值不会覆盖。没有预置管理员，使用网页注册并验证邮箱。
+
+默认地址：主站 `http://localhost:3000`；移动体验 `http://localhost:3000/m`；文档 `http://localhost:3002`；本地邮件箱 `http://localhost:8025`。首次运行请先打开主站注册，在 Mailpit 内点击验证邮件，然后创建工作空间。
+
+启动顺序为：检查配置 → 数据库健康 → SQL 迁移成功 → API 和 worker → 前端与网关 → HTTP 冒烟。迁移失败不会启动依赖它的新服务。首次启动会下载镜像与依赖，耗时取决于网络。
+
+## 常用命令
+
+两种脚本均支持 `up / update / status / logs / stop / down / config / migrate / backup / restore / doctor`；另保留 `build / restart / start / ps / clean` 别名。
+
+```powershell
+.\deploy\deploy.ps1 config
+.\deploy\deploy.ps1 logs api worker
+.\deploy\deploy.ps1 build web
+.\deploy\deploy.ps1 up storybook
+.\deploy\deploy.ps1 doctor
+.\deploy\deploy.ps1 backup
+.\deploy\deploy.ps1 restore -BackupId 20261013-120000 -Yes
+.\deploy\deploy.ps1 update
+.\deploy\deploy.ps1 down
+```
+
+```bash
+bash deploy/deploy.sh config
+bash deploy/deploy.sh logs api worker
+bash deploy/deploy.sh build web
+bash deploy/deploy.sh up storybook
+bash deploy/deploy.sh restore --backup-id 20261013-120000 --yes
+```
+
+`up` 始终启动完整平台；服务参数用于 `build/logs/restart/stop`，`storybook` 还会启用可选服务。旧服务名 `editor` 会提示并映射到 `web`。`down`、`clean` 都保留卷，不执行 `down -v`。
+
+临时指定局域网地址：PowerShell `-HostName 192.168.1.10`，Bash `--host 192.168.1.10`。长期部署请直接配置 `PUBLIC_URL` 和 `DOCS_PUBLIC_URL`，避免后续命令使用不同地址。跨应用地址在构建期注入，修改后需要重新构建。
+
+## 生产配置
+
+编辑 `deploy/.env`：
+
+- `APP_ENV=production`，`PUBLIC_URL=https://aim.example.com`，文档地址配置为 HTTPS。
+- 配置可用的 SMTP 主机、端口、账号、密码和发件人。生产不启动 Mailpit。
+- `PROVIDER_MODE=disabled`。当前没有真实发送供应商实现，按钮会显示未启用；生产拒绝 `simulated`。
+- 固定 `IMAGE_TAG` 对应发布版本。不要把密码、认证密钥或 S3 密钥提交到仓库。
+- 在网关前配置受信任的 HTTPS 反向代理，转发到 `WEB_PORT`；数据库、API 和 worker 不对宿主开放端口。
+- 将 `POSTGRES_PASSWORD` 保持为脚本生成的十六进制字符串，避免连接 URL 中出现需要编码的字符。
+
+如需体验本地模拟发送，开发环境设置 `PROVIDER_MODE=simulated`。结果明确标注模拟，没有真实短信或外部 AI 调用。
+
+本地素材使用 `files` 命名卷，数据库使用 `postgres-data` 卷。S3 可设置 `STORAGE_DRIVER=s3`、`S3_BUCKET`、`S3_ENDPOINT`、`S3_REGION` 及 AWS 凭据；对象默认私有，通过授权 API 读取。音视频元信息由镜像中的 ffprobe 校验；源码开发需安装 ffmpeg 或设置 `FFPROBE_PATH`。
+
+## 更新、备份与恢复
+
+`update` 在构建前先执行备份。备份短暂停止网关、应用和 worker，以同一批次保存 `database.dump`、`files.tar.gz` 和 `COMPLETE` 标记，然后恢复服务。备份位于 `deploy/backups/时间批次/`，需另行复制到异机存储。
+
+`restore` 会覆盖当前数据库与素材，必须显式指定批次和确认参数。仅接受有完整标记的批次；还原失败时保持应用停止，检查日志后再启动。恢复后执行 `doctor` 并完成登录、模板预览及文件读取检查。
+
+内置脚本只保证本地卷备份。选择 S3 时会拒绝生成不完整备份，应先冻结业务写入，在数据库备份批次中记录桶版本或对象快照，再同步恢复这两部分。
+
+数据库使用版本化 SQL，禁止生产执行 `drizzle-kit push`。新增迁移必须兼容上一应用版本；应用回滚使用上一版本镜像。破坏性迁移不能仅回滚镜像，必须恢复匹配的数据库与素材备份。
+
+## 排障
+
+- `config` 无需 Docker，只显示地址和模式，不打印密钥。
+- `doctor` 检查 Compose、容器和各 HTTP 入口；完整注册与发送流程仍需业务测试。
+- 迁移错误：`logs migrate`；邮箱收不到：`logs worker` 并检查 Mailpit / SMTP。
+- API 启动失败：检查密钥长度、HTTPS、SMTP 和生产模拟限制。
+- 登录重复跳转：所有浏览器访问统一使用 `PUBLIC_URL` 对应域名，不混用 IP 与 localhost。
+- 修改公开地址、`/m` 拓扑或前端环境变量后需要 rebuild，不能只 restart。
+- worker 最多尝试五次；失败的业务任务可通过有权限的任务重试接口重新排队。结果不确定的真实供应商任务不能直接重发。
+
+## 验证边界
+
+仓库提供真实 PostgreSQL 集成测试和 Docker CI。只有镜像真实构建、启动并完成业务冒烟后，才能将某个环境的 Docker 验收标为通过；脚本语法检查或源码构建不能替代部署验收。

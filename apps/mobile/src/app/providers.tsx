@@ -1,4 +1,5 @@
 'use client'
+import { SessionGate } from '@/components/session-gate'
 
 import { createQueryClient } from '@aim/api-client/react'
 import { Spinner, Toaster } from '@aim/ui'
@@ -45,7 +46,7 @@ export function Providers({ children }: { children: ReactNode }) {
   }, [])
   return (
     <QueryClientProvider client={client}>
-      <MockGate>{children}</MockGate>
+      {env.mock ? <MockGate>{children}</MockGate> : <SessionGate>{children}</SessionGate>}
       <Toaster position="top-center" />
     </QueryClientProvider>
   )

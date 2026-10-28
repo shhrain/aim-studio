@@ -1,3 +1,4 @@
+import { login } from '../helpers/platform'
 import { expect, test, type Locator, type Page } from '@playwright/test'
 
 /** 桌面端（鼠标）滚动交互：滚轮横滑、拖拽滚动、弹窗 / 面板纵向滚动 */
@@ -21,12 +22,14 @@ async function dragOver(page: Page, target: Locator, dx: number) {
   await page.mouse.up()
 }
 
+let workspace = ''
 test.beforeEach(async ({ page }) => {
+  workspace = (await login(page)).workspace
   await page.addInitScript(() => localStorage.setItem('aim:editor-tour-v1', 'true'))
 })
 
 test('横滑模板：画布内滚轮与鼠标拖拽可横向滑动，拖拽不误选中', async ({ page }) => {
-  await page.goto('/editor/new?layout=com.hbm.sideslip')
+  await page.goto(`/zh-CN/app/w/${workspace}/create/new?layout=com.hbm.sideslip`)
   const row = page.locator('.aim-el[data-selectable] .aim-hscroll')
   await expect(row).toBeVisible()
 
@@ -45,7 +48,7 @@ test('横滑模板：画布内滚轮与鼠标拖拽可横向滑动，拖拽不�
 })
 
 test('图片轮播：鼠标拖拽翻页', async ({ page }) => {
-  await page.goto('/editor/new?layout=com.hbm.carouselImageSixteenToNine')
+  await page.goto(`/zh-CN/app/w/${workspace}/create/new?layout=com.hbm.carouselImageSixteenToNine`)
   const swiper = page.locator('.aim-el[data-selectable] .aim-swiper')
   const track = swiper.locator('.aim-swiper-track')
   await expect(track).toHaveAttribute('style', /translateX\(-?0%\)/)
@@ -55,7 +58,7 @@ test('图片轮播：鼠标拖拽翻页', async ({ page }) => {
 })
 
 test('检查器与预览弹窗可用滚轮纵向滚动', async ({ page }) => {
-  await page.goto('/editor/new?layout=com.hbm.sideslip')
+  await page.goto(`/zh-CN/app/w/${workspace}/create/new?layout=com.hbm.sideslip`)
   await page.locator('.aim-el[data-selectable][data-type="sideslip"]').click()
   const viewport = page.locator('aside [data-slot="scroll-area-viewport"]').last()
   await wheelOver(page, viewport, 600)
@@ -68,12 +71,12 @@ test('检查器与预览弹窗可用滚轮纵向滚动', async ({ page }) => {
   await expect.poll(() => scrollTop(body)).toBeGreaterThan(100)
 })
 
-test('移动端标签行在桌面浏览器中可滚轮横滑', async ({ page }) => {
+test('移动端厂商行在桌面浏览器中可滚轮横滑', async ({ page }) => {
+  const state = await login(page)
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('http://localhost:3001/?token=e2e-token&phone=13800138000')
-  await expect(page).toHaveURL(/\/template-list$/)
+  await page.goto('/m/detail?tplId=' + state.template + '&workspace=' + state.workspace)
   const row = page.locator('[data-slot="scroll-row"] > div').first()
-  await expect(row.getByRole('button').nth(4)).toBeVisible()
+  await expect(row).toBeVisible()
   await wheelOver(page, row, 200)
-  await expect.poll(() => scrollLeft(row)).toBeGreaterThan(50)
+  await expect.poll(() => scrollLeft(row)).toBeGreaterThan(0)
 })

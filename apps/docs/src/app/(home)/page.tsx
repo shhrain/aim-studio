@@ -21,7 +21,7 @@ const GUIDES: { href: string; title: string; desc: string; icon: LucideIcon }[] 
   {
     href: '/docs/getting-started',
     title: '快速开始',
-    desc: '安装依赖、启动三个应用、了解仓库结构',
+    desc: '安装依赖、启动主站、服务端与移动端',
     icon: RocketIcon,
   },
   {
@@ -66,7 +66,7 @@ const APPS: { href: string; title: string; desc: string; icon: LucideIcon }[] = 
   {
     href: appUrls.mobile,
     title: '移动端体验',
-    desc: '浏览模板、测试发送到手机、查询阅信能力',
+    desc: '浏览已发布版本、多端预览与模拟任务',
     icon: SmartphoneIcon,
   },
   {
@@ -75,7 +75,7 @@ const APPS: { href: string; title: string; desc: string; icon: LucideIcon }[] = 
     desc: '组件库与「版式 × 厂商 × 协议」预览矩阵',
     icon: BookOpenIcon,
   },
-]
+].filter((app) => Boolean(app.href))
 
 const SNIPPET = `import { TemplatePreview } from '@aim/template-preview'
 import '@aim/template-preview/styles.css'

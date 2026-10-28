@@ -5,6 +5,8 @@ description: TemplatePreview、MultiVendorPreview、IntegratedPreview、Template
 
 ## TemplatePreview
 
+展示已发布版本或发送记录时，除 `document` 外，应传入接口返回的 `conversion` 转换快照。该快照包含服务端合成的红包审核图及 RCS 替代链接，避免按当前草稿重新转换造成预览与发送内容不一致。普通编辑态可省略，组件会实时转换。
+
 ```tsx
 import { TemplatePreview } from '@aim/template-preview'
 

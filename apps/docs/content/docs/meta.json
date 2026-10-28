@@ -3,6 +3,7 @@
   "pages": [
     "index",
     "getting-started",
+    "platform",
     "---产品指南---",
     "...product",
     "---模板规范---",
@@ -14,6 +15,8 @@
     "---工程与架构---",
     "...architecture",
     "api",
+    "---部署运维---",
+    "deployment",
     "---AI 协作---",
     "ai"
   ]

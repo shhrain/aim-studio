@@ -1,7 +1,13 @@
+import path from 'node:path'
 import type { NextConfig } from 'next'
 
 const config: NextConfig = {
+  basePath: '/m',
   reactStrictMode: true,
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
+  // Docker 镜像使用 standalone 产物（NEXT_OUTPUT=standalone），追踪根目录为 monorepo 根
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
+  outputFileTracingRoot: path.resolve(process.cwd(), '../..'),
   transpilePackages: [
     '@aim/ui',
     '@aim/utils',

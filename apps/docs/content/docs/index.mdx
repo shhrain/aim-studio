@@ -22,6 +22,11 @@ icon: House
 
 <Cards>
   <Card
+    title="账号与工作空间"
+    href="/docs/platform"
+    description="注册登录、团队角色、版本审核、发布与真实 API"
+  />
+  <Card
     title="模板编辑器"
     href="/docs/product/editor"
     description="版式库、所见即所得画布、参数、预检与提交审核"
@@ -50,4 +55,5 @@ icon: House
 - **一份协议，多端复用**：`@aim/template-schema` 定义模板文档，编辑器、移动端、服务端共用。
 - **预览即真机**：`@aim/template-preview` 以容器单位等比渲染，PC 手机壳、移动端全宽、列表缩略图表现一致。
 - **规范即代码**：版式字数限制、厂商矩阵、事件降级规则写在 schema 中，文档与 AI 提示词由它自动生成。
-- **Mock 优先**：所有接口由 `@aim/mock`（MSW）提供，克隆即可运行完整流程。
+- **工作空间隔离**：账号、模板、素材和发送任务按工作空间持久化；服务端不信任客户端传入的租户或审核状态。
+- **Mock 仅用于演示**：正式流程走 `@aim/api`。`@aim/mock` 只留给组件开发、测试和显式演示。

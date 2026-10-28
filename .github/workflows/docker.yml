@@ -1,0 +1,77 @@
+name: Docker
+
+# 校验 Dockerfile 与一键部署脚本：构建全部镜像、启动并执行部署冒烟验证
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'deploy/**'
+      - 'apps/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.dockerignore'
+      - '.github/workflows/docker.yml'
+  pull_request:
+    paths:
+      - 'deploy/**'
+      - 'apps/**'
+      - 'packages/**'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - 'pnpm-lock.yaml'
+      - '.dockerignore'
+      - '.github/workflows/docker.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      NPM_REGISTRY: https://registry.npmjs.org
+      PROVIDER_MODE: simulated
+      PUBLIC_URL: http://127.0.0.1:3000
+      DOCS_PUBLIC_URL: http://127.0.0.1:3002
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: 一键部署
+        run: bash deploy/deploy.sh up --host 127.0.0.1
+      - name: 健康检查
+        run: |
+          curl -fsS http://127.0.0.1:3000/api/health
+          curl -fsS http://127.0.0.1:3000/api/v1/capabilities
+          curl -fsS http://127.0.0.1:3000/m/api/health
+          curl -fsS http://127.0.0.1:3002/api/health
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @aim/e2e exec playwright install --with-deps chromium
+      - name: 部署冒烟验证
+        run: pnpm deploy:verify 127.0.0.1
+      - name: 服务重启后的持久化检查
+        run: |
+          bash deploy/deploy.sh restart api worker
+          bash deploy/deploy.sh up
+          DEPLOY_VERIFY_EXISTING=true pnpm deploy:verify 127.0.0.1
+      - name: 一致批次备份与恢复演练
+        run: |
+          bash deploy/deploy.sh backup
+          batch=$(find deploy/backups -mindepth 2 -maxdepth 2 -name COMPLETE | sort | tail -1 | xargs dirname | xargs basename)
+          DEPLOY_VERIFY_EXISTING=true DEPLOY_MUTATE=true pnpm deploy:verify 127.0.0.1
+          bash deploy/deploy.sh restore --backup-id "$batch" --yes
+          bash deploy/deploy.sh up
+          DEPLOY_VERIFY_EXISTING=true pnpm deploy:verify 127.0.0.1
+      - name: 容器日志
+        if: failure()
+        run: docker compose -f deploy/docker-compose.yml --env-file deploy/.env logs --tail=300
+      - name: 清理
+        if: always()
+        run: bash deploy/deploy.sh down

@@ -12,7 +12,7 @@ concurrency:
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-  NEXT_PUBLIC_API_MOCK: 'true'
+  NEXT_PUBLIC_API_MOCK: 'false'
 
 jobs:
   verify:
@@ -31,6 +31,8 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm --filter @aim/api test:integration
+      - run: pnpm --filter @aim/api test:migrations
       - run: pnpm build
       - name: Changeset status
         if: github.event_name == 'pull_request'
@@ -39,6 +41,10 @@ jobs:
   e2e:
     needs: verify
     runs-on: ubuntu-latest
+    services:
+      mailpit:
+        image: axllent/mailpit:v1.27
+        ports: ['11026:1025', '18026:8025']
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -48,8 +54,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @aim/e2e exec playwright install --with-deps chromium
-      - run: pnpm build --filter=@aim/editor... --filter=@aim/mobile...
       - run: pnpm test:e2e
+        env:
+          QA_SMTP_PORT: 11026
+          E2E_MAILPIT_URL: http://127.0.0.1:18026
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

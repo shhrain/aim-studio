@@ -4,7 +4,9 @@ description: 各包主要导出；完整类型参考由 TypeDoc 生成。
 icon: Code
 ---
 
-完整 API 参考：运行 `pnpm --filter @aim/docs api` 生成 TypeDoc，访问 [/typedoc](/typedoc/index.html)。
+完整类型参考：运行 `pnpm --filter @aim/docs api` 生成 TypeDoc，访问 [/typedoc](/typedoc/index.html)。
+
+平台业务接口在运行中的 API 上提供 OpenAPI：`/api/openapi.json`。认证走 `/api/auth/*`，工作空间业务走 `/api/v1/*`。账号、权限和错误码见 [平台说明](/docs/platform)。
 
 ## @aim/template-schema
 

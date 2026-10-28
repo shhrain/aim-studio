@@ -1,57 +1,47 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import { login, web, business } from '../helpers/platform'
 
-async function login(page: Page) {
-  await page.goto('/?token=e2e-token&phone=13800138000')
-  await expect(page).toHaveURL(/\/template-list$/)
-}
-
-test.describe('移动端体验', () => {
-  test('未登录跳转登录提示，体验登录后回到目标页', async ({ page }) => {
-    await page.goto('/send-records')
-    await expect(page).toHaveURL(/\/auth-required/)
-    await page.getByRole('button', { name: '体验登录' }).click()
-    await expect(page).toHaveURL(/\/send-records$/)
+test('移动端浏览已发布版本、预览和模拟发送记录', async ({ page }) => {
+  const state = await login(page)
+  await page.goto('/m/template-list?workspace=' + state.workspace)
+  await expect(page.getByText('已发布的回归模板')).toBeVisible()
+  await page.getByText('已发布的回归模板').click()
+  await expect(page.getByRole('button', { name: '测试发送', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: '测试发送', exact: true }).click()
+  await page.getByLabel('接收号码').fill('13800138000')
+  await page.getByRole('button', { name: '创建模拟任务' }).click()
+  await expect(page.getByText('任务已受理', { exact: true })).toBeVisible()
+  await page.goto('/m/send-records')
+  await expect(page.getByText('已发布的回归模板').first()).toBeVisible()
+  await expect(page.getByText(/模拟/).first()).toBeVisible()
+  await page.getByRole('button', { name: '预览', exact: true }).first().click()
+  await expect(page.locator('.aim-root')).toBeVisible()
+})
+test('联系人增改和能力查询', async ({ page }) => {
+  const state = await login(page)
+  const prefix = '/api/v1/workspaces/' + state.workspace
+  const contact = await business(page.request, prefix + '/contacts', {
+    contactName: '回归联系人',
+    mobile: '13800138001',
   })
-
-  test('URL 携带 token 进入：清理地址并写入 Cookie', async ({ page, context }) => {
-    await login(page)
-    const cookies = await context.cookies()
-    expect(cookies.find((c) => c.name === 'aim_token')?.value).toBe('e2e-token')
-    await expect(page.getByRole('heading', { name: '模板体验' })).toBeVisible()
-    await expect(page.locator('.waterfall > a').first()).toBeVisible({ timeout: 30_000 })
-  })
-
-  test('详情页测试发送全流程', async ({ page }) => {
-    await login(page)
-    await page.goto('/detail?tplId=tpl_travel')
-    await expect(page.locator('.aim-card')).toBeVisible({ timeout: 30_000 })
-    await page.getByRole('button', { name: '测试发送' }).click()
-    await page.getByRole('button', { name: '下一步：确认号码' }).click()
-    await expect(page.getByText('13800138000')).toBeVisible()
-    await page.getByRole('button', { name: /^发送 \d+ 个号码$/ }).click()
-
-    // Mock 验证码：读取图片 SVG 中的数字
-    const img = page.getByAltText('图形验证码')
-    await expect(img).toBeVisible()
-    const code = await page.evaluate(async () => {
-      const el = document.querySelector<HTMLImageElement>('img[alt="图形验证码"]')!
-      const svg = await (await fetch(el.src)).text()
-      return [...svg.matchAll(/>(\d)<\/text>/g)].map((m) => m[1]).join('')
-    })
-    await page.getByPlaceholder('4 位验证码').fill(code)
-    await page.getByRole('button', { name: '确认发送' }).click()
-    await expect(page.getByText('已提交发送')).toBeVisible()
-
-    await page.getByRole('button', { name: '查看发送记录' }).click()
-    await expect(page).toHaveURL(/\/send-records$/)
-    await expect(page.getByText('国庆出游季').first()).toBeVisible()
-  })
-
-  test('能力查询', async ({ page }) => {
-    await login(page)
-    await page.goto('/ability-query')
-    await page.getByPlaceholder('输入要查询的手机号').fill('13800138000,13912345678')
-    await page.getByRole('button', { name: '立即查询' }).click()
-    await expect(page.locator('li', { hasText: '13912345678' })).toBeVisible()
-  })
+  await page.goto('/m/send-objects')
+  await expect(page.getByText('回归联系人')).toBeVisible()
+  await business(
+    page.request,
+    prefix + '/contacts/' + contact.id,
+    { contactName: '更新后的联系人', mobile: '13800138001' },
+    'PUT',
+  )
+  await page.reload()
+  await expect(page.getByText('更新后的联系人')).toBeVisible()
+  await page.goto('/m/ability-query')
+  await page.getByPlaceholder('输入要查询的手机号').fill('13800138001')
+  await page.getByRole('button', { name: '立即查询' }).click()
+  await expect(page.getByText('13800138001').first()).toBeVisible()
+})
+test('匿名业务页面回到登录，旧 token 不授予身份', async ({ page, context }) => {
+  await context.clearCookies()
+  await page.goto('/m/?token=obsolete&phone=13800138000')
+  await expect(page).toHaveURL(new RegExp(web + '/zh-CN/login'))
+  await expect(page.getByRole('heading', { name: '登录', exact: true })).toBeVisible()
 })

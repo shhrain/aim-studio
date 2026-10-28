@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AppTabBar } from '@/components/app-tabbar'
 import { hooks } from '@/lib/api'
-import { getPhone } from '@/lib/auth'
+import { getIdentity } from '@/lib/auth'
 
 const TYPE_COLOR: Record<MessageType, string> = { 1: '#2f6bff', 2: '#16a34a', 3: '#f59e0b' }
 
@@ -53,10 +53,10 @@ function Pie({ parts }: { parts: { label: string; value: number; color: string }
 
 export default function StatisticsPage() {
   const router = useRouter()
-  const { data, isLoading } = hooks.useStatistics(getPhone())
+  const { data, isLoading } = hooks.useStatistics(getIdentity())
   return (
     <div className="mx-auto min-h-dvh max-w-screen-sm">
-      <NavBar title="发送统计" onBack={() => router.push('/send-records')} />
+      <NavBar title="模拟任务统计" onBack={() => router.push('/send-records')} />
       {isLoading ? (
         <div className="space-y-3 p-4">
           <Skeleton className="h-24 rounded-xl" />
@@ -65,7 +65,7 @@ export default function StatisticsPage() {
       ) : !data || data.total === 0 ? (
         <div className="space-y-3 py-3">
           <div className="mx-3 grid grid-cols-3 gap-2">
-            {['发送总数', '成功', '失败'].map((label) => (
+            {['模拟条数', '模拟成功', '失败'].map((label) => (
               <div key={label} className="bg-card shadow-panel rounded-xl p-3 text-center">
                 <div className="text-muted-foreground/60 text-2xl font-semibold tabular-nums">
                   0
@@ -78,11 +78,11 @@ export default function StatisticsPage() {
             <Empty
               className="px-6"
               icon={<BarChart3Icon />}
-              title="还没有发送数据"
-              description="挑选一个模板发送到手机，这里会展示成功率、消息形态与终端厂商分布"
+              title="还没有模拟任务数据"
+              description="从已发布模板创建模拟任务。这里只汇总模拟处理记录，不代表真实消息送达。"
               action={
                 <Button size="sm" asChild>
-                  <Link href="/template-list">去发送体验</Link>
+                  <Link href="/template-list">浏览模板</Link>
                 </Button>
               }
             />
@@ -92,8 +92,8 @@ export default function StatisticsPage() {
         <div className="space-y-3 py-3">
           <div className="mx-3 grid grid-cols-3 gap-2">
             {[
-              ['发送总数', data.total, 'text-foreground'],
-              ['成功', data.byStatus.SUCCESS, 'text-success'],
+              ['模拟条数', data.total, 'text-foreground'],
+              ['模拟成功', data.byStatus.SUCCESS, 'text-success'],
               ['失败', data.byStatus.FAILED, 'text-destructive'],
             ].map(([label, value, color]) => (
               <div key={String(label)} className="bg-card shadow-panel rounded-xl p-3 text-center">

@@ -1,63 +1,65 @@
 ---
 title: 快速开始
-description: 安装依赖、启动应用、了解常用命令。
+description: 安装依赖、启动主站与 API、了解常用命令。
 icon: Rocket
 ---
 
 ## 环境要求
 
-- Node.js ≥ 20.9（推荐 24，见 `.nvmrc`）
-- pnpm ≥ 9.15
+- Node.js 24（见 `.nvmrc`）
+- pnpm 9.15.7（与 packageManager 一致）
+- 本机开发需要 PostgreSQL 17，并设置 `DATABASE_URL`、`BETTER_AUTH_SECRET`、`PUBLIC_URL`
+- 注册和找回密码需要 SMTP；用 Docker 启动时，开发配置自带 Mailpit
 
 ## 安装与启动
 
 ```bash
 pnpm install
-pnpm dev            # 同时启动三个应用
+pnpm db:migrate
+pnpm dev:api
+pnpm --filter @aim/api worker
+pnpm dev:web
 ```
 
-| 应用             | 地址                  | 说明                               |
-| ---------------- | --------------------- | ---------------------------------- |
-| `apps/editor`    | http://localhost:3000 | 模板编辑器（PC）                   |
-| `apps/mobile`    | http://localhost:3001 | 5G 阅信体验 H5                     |
-| `apps/docs`      | http://localhost:3002 | 本文档站                           |
-| `apps/storybook` | http://localhost:6006 | 组件与预览矩阵（`pnpm storybook`） |
+| 应用             | 地址                    | 说明                                                                  |
+| ---------------- | ----------------------- | --------------------------------------------------------------------- |
+| `apps/web`       | http://localhost:3000   | 落地页、账号、工作空间与模板创作。旧命令 `pnpm dev:editor` 仍启动这里 |
+| `apps/api`       | http://localhost:4000   | 认证与业务接口；worker 单独进程处理邮件和任务                         |
+| `apps/mobile`    | http://localhost:3000/m | 移动体验。开发与部署均通过主站 `/m` 访问                              |
+| `apps/docs`      | http://localhost:3002   | 本文档站（`pnpm dev:docs`）                                           |
+| `apps/storybook` | http://localhost:6006   | 组件与预览矩阵                                                        |
 
-默认启用本地 Mock：编辑器的模板、素材，移动端的模板列表、发送、通讯录等数据都保存在浏览器 IndexedDB 中。
+打开 `http://localhost:3000/zh-CN`，注册并验证邮箱，创建工作空间后进入控制台。语言前缀支持 `zh-CN` 与 `en`。账号、模板、素材和审核保存在数据库里，默认不启用 Mock。
 
-<Callout title="移动端登录">
-  移动端与原体验系统一致，通过 URL 携带 `token` 与 `phone` 进入，例如
-  `http://localhost:3001/?token=demo&phone=13800138000`。Mock
-  环境下也可以在「请先登录」页直接体验登录。
+<Callout title="服务器部署">
+  只需 Docker：`bash deploy/deploy.sh up`（Windows 为 `.\deploy\deploy.ps1
+  up`）。首次运行生成随机数据库密码和认证密钥，没有预置管理员。详见 [Docker 部署](/docs/deployment)
+  与 [平台说明](/docs/platform)。
 </Callout>
 
 ## 手机扫码预览
 
-编辑器「预览」中的二维码指向移动端的 `/preview/:id`。手机与电脑处于同一局域网时：
-
-1. 将 `apps/editor/.env` 中 `NEXT_PUBLIC_MOBILE_URL` 改为电脑局域网地址，如 `http://192.168.1.10:3001`；
-2. 重启编辑器，在预览弹窗中扫码即可在真机查看（30 分钟内有效）。
+编辑器预览中的二维码指向持久化分享快照。分享默认 30 分钟有效，可在工作空间内撤销。手机与电脑需能访问主站地址；Docker 部署时移动体验在主站的 `/m`。
 
 ## 常用命令
 
 ```bash
-pnpm build          # 全量构建（Turborepo 缓存）
-pnpm lint           # ESLint
-pnpm typecheck      # 类型检查
-pnpm test           # 单元测试（Vitest）
-pnpm test:e2e       # 端到端 + 视觉回归（Playwright）
-pnpm ai:generate    # 从 schema 重新生成提示词、规则与规范文档
-pnpm gen:element    # 脚手架：新增元素类型
-pnpm gen:layout     # 脚手架：新增版式
-pnpm changeset      # 记录可发布包的变更
+pnpm typecheck
+pnpm lint
+pnpm test
+pnpm --filter @aim/api test:integration
+pnpm test:e2e
+pnpm db:generate
+pnpm ai:generate
+pnpm gen:element
+pnpm gen:layout
+pnpm changeset
 ```
 
-## Mock 调试
+集成测试使用真实 PostgreSQL，不要换成 SQLite。生产禁止在启动时执行 `drizzle-kit push`。
 
-浏览器控制台提供调试入口：
+## 隔离回归环境
 
-```js
-__aimMock.set({ latency: 1500 }) // 模拟慢网络
-__aimMock.failNext('/send/experience', 1003) // 下一次发送返回“操作过于频繁”
-__aimMock.reset() // 重置为种子数据
-```
+`pnpm test:e2e` 使用独立 PostgreSQL、API、worker 和三个前端进程，默认地址为 3100、3101、3102、4100。测试素材保存在 `.cache/qa-files`，不访问已有开发数据库。
+
+启动前准备 Mailpit，SMTP 端口默认 11026，HTTP 端口默认 18026；可设置 `QA_SMTP_HOST`、`QA_SMTP_PORT`、`E2E_MAILPIT_URL`。CI 使用 Mailpit 服务容器。已启动环境可设置 `E2E_EXTERNAL=true` 复用。回归日志位于 `.cache/qa-*.log`，结果在 `e2e/playwright-report`。

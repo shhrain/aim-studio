@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { AppTabBar } from '@/components/app-tabbar'
 import { hooks } from '@/lib/api'
-import { getPhone } from '@/lib/auth'
+import { getIdentity, canWrite } from '@/lib/auth'
 import { MAX_SEND, loadDraft, saveDraft } from '@/lib/send-draft'
 
 export function ContactsView() {
@@ -17,7 +17,8 @@ export function ContactsView() {
   const sp = useSearchParams()
   const selectMode = sp.get('mode') === 'select'
   const tplId = sp.get('tplId') ?? ''
-  const whois = getPhone()
+  const whois = getIdentity()
+  const writable = canWrite()
   const { data, isLoading } = hooks.useContacts(whois)
   const del = hooks.useDeleteContacts(whois)
   const [keyword, setKeyword] = useState('')
@@ -75,7 +76,8 @@ export function ContactsView() {
         title={selectMode ? '选择接收号码' : '通讯录'}
         onBack={() => (selectMode ? router.back() : router.push('/template-list'))}
         right={
-          !selectMode && (
+          !selectMode &&
+          writable && (
             <button
               type="button"
               className="text-primary px-2 text-sm"
@@ -95,7 +97,7 @@ export function ContactsView() {
             onChange={(e) => setKeyword(e.target.value)}
             className="bg-card flex-1"
           />
-          <Button variant="soft" onClick={() => setEditing('new')}>
+          <Button variant="soft" disabled={!writable} onClick={() => setEditing('new')}>
             <PlusIcon />
             新增
           </Button>
@@ -108,9 +110,11 @@ export function ContactsView() {
             title={keyword ? '没有匹配的联系人' : '通讯录为空'}
             description="添加常用号码，发送时一键选择"
             action={
-              <Button size="sm" onClick={() => setEditing('new')}>
-                添加联系人
-              </Button>
+              writable && (
+                <Button size="sm" onClick={() => setEditing('new')}>
+                  添加联系人
+                </Button>
+              )
             }
           />
         ) : (
@@ -136,7 +140,7 @@ export function ContactsView() {
                   <div className="truncate text-[15px]">{c.contactName}</div>
                   <div className="text-muted-foreground text-xs tabular-nums">{c.mobile}</div>
                 </div>
-                {!selectMode && !managing && (
+                {!selectMode && !managing && writable && (
                   <button
                     type="button"
                     aria-label="编辑"

@@ -1,37 +1,25 @@
-/** 登录态：URL 携带的 token / phone 由 proxy 写入 Cookie 后从地址栏清除 */
-export const TOKEN_COOKIE = 'aim_token'
-export const PHONE_COOKIE = 'aim_phone'
-const MAX_AGE = 7 * 24 * 3600
-
-/** 无需登录即可访问的路径前缀 */
-export const PUBLIC_PATHS = ['/auth-required', '/ability-guide', '/preview', '/embed', '/api']
-
-function readCookie(name: string): string {
-  if (typeof document === 'undefined') return ''
-  const m = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
-  return m ? decodeURIComponent(m[1]!) : ''
+/** 身份由 HttpOnly Cookie 与服务端会话确定；这里只保存页面工作空间选择。 */
+export function getIdentity() {
+  return typeof sessionStorage === 'undefined'
+    ? ''
+    : (sessionStorage.getItem('aim:workspace') ?? '')
 }
-
-export function getToken() {
-  return readCookie(TOKEN_COOKIE)
-}
-
-/** 业务标识 whois = 登录手机号 */
 export function getPhone() {
-  return readCookie(PHONE_COOKIE)
+  return ''
 }
-
-export function setAuth(token: string, phone: string) {
-  document.cookie = `${TOKEN_COOKIE}=${encodeURIComponent(token)}; path=/; max-age=${MAX_AGE}; samesite=lax`
-  document.cookie = `${PHONE_COOKIE}=${encodeURIComponent(phone)}; path=/; max-age=${MAX_AGE}; samesite=lax`
+/** 仅控制界面入口；服务端在每次请求中重新校验成员权限。 */
+export function canWrite() {
+  return (
+    typeof sessionStorage !== 'undefined' &&
+    ['owner', 'admin', 'editor'].includes(sessionStorage.getItem('aim:role') ?? '')
+  )
 }
-
 export function clearAuth() {
-  document.cookie = `${TOKEN_COOKIE}=; path=/; max-age=0`
-  document.cookie = `${PHONE_COOKIE}=; path=/; max-age=0`
-  try {
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.removeItem('aim:workspace')
+    sessionStorage.removeItem('aim:role')
     sessionStorage.removeItem('aim:sendDraft')
-  } catch {
-    /* ignore */
+    sessionStorage.removeItem('aim:user')
+    for (const key of Object.keys(sessionStorage)) if (key.startsWith('aim:ability-history:')) sessionStorage.removeItem(key)
   }
 }

@@ -27,7 +27,11 @@ test('文档导航、搜索、预览及 AI 文档入口', async ({ page, request
     .filter({ visible: true })
     .first()
   await expect(searchTrigger).toBeVisible()
-  await searchTrigger.click()
+  // 首屏水合完成前点击可能无效；失败时重试，避免长链路用例后的偶发失败。
+  await expect(async () => {
+    await searchTrigger.click()
+    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5_000 })
+  }).toPass({ timeout: 30_000 })
   const searchDialog = page.getByRole('dialog')
   await expect(searchDialog).toBeVisible()
   const searchInput = searchDialog.getByRole('combobox').or(searchDialog.locator('input')).first()

@@ -27,12 +27,15 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm check:deps
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm --filter @aim/api test:integration
       - run: pnpm --filter @aim/api test:migrations
+      - name: AI 文档与规则无漂移
+        run: pnpm ai:generate && git diff --exit-code
       - run: pnpm build
       - name: Changeset status
         if: github.event_name == 'pull_request'

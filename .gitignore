@@ -27,3 +27,4 @@ deploy/backups/
 .env
 
 apps/docs/public/typedoc/
+artifacts/

@@ -53,7 +53,8 @@ bash deploy/deploy.sh doctor      # 检查 Compose、容器和 HTTP 入口
 ```bash
 pnpm typecheck && pnpm lint && pnpm test
 pnpm --filter @aim/template-core test      # 转换器对照测试
-pnpm test:e2e                               # 端到端 + 视觉回归
+pnpm test:e2e                               # 端到端
+PW_VISUAL=1 pnpm test:e2e                   # 视觉回归（基线按平台保存）
 ```
 
 <!-- ai-kit:generated:start -->

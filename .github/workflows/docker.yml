@@ -8,7 +8,10 @@ on:
       - 'deploy/**'
       - 'apps/**'
       - 'packages/**'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
       - 'pnpm-lock.yaml'
+      - '.npmrc'
       - '.dockerignore'
       - '.github/workflows/docker.yml'
   pull_request:

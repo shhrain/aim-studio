@@ -59,12 +59,15 @@ pnpm lint
 pnpm test
 pnpm --filter @aim/api test:integration   # 需要真实 PostgreSQL
 pnpm test:e2e
+PW_VISUAL=1 pnpm test:e2e   # 视觉回归（基线按平台保存，CI 默认跳过）
 pnpm db:generate    # 生成迁移，生产禁止 drizzle-kit push
 pnpm ai:generate
 pnpm gen:element
 pnpm gen:layout
 pnpm changeset
 ```
+
+视觉回归基线保存在 `e2e/tests/visual.spec.ts-snapshots/`，文件名包含平台。新平台首次运行：`PW_VISUAL=1 pnpm test:e2e -- --update-snapshots`。
 
 ## AI 协作
 

@@ -41,7 +41,9 @@ pnpm version-packages   # 生成版本号与 CHANGELOG
 pnpm release            # 构建 packages/* 并发布
 ```
 
-CI（`.github/workflows/ci.yml`）在 PR 上执行：格式检查 → lint → 类型检查 → 单元测试 → 构建 → Changeset 状态检查 → E2E。合并到 main 后 `release.yml` 通过 `changesets/action` 自动创建版本 PR 或发布。
+CI（`.github/workflows/ci.yml`）在 PR 与 main 上执行：依赖规范 → 格式检查 → lint → 类型检查 → 单元测试 → API 集成/迁移测试 → AI 文档漂移检查 → 构建 → E2E。`docker.yml` 额外构建全部镜像、执行部署冒烟、重启持久化检查以及备份恢复演练。合并到 main 后 `release.yml` 通过 `changesets/action` 自动创建版本 PR 或发布。
+
+视觉回归基线按平台保存，默认跳过（避免没有 Linux 基线的 CI 失败）。需要时运行 `PW_VISUAL=1 pnpm test:e2e`；新平台首次运行使用 `PW_VISUAL=1 pnpm test:e2e -- --update-snapshots` 生成基线。
 
 ## 提交规范
 

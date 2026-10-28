@@ -1,4 +1,4 @@
-<# AIM Studio 平台部署；配置输出不包含密码。 #>
+﻿<# AIM Studio 平台部署；配置输出不包含密码。 #>
 param(
   [Parameter(Position=0)][ValidateSet('up','start','build','update','restart','stop','down','status','ps','logs','config','migrate','backup','restore','doctor','clean')][string]$Command='up',
   [Parameter(Position=1,ValueFromRemainingArguments=$true)][string[]]$Services,
@@ -62,7 +62,7 @@ switch($Command){
     $backupRoot=[IO.Path]::GetFullPath((Join-Path $DeployDir 'backups'));$target=[IO.Path]::GetFullPath((Join-Path $backupRoot $BackupId))
     if(-not$target.StartsWith($backupRoot+[IO.Path]::DirectorySeparatorChar)-or -not(Test-Path -LiteralPath (Join-Path $target 'COMPLETE'))){throw '找不到完整的备份批次'}
     Dc stop gateway web mobile api worker
-    Dc run --rm -e "BATCH=$BackupId" backup -c 'set -eu; test -s /backups/$BATCH/database.dump; tar -tzf /backups/$BATCH/files.tar.gz > /dev/null; pg_restore -h postgres -U aim -d aim --single-transaction --exit-on-error --clean --if-exists /backups/$BATCH/database.dump; find /files -mindepth 1 -delete; tar -xzf /backups/$BATCH/files.tar.gz -C /files'
+    Dc run --rm -e "BATCH=$BackupId" backup -c 'set -eu; test -s /backups/$BATCH/database.dump; tar -tzf /backups/$BATCH/files.tar.gz > /dev/null; psql -h postgres -U aim -d postgres -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS aim WITH (FORCE);" -c "CREATE DATABASE aim;"; pg_restore -h postgres -U aim -d aim --single-transaction --exit-on-error /backups/$BATCH/database.dump; find /files -mindepth 1 -delete; tar -xzf /backups/$BATCH/files.tar.gz -C /files'
     Dc start api worker web mobile gateway;Write-Host '恢复完成，请执行 doctor 和业务冒烟检查'
   }
 }

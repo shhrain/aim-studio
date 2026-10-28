@@ -68,7 +68,7 @@ case "$COMMAND" in
   restore)
     [[ -n "$YES" && "$BATCH" =~ ^[0-9]{8}-[0-9]{6}$ && -f "$DEPLOY_DIR/backups/$BATCH/COMPLETE" ]] || { echo '请提供 --yes --backup-id 有效备份批次'; exit 1; }
     dc stop gateway web mobile api worker
-    dc run --rm -e "BATCH=$BATCH" backup -c 'set -eu; test -s /backups/$BATCH/database.dump; tar -tzf /backups/$BATCH/files.tar.gz > /dev/null; pg_restore -h postgres -U aim -d aim --single-transaction --exit-on-error --clean --if-exists /backups/$BATCH/database.dump; find /files -mindepth 1 -delete; tar -xzf /backups/$BATCH/files.tar.gz -C /files'
+    dc run --rm -e "BATCH=$BATCH" backup -c 'set -eu; test -s /backups/$BATCH/database.dump; tar -tzf /backups/$BATCH/files.tar.gz > /dev/null; psql -h postgres -U aim -d postgres -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS aim WITH (FORCE);" -c "CREATE DATABASE aim;"; pg_restore -h postgres -U aim -d aim --single-transaction --exit-on-error /backups/$BATCH/database.dump; find /files -mindepth 1 -delete; tar -xzf /backups/$BATCH/files.tar.gz -C /files'
     dc start api worker web mobile gateway; echo '恢复完成，请验证业务';;
   *) echo "未知命令：$COMMAND"; exit 1;;
 esac

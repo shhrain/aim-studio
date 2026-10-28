@@ -13,12 +13,16 @@ import {
   can,
   contactSchema,
   deliverySchema,
+  experienceRecordQuerySchema,
+  experienceTemplateQuerySchema,
   pageSchema,
   preferencesSchema,
   roles,
   submitSchema,
   workspaceSchema,
 } from '@aim/api-contracts'
+import { INTEGRATED_CARD_IDS } from '@aim/template-core'
+import { getLayout, VENDORS } from '@aim/template-schema'
 import { auth } from './auth'
 import { assert, BusinessError, config, id, pool, record, transaction } from './context'
 import { cleanDocument, saveTemplate, submit, summary } from './templates'
@@ -1149,30 +1153,93 @@ app.post(`${prefix}/tools/link-check`, async (c) => {
     return c.json(ok({ url, reachable: false, https: true, message: (error as Error).message }))
   }
 })
-app.get(`${prefix}/experience/templates`, async (c) =>
-  c.json(
+/** 已发布版本统一映射为移动端体验模板。 */
+const experienceTemplate = (row: Record<string, any>) => ({
+  tplId: row.id,
+  tplName: row.document.name,
+  cardId: row.document.cardId,
+  styleName: getLayout(row.document.cardId ?? row.document.layoutId)?.name ?? row.document.layoutId,
+  industryId: row.document.meta.industry ?? '',
+  industryName: row.document.meta.industry ?? '',
+  labels: [],
+  factories: row.document.vendors,
+  carriers: [],
+  paramcnt: row.document.params.length,
+  integrated: INTEGRATED_CARD_IDS.includes(row.document.cardId),
+  document: row.document,
+  conversion: row.converted,
+})
+const experienceTemplateSql = `SELECT t.id,v.document,v.converted FROM templates t
+  JOIN template_versions v ON v.id=t.published_version_id
+  WHERE t.workspace_id=$1 AND t.archived=false
+    AND ($2='' OR v.document->>'name' ILIKE $2)
+    AND ($3='' OR v.document->>'cardId' = ANY(string_to_array($3,',')))
+    AND ($4='' OR COALESCE(v.document->'meta'->>'industry','') = ANY(string_to_array($4,',')))
+    AND ($5='' OR EXISTS (
+      SELECT 1 FROM jsonb_array_elements_text(COALESCE(v.document->'vendors','[]'::jsonb)) AS f(vendor)
+      WHERE f.vendor = ANY(string_to_array($5,','))
+    ))
+    AND ($6=false OR v.document->>'cardId' = ANY($7::text[]))
+  ORDER BY t.updated_at DESC,t.id`
+app.get(`${prefix}/experience/templates`, async (c) => {
+  const q = experienceTemplateQuerySchema.parse(c.req.query())
+  return c.json(
     await readPage(
-      'SELECT t.id,v.document,v.converted FROM templates t JOIN template_versions v ON v.id=t.published_version_id WHERE t.workspace_id=$1 AND t.archived=false ORDER BY t.updated_at DESC,t.id',
-      [c.get('workspace')],
+      experienceTemplateSql,
+      [
+        c.get('workspace'),
+        q.keyword ? `%${q.keyword}%` : '',
+        q.styleIds,
+        q.industryIds,
+        q.factories,
+        q.integrated === 'true',
+        INTEGRATED_CARD_IDS,
+      ],
       c.req.query(),
-      (row) => ({
-        tplId: row.id,
-        tplName: row.document.name,
-        cardId: row.document.cardId,
-        styleName: row.document.layoutId,
-        industryId: row.document.meta.industry ?? '',
-        industryName: row.document.meta.industry ?? '',
-        labels: [],
-        factories: row.document.vendors,
-        carriers: [],
-        paramcnt: row.document.params.length,
-        integrated: !!row.document.settings.integrated,
-        document: row.document,
-        conversion: row.converted,
-      }),
+      experienceTemplate,
     ),
-  ),
-)
+  )
+})
+app.get(`${prefix}/experience/templates/:id`, async (c) => {
+  const row = (
+    await pool.query(
+      'SELECT t.id,v.document,v.converted FROM templates t JOIN template_versions v ON v.id=t.published_version_id WHERE t.id=$1 AND t.workspace_id=$2 AND t.archived=false',
+      [c.req.param('id'), c.get('workspace')],
+    )
+  ).rows[0]
+  assert(row)
+  return c.json(ok(experienceTemplate(row)))
+})
+app.get(`${prefix}/experience/filter-options`, async (c) => {
+  const ws = c.get('workspace')
+  const [industries, styles] = await Promise.all([
+    pool.query(
+      `SELECT DISTINCT v.document->'meta'->>'industry' AS industry FROM templates t
+        JOIN template_versions v ON v.id=t.published_version_id
+        WHERE t.workspace_id=$1 AND t.archived=false
+          AND COALESCE(v.document->'meta'->>'industry','')<>'' ORDER BY industry`,
+      [ws],
+    ),
+    pool.query(
+      `SELECT DISTINCT v.document->>'cardId' AS card_id FROM templates t
+        JOIN template_versions v ON v.id=t.published_version_id
+        WHERE t.workspace_id=$1 AND t.archived=false ORDER BY card_id`,
+      [ws],
+    ),
+  ])
+  return c.json(
+    ok({
+      industries: industries.rows.map((r) => ({ id: r.industry, name: r.industry })),
+      styles: styles.rows.map((r) => ({
+        id: r.card_id,
+        name: getLayout(r.card_id)?.name ?? r.card_id,
+      })),
+      labels: [],
+      carriers: [],
+      factories: Object.entries(VENDORS).map(([id, vendor]) => ({ id, name: vendor.name })),
+    }),
+  )
+})
 app.get(prefix + '/experience/records/:id/template', async (c) => {
   const row = (
     await pool.query(
@@ -1206,11 +1273,87 @@ app.post(`${prefix}/ability/query`, async (c) => {
   )
   return c.json(ok({ mode: result.mode, mobiles: result.data }))
 })
-app.get(`${prefix}/experience/records`, async (c) =>
-  c.json(
-    await readPage(
-      "SELECT d.*,j.mode,j.status job_status,j.error job_error,j.payload,v.document->>'name' name,v.document->>'cardId' card_id FROM deliveries d JOIN jobs j ON j.id=d.job_id JOIN template_versions v ON v.id=j.payload->>'versionId' WHERE d.workspace_id=$1 ORDER BY d.created_at DESC,d.id",
+const experienceRecordSql = `SELECT * FROM (
+  SELECT d.id,d.job_id,d.mobile,d.message_type,d.created_at,d.status AS delivery_status,
+    j.mode,j.status AS job_status,j.error AS job_error,j.payload,
+    v.document->>'name' AS name,v.document->>'cardId' AS card_id,
+    CASE WHEN j.status='failed' THEN 'FAILED'
+         WHEN d.status='pending' THEN 'SENDING'
+         WHEN d.status='simulated_success' THEN 'SUCCESS'
+         ELSE 'FAILED' END AS message_status
+  FROM deliveries d
+  JOIN jobs j ON j.id=d.job_id
+  JOIN template_versions v ON v.id=j.payload->>'versionId'
+  WHERE d.workspace_id=$1
+) s
+WHERE ($2='' OR s.mobile LIKE '%'||$2||'%')
+  AND ($3='' OR s.message_status=$3)
+  AND ($4='' OR s.created_at >= (NULLIF($4,'')::date::timestamp AT TIME ZONE 'Asia/Shanghai'))
+  AND ($5='' OR s.created_at < ((NULLIF($5,'')::date + 1)::timestamp AT TIME ZONE 'Asia/Shanghai'))
+ORDER BY s.created_at DESC,s.id`
+app.get(`${prefix}/experience/statistics`, async (c) => {
+  const q = z
+    .object({
+      startDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/)
+        .optional(),
+      endDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/)
+        .optional(),
+    })
+    .parse(c.req.query())
+  const row = (
+    await pool.query(
+      `SELECT count(*)::int total,
+        count(*) FILTER (WHERE s.message_status='SENDING')::int sending,
+        count(*) FILTER (WHERE s.message_status='SUCCESS')::int success,
+        count(*) FILTER (WHERE s.message_status='FAILED')::int failed,
+        count(*) FILTER (WHERE s.message_type=1)::int type1,
+        count(*) FILTER (WHERE s.message_type=2)::int type2,
+        count(*) FILTER (WHERE s.message_type=3)::int type3
+      FROM (
+        SELECT d.message_type,d.created_at,
+          CASE WHEN j.status='failed' THEN 'FAILED'
+               WHEN d.status='pending' THEN 'SENDING'
+               WHEN d.status='simulated_success' THEN 'SUCCESS'
+               ELSE 'FAILED' END AS message_status
+        FROM deliveries d JOIN jobs j ON j.id=d.job_id
+        WHERE d.workspace_id=$1 AND j.mode='simulated'
+      ) s
+      WHERE ($2='' OR s.created_at >= (NULLIF($2,'')::date::timestamp AT TIME ZONE 'Asia/Shanghai'))
+        AND ($3='' OR s.created_at < ((NULLIF($3,'')::date + 1)::timestamp AT TIME ZONE 'Asia/Shanghai'))`,
+      [c.get('workspace'), q.startDate ?? '', q.endDate ?? ''],
+    )
+  ).rows[0]
+  return c.json(
+    ok({
+      total: row.total,
+      byStatus: { SENDING: row.sending, SUCCESS: row.success, FAILED: row.failed },
+      byType: { 1: row.type1, 2: row.type2, 3: row.type3 },
+      byFactory: [],
+    }),
+  )
+})
+app.get(`${prefix}/experience/recent-mobiles`, async (c) => {
+  const rows = (
+    await pool.query(
+      `SELECT s.mobile FROM (
+        SELECT d.mobile,max(d.created_at) AS last_seen FROM deliveries d
+        WHERE d.workspace_id=$1 GROUP BY d.mobile ORDER BY last_seen DESC LIMIT 10
+      ) s`,
       [c.get('workspace')],
+    )
+  ).rows
+  return c.json(ok({ mobiles: rows.map((r) => r.mobile) }))
+})
+app.get(`${prefix}/experience/records`, async (c) => {
+  const q = experienceRecordQuerySchema.parse(c.req.query())
+  return c.json(
+    await readPage(
+      experienceRecordSql,
+      [c.get('workspace'), q.mobile, q.status ?? '', q.startDate ?? '', q.endDate ?? ''],
       c.req.query(),
       (r) => ({
         id: r.id,
@@ -1225,18 +1368,14 @@ app.get(`${prefix}/experience/records`, async (c) =>
         messageType: r.message_type,
         mode: r.mode,
         carrier: r.mode === 'simulated' ? '模拟通道' : '外部通道',
-        failReason: r.job_status === 'failed' ? '任务处理失败，请在控制台重试或联系管理员。' : undefined,
-        status:
-          r.job_status === 'failed' ? 'FAILED' : r.status === 'pending'
-            ? 'SENDING'
-            : r.status === 'simulated_success'
-              ? 'SUCCESS'
-              : 'FAILED',
+        failReason:
+          r.job_status === 'failed' ? '任务处理失败，请在控制台重试或联系管理员。' : undefined,
+        status: r.message_status,
         sendTime: new Date(r.created_at).getTime(),
       }),
     ),
-  ),
-)
+  )
+})
 app.notFound((c) => c.json({ subCode: 2001, message: '接口不存在', data: null }, 404))
 
 app.post(`${prefix}/tasks/:id/retry`, async (c) => {

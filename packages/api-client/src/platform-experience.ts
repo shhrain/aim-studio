@@ -1,70 +1,50 @@
 import type { ExperienceApi } from './endpoints'
 import type { Contact, ExperienceTemplate, SendRecord } from './contracts'
 import { createHttpClient } from './http'
+const csv = (value?: string[]) => (value?.length ? value.join(',') : undefined)
+const pages = (total: number, size: number) => Math.max(1, Math.ceil(total / size))
 /** 将独立移动应用接入同源会话及显式工作空间。 */
 export function createWorkspaceExperienceApi(workspace: () => string): ExperienceApi {
   const http = createHttpClient()
   const prefix = () => `/api/v1/workspaces/${encodeURIComponent(workspace())}`
-  const all = async <T>(path: string) => {
-    const result: T[] = []
-    for (let page = 1; ; page++) {
-      const response = await http.get<{ data: T[]; pageInfo?: { total: number } }>(path, {
-        query: { page, size: 100 },
-        raw: true,
-      })
-      result.push(...response.data)
-      if (!response.pageInfo || result.length >= response.pageInfo.total) return result
-    }
-  }
-  const list = () => all<ExperienceTemplate>(prefix() + '/experience/templates')
-  const records = () => all<SendRecord>(prefix() + '/experience/records')
-  const paginate = <T>(rows: T[], page: number, size: number) => ({
-    records: rows.slice((page - 1) * size, page * size),
-    total: rows.length,
+  const paginate = <T>(rows: T[], page: number, size: number, total: number) => ({
+    records: rows,
+    total,
     current: page,
     size,
-    pages: Math.ceil(rows.length / size),
+    pages: pages(total, size),
   })
   return {
     mockLogin: async () => {
       throw new Error('请使用邮箱账号登录')
     },
     imageCodeUrl: () => '',
-    filterOptions: async () => {
-      const rows = await list()
-      return {
-        industries: [...new Set(rows.map((r) => r.industryId).filter(Boolean))].map((id) => ({
-          id,
-          name: id,
-        })),
-        styles: [...new Set(rows.map((r) => r.cardId))].map((id) => ({
-          id,
-          name: id.split('.').at(-1)!,
-        })),
-        labels: [],
-        carriers: [],
-        factories: [],
-      }
-    },
+    filterOptions: () => http.get(prefix() + '/experience/filter-options'),
     templateList: async (q) => {
-      let rows = await list()
-      if (q.keyword) rows = rows.filter((r) => r.tplName.includes(q.keyword!))
-      if (q.industryIds?.length) rows = rows.filter((r) => q.industryIds!.includes(r.industryId))
-      if (q.styleIds?.length) rows = rows.filter((r) => q.styleIds!.includes(r.cardId))
-      if (q.factories?.length)
-        rows = rows.filter((r) => r.factories.some((f) => q.factories!.includes(f)))
+      const page = q.pageIndex + 1
+      const response = await http.get<{ data: ExperienceTemplate[]; pageInfo: { total: number } }>(
+        prefix() + '/experience/templates',
+        {
+          query: {
+            page,
+            size: q.pageSize,
+            keyword: q.keyword,
+            styleIds: csv(q.styleIds),
+            industryIds: csv(q.industryIds),
+            factories: csv(q.factories),
+            integrated: q.integrated ? 'true' : undefined,
+          },
+          raw: true,
+        },
+      )
       return {
         subCode: 0,
         message: 'OK',
-        data: rows.slice(q.pageIndex * q.pageSize, (q.pageIndex + 1) * q.pageSize),
-        pageInfo: { total: rows.length, pageIndex: q.pageIndex, pageSize: q.pageSize },
+        data: response.data,
+        pageInfo: { total: response.pageInfo.total, pageIndex: q.pageIndex, pageSize: q.pageSize },
       }
     },
-    templateDetail: async (id) => {
-      const row = (await list()).find((r) => r.tplId === id)
-      if (!row) throw new Error('模板不存在或已下架')
-      return row
-    },
+    templateDetail: (id) => http.get<ExperienceTemplate>(prefix() + `/experience/templates/${id}`),
     sendPreview: async (body) => {
       const result = await http.post<{ mobiles: any[] }>(prefix() + '/ability/query', {
         source: body.phones.join(','),
@@ -91,43 +71,46 @@ export function createWorkspaceExperienceApi(workspace: () => string): Experienc
       return { requestId: result.id, status: 'ACCEPTED' }
     },
     sendDetail: async (q) => {
-      let rows = await records()
-      if (q.mobile) rows = rows.filter((r) => r.mobile.includes(q.mobile!))
-      if (q.status) rows = rows.filter((r) => r.status === q.status)
-      if (q.startDate) rows = rows.filter((r) => r.sendTime >= new Date(q.startDate!).getTime())
-      if (q.endDate)
-        rows = rows.filter((r) => r.sendTime < new Date(q.endDate!).getTime() + 86400000)
-      return paginate(rows, q.pageNum, q.pageSize)
-    },
-    sendRecent: async () => ({
-      mobiles: [...new Set((await records()).map((r) => r.mobile))].slice(0, 10),
-    }),
-    sendStatistics: async (q) => {
-      let rows = (await records()).filter((r) => r.mode === 'simulated')
-      if (q.startDate) rows = rows.filter((r) => r.sendTime >= new Date(q.startDate!).getTime())
-      if (q.endDate)
-        rows = rows.filter((r) => r.sendTime < new Date(q.endDate!).getTime() + 86400000)
-      return {
-        total: rows.length,
-        byStatus: {
-          SENDING: rows.filter((r) => r.status === 'SENDING').length,
-          SUCCESS: rows.filter((r) => r.status === 'SUCCESS').length,
-          FAILED: rows.filter((r) => r.status === 'FAILED').length,
+      const response = await http.get<{ data: SendRecord[]; pageInfo: { total: number } }>(
+        prefix() + '/experience/records',
+        {
+          query: {
+            page: q.pageNum,
+            size: q.pageSize,
+            mobile: q.mobile,
+            status: q.status,
+            startDate: q.startDate,
+            endDate: q.endDate,
+          },
+          raw: true,
         },
-        byType: {
-          1: rows.filter((r) => r.messageType === 1).length,
-          2: rows.filter((r) => r.messageType === 2).length,
-          3: rows.filter((r) => r.messageType === 3).length,
-        },
-        byFactory: [],
-      }
+      )
+      return paginate(response.data, q.pageNum, q.pageSize, response.pageInfo.total)
     },
+    sendRecent: () => http.get<{ mobiles: string[] }>(prefix() + '/experience/recent-mobiles'),
+    sendStatistics: (q) =>
+      http.get(prefix() + '/experience/statistics', {
+        query: { startDate: q.startDate, endDate: q.endDate },
+      }),
     wechatSignature: async () => {
       throw new Error('微信签名通道未配置')
     },
     abilityQuery: (source) => http.post(prefix() + '/ability/query', { source }),
-    contacts: async (q) =>
-      paginate(await all<Contact>(prefix() + '/contacts'), q.pageNum, q.pageSize),
+    contacts: async (q) => {
+      const size = Math.min(100, q.pageSize)
+      const rows: Contact[] = []
+      let total = 0
+      for (let page = q.pageNum; rows.length < q.pageSize; page++) {
+        const response = await http.get<{ data: Contact[]; pageInfo: { total: number } }>(
+          prefix() + '/contacts',
+          { query: { page, size }, raw: true },
+        )
+        rows.push(...response.data)
+        total = response.pageInfo.total
+        if (!response.data.length || rows.length >= total) break
+      }
+      return paginate(rows, q.pageNum, q.pageSize, total)
+    },
     createContact: (body) => http.post(prefix() + '/contacts', body),
     updateContact: (id, body) => http.put(prefix() + `/contacts/${id}`, body),
     deleteContact: (id) => http.del(prefix() + `/contacts/${id}`),

@@ -34,6 +34,8 @@ export interface TemplateListQuery {
   carriers?: string[]
   factories?: VendorId[]
   keyword?: string
+  /** 仅三信融合模板；在服务端过滤以保持分页准确。 */
+  integrated?: boolean
 }
 
 export interface ExperienceTemplate {

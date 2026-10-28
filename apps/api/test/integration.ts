@@ -17,7 +17,13 @@ try {
     migrationsFolder: fileURLToPath(new URL('../../../packages/db/migrations', import.meta.url)),
   })
   const { app } = await import('../src/app')
-  async function request(path: string, method = 'GET', body?: unknown, cookie = '', key = 'integration-idempotency') {
+  async function request(
+    path: string,
+    method = 'GET',
+    body?: unknown,
+    cookie = '',
+    key = 'integration-idempotency',
+  ) {
     const response = await app.request(`http://localhost:3000${path}`, {
       method,
       headers: {
@@ -425,6 +431,139 @@ try {
     owner,
   )
   assert.equal(historic.json.data.document.name, '可发布通知', '历史预览绑定发送版本')
+
+  // 发布两个不同行业/厂商的模板，验证移动端列表过滤与分页在服务端完成。
+  const publish = async (doc: ReturnType<typeof createDocument>) => {
+    for (const element of doc.pages[0]!.elements)
+      if (element.event?.action === 'OPEN_URL') element.event.target = 'https://example.com'
+    assert.equal((await request(base + '/templates', 'POST', doc, owner)).response.status, 201)
+    assert.equal(
+      (await request(base + '/templates/' + doc.id + '/submit', 'POST', { revision: 1 }, owner))
+        .response.status,
+      200,
+    )
+    const review = (await request(base + '/reviews', 'GET', undefined, owner)).json.data.find(
+      (r: any) => r.template_id === doc.id && r.status === 'reviewing',
+    )
+    assert.ok(review)
+    assert.equal(
+      (
+        await request(
+          base + '/reviews/' + review.id + '/decision',
+          'POST',
+          { decision: 'approved' },
+          owner,
+        )
+      ).response.status,
+      200,
+    )
+    assert.equal(
+      (
+        await request(
+          base + '/templates/' + doc.id + '/publish',
+          'POST',
+          { versionId: review.version_id },
+          owner,
+        )
+      ).response.status,
+      200,
+    )
+  }
+  const retail = createDocument({ layoutId: 'com.hbm.pureText', name: '行业筛选甲' })
+  retail.meta.industry = 'retail'
+  retail.vendors = ['xiaomi']
+  const travel = createDocument({ layoutId: 'com.hbm.pureText', name: '行业筛选乙' })
+  travel.meta.industry = 'travel'
+  travel.vendors = ['huawei']
+  await publish(retail)
+  await publish(travel)
+
+  const page1 = (
+    await request(base + '/experience/templates?page=1&size=2', 'GET', undefined, owner)
+  ).json
+  assert.equal(page1.pageInfo.total, 3, '三条已发布模板参与服务端分页')
+  assert.equal(page1.data.length, 2)
+  const page2 = (
+    await request(base + '/experience/templates?page=2&size=2', 'GET', undefined, owner)
+  ).json
+  assert.equal(page2.data.length, 1)
+  const byIndustry = (
+    await request(base + '/experience/templates?industryIds=retail', 'GET', undefined, owner)
+  ).json
+  assert.equal(byIndustry.pageInfo.total, 1)
+  assert.equal(byIndustry.data[0].tplName, '行业筛选甲')
+  const byStyle = (
+    await request(base + '/experience/templates?styleIds=com.hbm.pureText', 'GET', undefined, owner)
+  ).json
+  assert.equal(byStyle.pageInfo.total, 3, '按版式过滤在 SQL 生效')
+  const byKeyword = (
+    await request(
+      base + '/experience/templates?keyword=' + encodeURIComponent('行业筛选'),
+      'GET',
+      undefined,
+      owner,
+    )
+  ).json
+  assert.equal(byKeyword.pageInfo.total, 2)
+  const byFactory = (
+    await request(base + '/experience/templates?factories=xiaomi', 'GET', undefined, owner)
+  ).json
+  assert.equal(byFactory.pageInfo.total, 2, 'valid 与行业筛选甲都包含小米')
+  const notIntegrated = (
+    await request(base + '/experience/templates?integrated=true', 'GET', undefined, owner)
+  ).json
+  assert.equal(notIntegrated.pageInfo.total, 0)
+  const options = (await request(base + '/experience/filter-options', 'GET', undefined, owner)).json
+    .data
+  assert.deepEqual(options.industries.map((i: any) => i.id).sort(), ['retail', 'travel'])
+  assert.ok(options.styles.some((s: any) => s.id === 'com.hbm.pureText'))
+  assert.ok(options.factories.length >= 8)
+
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date())
+  const success = (
+    await request(base + '/experience/records?status=SUCCESS&size=10', 'GET', undefined, owner)
+  ).json
+  assert.equal(success.pageInfo.total, 1)
+  assert.equal(success.data[0].status, 'SUCCESS')
+  assert.equal(
+    (await request(base + '/experience/records?status=FAILED', 'GET', undefined, owner)).json
+      .pageInfo.total,
+    0,
+  )
+  assert.equal(
+    (
+      await request(
+        base + '/experience/records?mobile=13800138000&startDate=' + today + '&endDate=' + today,
+        'GET',
+        undefined,
+        owner,
+      )
+    ).json.pageInfo.total,
+    1,
+    '号码与日期过滤在 SQL 生效',
+  )
+  assert.equal(
+    (
+      await request(
+        base + '/experience/records?startDate=2000-01-01&endDate=2000-01-02',
+        'GET',
+        undefined,
+        owner,
+      )
+    ).json.pageInfo.total,
+    0,
+    '日期范围外没有记录',
+  )
+  const statistics = (await request(base + '/experience/statistics', 'GET', undefined, owner)).json
+    .data
+  assert.equal(statistics.total, 1)
+  assert.equal(statistics.byStatus.SUCCESS, 1)
+  assert.equal(statistics.byType[1], 1)
+  assert.deepEqual(
+    (await request(base + '/experience/recent-mobiles', 'GET', undefined, owner)).json.data.mobiles,
+    ['13800138000'],
+  )
+
   const shareDoc = createDocument({ layoutId: 'com.hbm.imageandtext', name: '素材分享' })
   const image = shareDoc.pages[0]!.elements.find((e) => e.type === 'image')!
   if (image.type === 'image') image.props.src = material.url
@@ -477,7 +616,7 @@ try {
   )
 
   console.log(
-    '通过：审核驳回与发布、发布版本隔离、发送幂等、任务重试上限、邀请接受、真实素材解析与范围请求、重置密码撤销会话；真实 PostgreSQL 17 迁移、注册验证与登录、工作空间初始化幂等、租户隔离、权限撤销、版本冲突、审核状态防伪、分享撤销、最后所有者与来源校验。',
+    '通过：审核驳回与发布、发布版本隔离、发送幂等、任务重试上限、邀请接受、真实素材解析与范围请求、重置密码撤销会话、移动端模板/记录过滤分页与统计；真实 PostgreSQL 17 迁移、注册验证与登录、工作空间初始化幂等、租户隔离、权限撤销、版本冲突、审核状态防伪、分享撤销、最后所有者与来源校验。',
   )
 } finally {
   await pool.end()

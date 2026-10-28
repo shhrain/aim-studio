@@ -2,6 +2,8 @@ import { z } from 'zod'
 import {
   contactSchema,
   deliverySchema,
+  experienceRecordQuerySchema,
+  experienceTemplateQuerySchema,
   preferencesSchema,
   workspaceSchema,
   submitSchema,
@@ -114,6 +116,15 @@ export function buildOpenApi(routes: { path: string; method: string }[]) {
         (json(pageSchema) as { properties: Record<string, unknown> }).properties,
       ))
         parameters.push({ name, in: 'query', schema })
+    if (path.endsWith('/experience/templates') || path.endsWith('/experience/records')) {
+      const query = path.endsWith('/experience/templates')
+        ? experienceTemplateQuerySchema
+        : experienceRecordQuerySchema
+      for (const [name, schema] of Object.entries(
+        (json(query) as { properties: Record<string, unknown> }).properties,
+      ))
+        parameters.push({ name, in: 'query', schema })
+    }
     if (route.method === 'POST' && path.endsWith('/delivery-jobs'))
       parameters.push({
         name: 'Idempotency-Key',

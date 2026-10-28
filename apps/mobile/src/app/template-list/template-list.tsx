@@ -28,8 +28,12 @@ export function TemplateList() {
   const [open, setOpen] = useState(false)
   const options = hooks.useFilterOptions()
   const query = useMemo(
-    () => ({ ...filters, industryIds: industry === 'all' ? filters.industryIds : [industry] }),
-    [filters, industry],
+    () => ({
+      ...filters,
+      industryIds: industry === 'all' ? filters.industryIds : [industry],
+      integrated: integratedOnly || undefined,
+    }),
+    [filters, industry, integratedOnly],
   )
 
   const list = useInfiniteQuery({
@@ -40,9 +44,7 @@ export function TemplateList() {
     getNextPageParam: (last, all) =>
       all.length * PAGE_SIZE < (last.pageInfo?.total ?? 0) ? all.length : undefined,
   })
-  const items = (list.data?.pages.flatMap((p) => p.data) ?? []).filter(
-    (t) => !integratedOnly || t.integrated,
-  )
+  const items = list.data?.pages.flatMap((p) => p.data) ?? []
   const sentinel = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = sentinel.current

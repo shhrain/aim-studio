@@ -51,6 +51,21 @@ pg-boss 提供持久队列，事务 outbox 避免数据库提交与入队之间�
 
 租户记录、关联文件和所有列表查询都必须验证工作空间。客户端 `whois`、创建者、审核状态和预检通过标记不能授权或改变服务端状态。用户数据使用 no-store，SSR 转发 Cookie 到内部 API，不进入公共缓存。
 
+### 移动体验接口
+
+移动端列表的过滤与分页都在 PostgreSQL 完成，避免先拉取全量再在浏览器过滤：
+
+| 接口                             | 说明                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| `GET /experience/templates`      | `page`、`size`、`keyword`、`styleIds`、`industryIds`、`factories`、`integrated` |
+| `GET /experience/templates/:id`  | 已发布版本详情                                                                  |
+| `GET /experience/filter-options` | 行业、版式与厂商筛选项                                                          |
+| `GET /experience/records`        | `mobile`、`status`、`startDate`、`endDate`                                      |
+| `GET /experience/statistics`     | 模拟任务按状态/形态聚合                                                         |
+| `GET /experience/recent-mobiles` | 最近发送号码（最多 10 个）                                                      |
+
+多值过滤使用逗号分隔；日期按 `Asia/Shanghai` 解释。具体参数以运行中的 `/api/openapi.json` 为准。
+
 ## 主题、语言与设备
 
 主站支持浅色、深色、跟随系统。偏好保存账号并保留本机设置；厂商预览独立控制皮肤，控制台主题不能改变输出。中英文通过公共词典和 next-intl 路由接入；模板正文、素材名和参数名保持用户原文。

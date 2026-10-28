@@ -47,6 +47,27 @@ export const deliverySchema = z.object({
     .max(10),
   sendMode: z.enum(['priority', '1', '2', '3']).default('priority'),
 })
+/** 移动体验模板列表：过滤与分页都在服务端执行，逗号分隔的多值参数保持 URL 简单。 */
+export const experienceTemplateQuerySchema = pageSchema.extend({
+  keyword: z.string().trim().max(120).default(''),
+  styleIds: z.string().max(2000).default(''),
+  industryIds: z.string().max(2000).default(''),
+  factories: z.string().max(1000).default(''),
+  integrated: z.enum(['true', 'false']).optional(),
+})
+/** 移动体验发送记录：日期按工作空间时区解释，避免浏览器本地时区漂移。 */
+export const experienceRecordQuerySchema = pageSchema.extend({
+  mobile: z.string().trim().max(20).default(''),
+  status: z.enum(['SENDING', 'SUCCESS', 'FAILED']).optional(),
+  startDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  endDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+})
 export const API_CODE = {
   OK: 0,
   INVALID: 1001,

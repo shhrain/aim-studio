@@ -1,6 +1,6 @@
 {
   "name": "@aim/template-core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "5G 阅信模板内核：文档操作、插件注册、版式蓝图、校验与预检、AIM→RCS/RMS 三信融合转换、旧数据适配",
   "type": "module",
   "sideEffects": [

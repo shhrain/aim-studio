@@ -1,6 +1,6 @@
 {
   "name": "@aim/ai-kit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "面向 AI 编程 Agent 的 AIM 模板知识包：系统提示词、Cursor 规则、规范文档与示例模板（由 schema 自动生成）",
   "type": "module",
   "exports": {
